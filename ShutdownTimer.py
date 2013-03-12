@@ -24,16 +24,29 @@
 import sys, os, time
 
 app = "Shutdown Timer"
-version = "0.1"
+version = "0.2"
 creator = "Triangle717"
 
-sys.stdout.write("{0} {1}, Copyright 2013 {2}".format(app, version, creator))
-offtime = int(input("Please enter (using seconds) how long you wish to delay shutdown: "))
-sys.stdout.write("Shutdown started")
-time.sleep(offtime)
-sys.stdout.write("os.system('shutdown /r /t 0')")
-sys.stdout.write("Shutting down PC...")
-os.system("shutdown /r /t 0")
+def main():
+    '''Main Menu'''
+    sys.stdout.write("\n{0} {1}, Copyright 2013 {2}\n".format(app, version, creator))
+    sys.stdout.write("\nPlease enter the time you want the computer to shutdown.\n")
+    sys.stdout.write("Hint: Use the 12 hour format, with the following layout: 'HH:MM'")
+    offtime = get_input("\n\n> ")
+    time.sleep(50)
+    raise SystemExit
+##sys.stdout.write("Shutdown started")
+##time.sleep(offtime)
+##sys.stdout.write("os.system('shutdown /r /t 0')")
+##sys.stdout.write("Shutting down PC...")
+##os.system("shutdown /r /t 0")
+
+
+def one2tot24(offtime):
+    '''Converts 12-hour format to 24-hour format'''
+
+    # The current time, as defined by the System Clock
+    cur_time = strftime("%H:%M %p", localtime())
 
 
 # -- Resource links just for me. :) -- #
@@ -43,7 +56,11 @@ os.system("shutdown /r /t 0")
 #http://www.thewindowsclub.com/shutdown-restart-windows-8
 
 if __name__ == "__main__":
-    if sys.versioninfo == (2,7,3):
-        sys.stdout.write("Python 2.7")
+    if sys.version_info >= (3,0):
+        # Use Python 3 input
+        get_input = input
+        main()
     else:
-        sys.stdout.write("Python 3")
+        # Use Python 2 input
+        get_input = raw_input
+        main()
