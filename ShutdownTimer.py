@@ -31,12 +31,13 @@ creator = "Triangle717"
 def main():
     '''Main Menu'''
     print("\n{0} {1}, Copyright 2013 {2}\n".format(app, version, creator))
-    print("\nPlease enter the time you want the computer to shutdown.\n")
-    print("Hint: Use the 12 hour format, with the following layout: 'HH:MM'")
-    offtime = input("\n\n> ")
+    print("\nPlease enter the time you want the computer to shutdown.")
+    print("Hint: Use the 12-hour format, with the following layout: 'HH:MM'")
+    offhr = int(input("\n\n> "))
+    offmin = int(input("\n\n> "))
     print("Do you want AM or PM?")
     apm = input("\n\n> ")
-    one2tot24(offtime, apm)
+    one2tot24(offhr, offmin, apm)
 ##    time.sleep(50)
 ##    raise SystemExit
 ##sys.stdout.write("Shutdown started")
@@ -46,21 +47,32 @@ def main():
 ##os.system("shutdown /r /t 0")
 
 
-def one2tot24(offtime, apm):
+def one2tot24(offhr, offmin, apm):
     '''Converts 12-hour format to 24-hour format'''
 
-    # The current time, as defined by the System Clock
-    cur_time = strftime("%H:%M %p", localtime())
-    print(cur_time)
+    if apm.lower() == "pm":
+        offhr = offhr + 12 # TODO: Add this as hours, not a string
+        print("\nHour # " + str(offhr))
 
-##    if cur_time.lower() == offtime + apm:
-##        print("Shutdown now!")
-##        sleep(1)
-##        raise SystemExit
-##    else:
-##        print("Shutdown later")
-##        sleep(10)
-##        raise SystemExit
+    if offhr > 24:
+        offhr = 0
+
+    offtime = (offhr, offmin)
+    print(offtime)
+
+    # The current time, as defined by the System Clock
+    cur_time = strftime("%H:%M", localtime())
+    print(cur_time)
+    print(offtime, apm)
+
+    if offtime == cur_time:
+        print("Shutdown now!")
+        sleep(1)
+        raise SystemExit
+    else:
+        print("Shutdown later")
+        sleep(10)
+        raise SystemExit
 
 
 # -- Resource links just for me. :) -- #
