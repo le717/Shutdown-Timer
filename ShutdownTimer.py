@@ -25,8 +25,10 @@ import sys, os
 from time import strftime, localtime, sleep
 
 app = "Shutdown Timer"
-version = "0.2"
+version = "0.3"
 creator = "Triangle717"
+
+# Set recursion limit so program does not end prematurely.
 sys.setrecursionlimit(9999999)
 
 def main():
@@ -34,8 +36,14 @@ def main():
     print("\n{0} {1}, Copyright 2013 {2}\n".format(app, version, creator))
     print("\nPlease enter the time you want the computer to shutdown.")
     print("\nUse 24-hour format, with the following layout: 'HH:MM'")
+
+    # So the program can loop
+    global offtime
+
     offtime = input("\n\n> ")
     Shutdown(offtime)
+
+# To be used later. :)
 ##    time.sleep(50)
 ##    raise SystemExit
 ##sys.stdout.write("Shutdown started")
@@ -46,6 +54,7 @@ def main():
 
 
 def Shutdown(offtime):
+    '''Checks if it is time to shutdown, and does so when ready'''
 
 
     # The current time, as defined by the System Clock
@@ -53,17 +62,29 @@ def Shutdown(offtime):
     print(cur_time)
     print(offtime)
 
-    if offtime == cur_time:
-        print("Shutdown now!")
-        sleep(1)
-        raise SystemExit
-    else:
-        print("Shutdown later")
-        sleep(10)
-        raise SystemExit
+    # Keeps the program running until it is time.
+    while True:
+        if offtime == cur_time:
+            print("Shutdown now!")
+            sleep(1)
+            raise SystemExit
+        else:
+            # Display "not time yet" message every 1 minute
+            sleep(60)
+            print("Shutdown later")
+            Shutdown(offtime)
+
+#########
+## TODO:
+########
+
+# Write text file with time input
+# Detect file upon startup
+# If file detected: If no input in 30 seconds after startup, use time in file
+# If file not detected: ask for input, proceed when given
 
 
-# -- Resource links just for me. :) -- #
+# -- Resource links just for me. ;) -- #
 
 #http://www.dreamincode.net/forums/topic/210175-shutting-down-a-computer-from-python/
 #http://www.computerperformance.co.uk/windows7/windows7_shutdown_command.htm
