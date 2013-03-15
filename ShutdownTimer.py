@@ -35,7 +35,7 @@ def main():
     '''Main Menu'''
     print("\n{0} Version {1}, Copyright 2013 {2}".format(app, version, creator))
     print("\nPlease enter the time you want the computer to shutdown.")
-    print("\nUse the 24-hour format, with the following layout: 'HH:MM'")
+    print('\nUse the 24-hour format with the following layout: "HH:MM".')
     print('\nPress "q" to close.')
 
     # So the program can loop
@@ -48,6 +48,10 @@ def main():
         print("\n{0} is shutting down.".format(app))
         sleep(2)
         raise SystemExit
+
+    elif len(offtime) == 0:
+        print("Invalid input!") # Temp message
+        main()
 
     # User typed a vaild time
     else:
@@ -75,13 +79,13 @@ def Shutdown(offtime):
     # Keeps the program running until it is time.
     while True:
         if offtime == cur_time:
-            print("Shutdown now!")
+            print("Shutdown now!") # Temp here too
             sleep(1)
             raise SystemExit
         else:
             # Display "not time yet" message every 1 minute
             sleep(60)
-            print("Shutdown later")
+            print("Shutdown later") # And here...
             Shutdown(offtime)
 
 #########
@@ -92,8 +96,10 @@ def Shutdown(offtime):
 # Detect file upon startup
 # If file detected: If no input in 30 seconds after startup, use time in file
 # If file not detected: ask for input, proceed when given
+# My preload() code, with file detection added into it
 # Check if input matches required format???
 # Once timer is started, press 'q' to close, or Windows' exit button???
+# Anything else I remember later on
 
 
 # -- Resource links just for me. ;) -- #
