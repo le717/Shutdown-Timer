@@ -31,6 +31,48 @@ creator = "Triangle717"
 # Set recursion limit so program does not end prematurely.
 sys.setrecursionlimit(9999999)
 
+# ------------ Begin Shutdown Timer Initialization ------------ #
+
+def preload():
+    '''Python 3.3.0 check'''
+
+##    logging.info("Begin logging to {0}".format(yourscorecube.logging_file))
+##    logging.info('''
+##                                #############################################
+##                                        {0} {1} {2}
+##                                        Copyright 2013 {3}
+##                                            YourScoreCube.log
+##
+##
+##                                    If you run into a bug, open an issue at
+##                                    https://github.com/le717/ICU/issues
+##                                    and attach this file for an easier fix!
+##                                #############################################
+##                                '''.format(app, majver, minver, creator))
+
+     # You need to have at least Python 3.3.0 to run ICU ReDirect
+    if sys.version_info < (3,3,0):
+##        logging.warning("You are not running Python 3.3.0 or higher!\nYou need to get a newer version to run {0}".format(app))
+        sys.stdout.write("\nYou need to download Python 3.3.0 or greater to run {0} {1} {2}.".format(app, majver, minver))
+
+        # Don't open browser immediately
+        sleep(2)
+##        logging.info("Open new tab in web browser to http://python.org/download")
+        open_new_tab("http://python.org/download") # New tab, raise browser window (if possible)
+
+        # Close ICU ReDirect
+##        logging.info("Display error message for three seconds")
+        time.sleep(3)
+##        logging.info("{0} is shutting down.".format(app))
+        raise SystemExit
+
+    # If you are running Python 3.3.0
+    else:
+##        logging.info("You are running Python 3.3.0 or greater. {0} will continue.".format(app))
+# Add file detection code here
+        main()
+
+
 def main():
     '''Main Menu'''
     print("\n{0} Version {1}, Copyright 2013 {2}".format(app, version, creator))
@@ -78,25 +120,43 @@ def Shutdown(offtime):
 
     # Keeps the program running until it is time.
     while True:
+
+        # The defined time equals the current (system) time
         if offtime == cur_time:
             print("Shutdown now!") # Temp here too
+            # Display message
             sleep(1)
             raise SystemExit
-        else:
-            # Display "not time yet" message every 1 minute
-            sleep(60)
-            print("Shutdown later") # And here...
-            Shutdown(offtime)
 
-#########
-## TODO:
+        # The defined time does not equal the current (system) time.
+        else:
+            # Get the current seconds, as defined by the system clock.
+            seconds = strftime("%S", localtime())
+            print(seconds)
+
+            '''This aligns the timer exactly with the system clock,
+            allowing the computer to begin the shutdown routine exactly when stated.'''
+
+            if seconds != 00:
+                # Get how many seconds before it is aligned
+                # Conver to int(eger) to subtract
+                aligntime = 60 - int(seconds)
+                print(aligntime)
+                print("Shutdown later 2") # And here...
+                # Sleep for however long until alignment
+                sleep(aligntime)
+                # Loop back through the program
+                Shutdown(offtime)
+
+########
+## TODO
 ########
 
 # Write text file with time input
 # Detect file upon startup
 # If file detected: If no input in 30 seconds after startup, use time in file
 # If file not detected: ask for input, proceed when given
-# My preload() code, with file detection added into it
+# Add file detection into preload()
 # Check if input matches required format???
 # Once timer is started, press 'q' to close, or Windows' exit button???
 # Anything else I remember later on
