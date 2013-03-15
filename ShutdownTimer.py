@@ -20,15 +20,17 @@
 # https://github.com/le717/Shutdown-Timer
 # Copyright 2013 Triangle717 (http://triangle717.wordpress.com).
 
+# logging.BasicConfig() code based on example from A Byte of Python
+# http://www.swaroopch.com/notes/Python
 
-import sys, os
-from time import strftime, localtime, sleep
+
+import sys, os, time, logging
 
 app = "Shutdown Timer"
-version = "0.3"
+majver = "0.3"
 creator = "Triangle717"
 
-# Set recursion limit so program does not end prematurely.
+# Expand recursion limit so program does not end prematurely.
 sys.setrecursionlimit(9999999)
 
 # ------------ Begin Shutdown Timer Initialization ------------ #
@@ -36,46 +38,46 @@ sys.setrecursionlimit(9999999)
 def preload():
     '''Python 3.3.0 check'''
 
-##    logging.info("Begin logging to {0}".format(yourscorecube.logging_file))
-##    logging.info('''
-##                                #############################################
-##                                        {0} {1} {2}
-##                                        Copyright 2013 {3}
-##                                            YourScoreCube.log
-##
-##
-##                                    If you run into a bug, open an issue at
-##                                    https://github.com/le717/ICU/issues
-##                                    and attach this file for an easier fix!
-##                                #############################################
-##                                '''.format(app, majver, minver, creator))
+    logging.info("Begin logging to {0}".format(logging_file))
+    logging.info('''
+                                #############################################
+                                            {0} {1}
+                                        Copyright 2013 {2}
+                                                Debug.log
 
-     # You need to have at least Python 3.3.0 to run ICU ReDirect
+
+                                    If you run into a bug, open an issue at
+                                https://github.com/le717/Shutdown-Timer/issues
+                                    and attach this file for an easier fix!
+                                #############################################
+                                '''.format(app, majver, creator))
+
+     # You need to have at least Python 3.3.0 to run this
     if sys.version_info < (3,3,0):
-##        logging.warning("You are not running Python 3.3.0 or higher!\nYou need to get a newer version to run {0}".format(app))
-        sys.stdout.write("\nYou need to download Python 3.3.0 or greater to run {0} {1} {2}.".format(app, majver, minver))
+        logging.warning("You are not running Python 3.3.0 or higher!\nYou need to get a newer version to run {0}".format(app))
+        sys.stdout.write("\nYou need to download Python 3.3.0 or greater to run {0} {1}.".format(app, majver))
 
         # Don't open browser immediately
-        sleep(2)
-##        logging.info("Open new tab in web browser to http://python.org/download")
+        time.sleep(2)
+        logging.info("Open new tab in web browser to http://python.org/download")
         open_new_tab("http://python.org/download") # New tab, raise browser window (if possible)
 
-        # Close ICU ReDirect
-##        logging.info("Display error message for three seconds")
+        # Close app
+        logging.info("Display error message for three seconds")
         time.sleep(3)
-##        logging.info("{0} is shutting down.".format(app))
+        logging.info("{0} is shutting down.".format(app))
         raise SystemExit
 
     # If you are running Python 3.3.0
     else:
-##        logging.info("You are running Python 3.3.0 or greater. {0} will continue.".format(app))
+        logging.info("You are running Python 3.3.0 or greater. {0} will continue.".format(app))
 # Add file detection code here
         main()
 
 
 def main():
     '''Main Menu'''
-    print("\n{0} Version {1}, Copyright 2013 {2}".format(app, version, creator))
+    print("\n{0} Version {1}, Copyright 2013 {2}".format(app, majver, creator))
     print("\nPlease enter the time you want the computer to shutdown.")
     print('\nUse the 24-hour format with the following layout: "HH:MM".')
     print('\nPress "q" to close.')
@@ -88,7 +90,7 @@ def main():
     # Only 'q' will close the program
     if offtime.lower() == "q":
         print("\n{0} is shutting down.".format(app))
-        sleep(2)
+        time.sleep(2)
         raise SystemExit
 
     elif len(offtime) == 0:
@@ -114,7 +116,7 @@ def Shutdown(offtime):
 
 
     # The current time, as defined by the System Clock
-    cur_time = strftime("%H:%M", localtime())
+    cur_time = time.strftime("%H:%M", time.localtime())
     print(cur_time)
     print(offtime)
 
@@ -125,28 +127,52 @@ def Shutdown(offtime):
         if offtime == cur_time:
             print("Shutdown now!") # Temp here too
             # Display message
-            sleep(1)
+            time.sleep(1)
             raise SystemExit
 
         # The defined time does not equal the current (system) time.
         else:
             # Get the current seconds, as defined by the system clock.
-            seconds = strftime("%S", localtime())
+            seconds = time.strftime("%S", time.localtime())
             print(seconds)
 
-            '''This aligns the timer exactly with the system clock,
+            '''The following code aligns the timer exactly with the system clock,
             allowing the computer to begin the shutdown routine exactly when stated.'''
 
             if seconds != 00:
                 # Get how many seconds before it is aligned
                 # Conver to int(eger) to subtract
                 aligntime = 60 - int(seconds)
-                print(aligntime)
                 print("Shutdown later 2") # And here...
                 # Sleep for however long until alignment
-                sleep(aligntime)
+                time.sleep(aligntime)
                 # Loop back through the program
                 Shutdown(offtime)
+
+def TheLog():
+    '''Logging Settings'''
+
+    try:
+
+    # -- Begin Logging Config -- #
+
+        logging.basicConfig(
+            level = logging.DEBUG,
+            format = "%(asctime)s : %(levelname)s : %(message)s",
+            filename = logging_file,
+            filemode = 'a+',
+        )
+
+    # -- End Logging Config -- #
+
+    # Does not have the rights to set the Logging Config!
+    except PermissionError:
+        print("\{0} does not have the user rights to operate!\nPlease relaunch {0} as an Administrator.".format(app, app))
+        # Display message long enough so user can read it
+        time.sleep(5)
+        # Close program
+        raise SystemExit
+
 
 ########
 ## TODO
@@ -169,4 +195,6 @@ def Shutdown(offtime):
 #http://www.thewindowsclub.com/shutdown-restart-windows-8
 
 if __name__ == "__main__":
-    main()
+    logging_file = os.path.join(os.getcwd(), 'Debug.log')
+    TheLog()
+    preload()
