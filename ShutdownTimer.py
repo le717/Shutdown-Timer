@@ -27,6 +27,7 @@ from time import strftime, localtime, sleep
 app = "Shutdown Timer"
 version = "0.2"
 creator = "Triangle717"
+sys.setrecursionlimit(9999999)
 
 def main():
     '''Main Menu'''
