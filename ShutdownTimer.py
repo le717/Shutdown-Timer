@@ -33,15 +33,25 @@ sys.setrecursionlimit(9999999)
 
 def main():
     '''Main Menu'''
-    print("\n{0} {1}, Copyright 2013 {2}\n".format(app, version, creator))
+    print("\n{0} Version {1}, Copyright 2013 {2}".format(app, version, creator))
     print("\nPlease enter the time you want the computer to shutdown.")
-    print("\nUse 24-hour format, with the following layout: 'HH:MM'")
+    print("\nUse the 24-hour format, with the following layout: 'HH:MM'")
+    print('\nPress "q" to close.')
 
     # So the program can loop
     global offtime
 
     offtime = input("\n\n> ")
-    Shutdown(offtime)
+
+    # Only 'q' will close the program
+    if offtime.lower() == "q":
+        print("\n{0} is shutting down.".format(app))
+        sleep(2)
+        raise SystemExit
+
+    # User typed a vaild time
+    else:
+        Shutdown(offtime)
 
 # To be used later. :)
 ##    time.sleep(50)
@@ -82,6 +92,8 @@ def Shutdown(offtime):
 # Detect file upon startup
 # If file detected: If no input in 30 seconds after startup, use time in file
 # If file not detected: ask for input, proceed when given
+# Check if input matches required format???
+# Once timer is started, press 'q' to close, or Windows' exit button???
 
 
 # -- Resource links just for me. ;) -- #
