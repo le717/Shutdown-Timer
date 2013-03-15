@@ -71,12 +71,24 @@ def preload():
     # If you are running Python 3.3.0
     else:
         logging.info("You are running Python 3.3.0 or greater. {0} will continue.".format(app))
-# Add file detection code here
-        main()
 
+        if not os.path.exists("ShutdownTime.txt"):
+            logging.warning("Cannot find last used shutdown time (ShutdownTime.txt)!")
+            logging.info("Switching to FirstRunMenu()")
+            FirstRunMenu()
 
-def main():
-    '''Main Menu'''
+        else:
+            logging.info("Last used shutdown time found (ShutdownTime.txt)")
+            logging.info("Switching to MainMenu()")
+            MainMenu()
+
+def MainMenu():
+    '''Main Menu if ShutdownTime.txt is found'''
+    FirstRunMenu()
+
+def FirstRunMenu():
+    '''Main Menu if ShutdownTime.txt is not found'''
+
     print("\n{0} Version {1}, Copyright 2013 {2}".format(app, majver, creator))
     print("\nPlease enter the time you want the computer to shutdown.")
     print('\nUse the 24-hour format with the following layout: "HH:MM".')
