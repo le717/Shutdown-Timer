@@ -159,5 +159,13 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 
-# Mac crap
+# Mac junk
 .DS_Store
+
+#########
+## Misc.
+#########
+
+Compile/
+*.bat
+*.py
