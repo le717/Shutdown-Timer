@@ -227,6 +227,8 @@ def TheLog():
 # Write text file with time input
 # Detect file upon startup
 # If file detected: If no input in 30 seconds after startup, use time in file
+# (Refer to http://stackoverflow.com/questions/2933399/how-to-set-time-limit-on-input
+# And http://docs.python.org/3.3/library/threading.html?#timer-objects)
 # If file not detected: ask for input, proceed when given
 # Add file detection into preload()
 # Check if input matches required format???
