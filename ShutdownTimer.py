@@ -25,6 +25,7 @@
 
 
 import sys, os, time, logging
+from threading import Timer
 
 app = "Shutdown Timer"
 majver = "0.3"
@@ -36,7 +37,7 @@ sys.setrecursionlimit(9999999)
 # ------------ Begin Shutdown Timer Initialization ------------ #
 
 def preload():
-    '''Python 3.3.0 check'''
+    '''Python 3.3.0 & ShutdownTime.txt check'''
 
     logging.info("Begin logging to {0}".format(logging_file))
     logging.info('''
@@ -84,15 +85,48 @@ def preload():
 
 def MainMenu():
     '''Main Menu if ShutdownTime.txt is found'''
-    FirstRunMenu()
+
+    print("\n{0} Version {1}, Copyright 2013 {2}".format(app, majver, creator))
+    print('''\nLast used shutdown time has been restored.
+    \nIf no new time is enter in 30 seconds, {0} will use the restored time
+    \nnamely, "*time here*".
+    \nPress "q" to close.'''.format(app))
+
+    # So the program can loop
+    global offtime
+
+    offtime = input("\n\n> ")
+    offtime = "6:15"
+
+##    t = Timer(2.0, Shutdown(offtime))
+    t = Timer(10.0, print("Using file"))
+    t.start()
+##    print("Using file")
+    raise SystemExit
+
+
+    if offtime.lower() == "q":
+        print("\n{0} is shutting down.".format(app))
+        time.sleep(2)
+        raise SystemExit
+
+    elif len(offtime) == 0:
+        print("Invalid input!") # Temp message
+        MainMenu()
+
+    # User typed a valid time
+    else:
+        t.cancel()
+        Shutdown(offtime)
+
 
 def FirstRunMenu():
     '''Main Menu if ShutdownTime.txt is not found'''
 
     print("\n{0} Version {1}, Copyright 2013 {2}".format(app, majver, creator))
-    print("\nPlease enter the time you want the computer to shutdown.")
-    print('\nUse the 24-hour format with the following layout: "HH:MM".')
-    print('\nPress "q" to close.')
+    print('''\nPlease enter the time you want the computer to shutdown.
+    \nUse the 24-hour format with the following layout: "HH:MM".
+    \nPress "q" to close.''')
 
     # So the program can loop
     global offtime

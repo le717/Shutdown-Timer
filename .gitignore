@@ -170,3 +170,4 @@ Compile/
 *.bat
 *.py
 *.log
+ShutdownTime.txt
