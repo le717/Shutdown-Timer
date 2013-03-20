@@ -19,6 +19,7 @@
 """
 import sys, os, time, platform, webbrowser
 from threading import Timer
+import getopt
 
 app = "Shutdown Timer"
 majver = "0.3"
@@ -46,7 +47,9 @@ def preload():
 
     # If you are running Python 3.3.0
     else:
-        if platform.system() != 'Windows':
+        if platform.system() == 'Windows':
+            main()
+        else: # if platform.system() != 'Windows':
             print("\n{0} {1} is not supported on a non-Windows Operating System!".format(app, majver))
             print("\n{0} is shutting down.".format(app))
             time.sleep(2)
@@ -61,10 +64,10 @@ def preload():
 ##            logging.info("Last used shutdown time found (ShutdownTime.txt)")
 ##            logging.info("Switching to MainMenu()")
 ##            MainMenu()
-        main()
+
 
 def MainMenu():
-    '''Main Menu if ShutdownTime.txt is found'''
+    '''Shutdown Timer Command-line Menu layout'''
 
     print("\n{0} Version {1}, Copyright 2013 {2}".format(app, majver, creator))
     print('''\nLast used shutdown time has been restored.
@@ -79,10 +82,10 @@ def MainMenu():
     offtime = "6:15"
 
 ##    t = Timer(2.0, Shutdown(offtime))
-    t = Timer(10.0, print("Using file"))
-    t.start()
+##    t = Timer(10.0, print("Using file"))
+##    t.start()
 ##    print("Using file")
-    raise SystemExit
+##    raise SystemExit
 
 
     if offtime.lower() == "q":
@@ -101,7 +104,7 @@ def MainMenu():
 
 
 def main():
-    '''Main Menu if ShutdownTime.txt is not found'''
+    '''Shutdown Timer Menu Layout'''
 
     print("\n{0} Version {1}, Copyright 2013 {2}".format(app, majver, creator))
     print('''\nPlease enter the time you want the computer to shutdown.
@@ -196,6 +199,15 @@ def Shutdown(offtime):
 #http://www.dreamincode.net/forums/topic/210175-shutting-down-a-computer-from-python/
 #http://www.computerperformance.co.uk/windows7/windows7_shutdown_command.htm
 #http://www.thewindowsclub.com/shutdown-restart-windows-8
+## CMD Arguments
+# http://docs.python.org/3.3/howto/argparse.html#id1
+# http://beastie.cs.ua.edu/cs150/book/index_11.html
+
+##fileName = sys.argv[0].split(os.sep).pop()
+##if sys.argv[0] == fileName:
+##    preload()
+##elif sys.argv[:1] == fileName + "-cmd":
+##    MainMenu()
 
 if __name__ == "__main__":
     preload()
