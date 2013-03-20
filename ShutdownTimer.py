@@ -24,7 +24,7 @@
 # http://www.swaroopch.com/notes/Python
 
 
-import sys, os, time, logging
+import sys, os, time, logging, platform
 from threading import Timer
 
 app = "Shutdown Timer"
@@ -71,6 +71,11 @@ def preload():
 
     # If you are running Python 3.3.0
     else:
+        if platform.system() != 'Windows':
+            print("\n{0} {1} is not supported on a non-Windows Operating System!".format(app, majver))
+            print("\n{0} is shutting down.".format(app))
+            time.sleep(2)
+            raise SystemExit
 ##        logging.info("You are running Python 3.3.0 or greater. {0} will continue.".format(app))
 ##
 ##        if not os.path.exists("ShutdownTime.txt"):
@@ -82,7 +87,7 @@ def preload():
 ##            logging.info("Last used shutdown time found (ShutdownTime.txt)")
 ##            logging.info("Switching to MainMenu()")
 ##            MainMenu()
-            main()
+        main()
 
 def MainMenu():
     '''Main Menu if ShutdownTime.txt is found'''
@@ -173,9 +178,9 @@ def Shutdown(offtime):
 
         # The defined time equals the current (system) time
         if offtime == cur_time:
-            print("Shutdown now!") # Temp here too
-            # Display message
+            # Let user read message
             time.sleep(1)
+            # To be replaced with shutdown code
             raise SystemExit
 
         # The defined time does not equal the current (system) time.
@@ -234,7 +239,6 @@ def TheLog():
 # Add file detection into preload()
 # Check if input matches required format???
 # Once timer is started, press 'q' to close, or Windows' exit button???
-# Check if user runs Windows or not
 # Anything else I remember later on
 
 
