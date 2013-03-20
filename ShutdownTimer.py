@@ -1,6 +1,7 @@
 """
     Shutdown Timer -  Small Windows Shutdown Timer
     Copyright 2013 Triangle717 <http://triangle717.wordpress.com>
+    Source code is available at <https://github.com/le717/Shutdown-Timer>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,15 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-
-# Shutdown Timer
-# https://github.com/le717/Shutdown-Timer
-
-# logging.BasicConfig() code based on example from A Byte of Python
-# http://www.swaroopch.com/notes/Python
-
-
-import sys, os, time, logging, platform
+import sys, os, time, platform, webbrowser
 from threading import Timer
 
 app = "Shutdown Timer"
@@ -39,34 +32,16 @@ sys.setrecursionlimit(9999999)
 def preload():
     '''Python 3.3.0 & ShutdownTime.txt check'''
 
-    logging.info("Begin logging to {0}".format(logging_file))
-    logging.info('''
-                                #############################################
-                                            {0} {1}
-                                        Copyright 2013 {2}
-                                                Debug.log
-
-
-                                    If you run into a bug, open an issue at
-                                https://github.com/le717/Shutdown-Timer/issues
-                                    and attach this file for an easier fix!
-                                #############################################
-                                '''.format(app, majver, creator))
-
      # You need to have at least Python 3.3.0 to run this
     if sys.version_info < (3,3,0):
-        logging.warning("You are not running Python 3.3.0 or higher!\nYou need to get a newer version to run {0}".format(app))
         sys.stdout.write("\nYou need to download Python 3.3.0 or greater to run {0} {1}.".format(app, majver))
 
         # Don't open browser immediately
         time.sleep(2)
-        logging.info("Open new tab in web browser to http://python.org/download")
-        open_new_tab("http://python.org/download") # New tab, raise browser window (if possible)
+        webbrowser.open_new_tab("http://python.org/download") # New tab, raise browser window (if possible)
 
         # Close app
-        logging.info("Display error message for three seconds")
         time.sleep(3)
-        logging.info("{0} is shutting down.".format(app))
         raise SystemExit
 
     # If you are running Python 3.3.0
@@ -76,7 +51,6 @@ def preload():
             print("\n{0} is shutting down.".format(app))
             time.sleep(2)
             raise SystemExit
-##        logging.info("You are running Python 3.3.0 or greater. {0} will continue.".format(app))
 ##
 ##        if not os.path.exists("ShutdownTime.txt"):
 ##            logging.warning("Cannot find last used shutdown time (ShutdownTime.txt)!")
@@ -202,31 +176,6 @@ def Shutdown(offtime):
                 # Loop back through the program
                 Shutdown(offtime)
 
-def TheLog():
-    '''Logging Settings'''
-
-    try:
-
-    # -- Begin Logging Config -- #
-
-        logging.basicConfig(
-            level = logging.DEBUG,
-            format = "%(asctime)s : %(levelname)s : %(message)s",
-            filename = logging_file,
-            filemode = 'a+',
-        )
-
-    # -- End Logging Config -- #
-
-    # Does not have the rights to set the Logging Config!
-    except PermissionError:
-        print("\{0} does not have the user rights to operate!\nPlease relaunch {0} as an Administrator.".format(app, app))
-        # Display message long enough so user can read it
-        time.sleep(5)
-        # Close program
-        raise SystemExit
-
-
 ########
 ## TODO
 ########
@@ -249,6 +198,4 @@ def TheLog():
 #http://www.thewindowsclub.com/shutdown-restart-windows-8
 
 if __name__ == "__main__":
-    logging_file = os.path.join(os.getcwd(), 'Debug.log')
-    TheLog()
     preload()
