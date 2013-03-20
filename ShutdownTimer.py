@@ -71,17 +71,18 @@ def preload():
 
     # If you are running Python 3.3.0
     else:
-        logging.info("You are running Python 3.3.0 or greater. {0} will continue.".format(app))
-
-        if not os.path.exists("ShutdownTime.txt"):
-            logging.warning("Cannot find last used shutdown time (ShutdownTime.txt)!")
-            logging.info("Switching to FirstRunMenu()")
+##        logging.info("You are running Python 3.3.0 or greater. {0} will continue.".format(app))
+##
+##        if not os.path.exists("ShutdownTime.txt"):
+##            logging.warning("Cannot find last used shutdown time (ShutdownTime.txt)!")
+##            logging.info("Switching to FirstRunMenu()")
+##            FirstRunMenu()
+##
+##        else:
+##            logging.info("Last used shutdown time found (ShutdownTime.txt)")
+##            logging.info("Switching to MainMenu()")
+##            MainMenu()
             FirstRunMenu()
-
-        else:
-            logging.info("Last used shutdown time found (ShutdownTime.txt)")
-            logging.info("Switching to MainMenu()")
-            MainMenu()
 
 def MainMenu():
     '''Main Menu if ShutdownTime.txt is found'''
@@ -125,8 +126,8 @@ def FirstRunMenu():
 
     print("\n{0} Version {1}, Copyright 2013 {2}".format(app, majver, creator))
     print('''\nPlease enter the time you want the computer to shutdown.
-    \nUse the 24-hour format with the following layout: "HH:MM".
-    \nPress "q" to close.''')
+Use the 24-hour format with the following layout: "HH:MM".
+Press "q" to close.''')
 
     # So the program can loop
     global offtime
