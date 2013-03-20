@@ -82,7 +82,7 @@ def preload():
 ##            logging.info("Last used shutdown time found (ShutdownTime.txt)")
 ##            logging.info("Switching to MainMenu()")
 ##            MainMenu()
-            FirstRunMenu()
+            main()
 
 def MainMenu():
     '''Main Menu if ShutdownTime.txt is found'''
@@ -121,13 +121,13 @@ def MainMenu():
         Shutdown(offtime)
 
 
-def FirstRunMenu():
+def main():
     '''Main Menu if ShutdownTime.txt is not found'''
 
     print("\n{0} Version {1}, Copyright 2013 {2}".format(app, majver, creator))
     print('''\nPlease enter the time you want the computer to shutdown.
 Use the 24-hour format with the following layout: "HH:MM".
-Press "q" to close.''')
+\nPress "q" to exit.''')
 
     # So the program can loop
     global offtime
@@ -141,7 +141,8 @@ Press "q" to close.''')
         raise SystemExit
 
     elif len(offtime) == 0:
-        print("Invalid input!") # Temp message
+        print("\nYou have entered an invalid time!")
+        time.sleep(1.5)
         main()
 
     # User typed a vaild time
@@ -225,15 +226,15 @@ def TheLog():
 ## TODO
 ########
 
-# Write text file with time input
-# Detect file upon startup
-# If file detected: If no input in 30 seconds after startup, use time in file
+# Write text file with time input when run from command-line
+# Detect file upon startup from command-line
+# Use file as time when run from command-line, enter time when run normally
 # (Refer to http://stackoverflow.com/questions/2933399/how-to-set-time-limit-on-input
 # And http://docs.python.org/3.3/library/threading.html?#timer-objects)
-# If file not detected: ask for input, proceed when given
 # Add file detection into preload()
 # Check if input matches required format???
 # Once timer is started, press 'q' to close, or Windows' exit button???
+# Check if user runs Windows or not
 # Anything else I remember later on
 
 
