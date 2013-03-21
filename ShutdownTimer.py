@@ -1,6 +1,6 @@
 """
     Shutdown Timer -  Small Windows Shutdown Timer
-    Copyright 2013 Triangle717 <http://triangle717.wordpress.com>
+    Created 2013 Triangle717 <http://triangle717.wordpress.com>
     Source code is available at <https://github.com/le717/Shutdown-Timer>
 
     This program is free software: you can redistribute it and/or modify
@@ -96,7 +96,7 @@ def CmdMain():
     # Write window title for command-line mode
     os.system("title {0} {1} - Command Line Mode".format(app, majver))
 
-    print("\n{0} Version {1}, Copyright 2013 {2}".format(app, majver, creator))
+    print("\n{0} Version {1}, Created 2013 {2}".format(app, majver, creator))
     print('''Command Line Mode
         \nShutdownTime.txt has been detected.
 Your computer will shutdown at the time written in the file.
@@ -122,7 +122,7 @@ def main():
     # Write window title for non-command-line mode
     os.system("title {0} {1}".format(app, majver))
 
-    print("\n{0} Version {1}, Copyright 2013 {2}".format(app, majver, creator))
+    print("\n{0} Version {1}, Created 2013 {2}".format(app, majver, creator))
     print('''\nPlease enter the time you want the computer to shutdown.
 Use the 24-hour format with the following layout: "HH:MM".
 \nPress "q" to exit.''')
@@ -200,7 +200,7 @@ def Shutdown(offtime):
                 # Conver to int(eger) to subtract
                 aligntime = 60 - int(cur_seconds)
 
-                print("\nIt is not time for your computer to shutdown.")
+                print("\nIt is not {0}. Your computer will not shutdown.".format(offtime))
                 # Sleep for however long until alignment
                 time.sleep(aligntime)
                 # Loop back through the program
