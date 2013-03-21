@@ -88,11 +88,11 @@ def CmdMain():
     # Write window title for command-line mode
     os.system("title {0} {1} - Command Line Mode".format(app, majver))
 
-    print("\n{0} Version {1}, Copyright 2013 {2}".format(app, majver, creator))
-    print('''\nLast used shutdown time has been restored.
-    \nIf no new time is enter in 30 seconds, {0} will use the restored time
-    \nnamely, "*time here*".
-    \nPress "q" to close.'''.format(app))
+    print("\n{0} Version {1} - Command Line Mode\nCopyright 2013 {2}".format(app, majver, creator))
+    print('''\nShutdownTime.txt has been detected.
+Your computer will shutdown at the time written in the file.
+        \nShutdown Timer will begin in 10 seconds.
+Pressing 'q' right now will cancel the timer.'''.format(app))
 
     # So the program can loop
     global offtime
@@ -162,10 +162,14 @@ Use the 24-hour format with the following layout: "HH:MM".
 ##sys.stdout.write("Shutting down PC...")
 ##os.system("shutdown /r /t 0")
 
+def readFile(file):
+    print("HHHHHHHHHHHHIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
+    raise SystemExit
+##    with open("ShutdownTime.txt", 'rt', encoding='utf-8') as file:
+
 
 def Shutdown(offtime):
     '''Checks if it is time to shutdown, and does so when ready'''
-
 
     # The current time, as defined by the System Clock
     cur_time = time.strftime("%H:%M", time.localtime())
