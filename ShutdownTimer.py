@@ -22,7 +22,7 @@ from threading import Timer
 import argparse
 
 app = "Shutdown Timer"
-majver = "0.4"
+majver = "0.5"
 creator = "Triangle717"
 
 # Expand recursion limit so program does not end prematurely.
@@ -96,7 +96,7 @@ Pressing 'q' right now will cancel the timer.'''.format(app))
 
     # Start 10 second countdown timer
     # After 10 seconds, runs readFile() to get the shutdown time
-    t = Timer(10.0, readFile)
+    t = Timer(10.0,getTime)
     t.start()
     menuopt = input("\n\n> ")
 
@@ -136,6 +136,12 @@ Use the 24-hour format with the following layout: "HH:MM".
 
     # User typed a vaild time
     else:
+        # Write time to be used by CMD mode
+        with open("ShutdownTime.txt", 'wt', encoding="utf-8") as file:
+            print("// Shutdown Timer, copyright 2013 Triangle717", file=file)
+            # Kill new line ending
+            print(offtime, file=file, end="")
+        # Now run shutdown sequence
         Shutdown(offtime)
 
 # To be used later. :)
@@ -147,7 +153,7 @@ Use the 24-hour format with the following layout: "HH:MM".
 ##sys.stdout.write("Shutting down PC...")
 ##os.system("shutdown /r /t 0")
 
-def readFile():
+def getTime():
     '''Reads ShutdownTime.txt for shutdown time for Command Line Mode'''
     os._exit(0)
 ##    with open("ShutdownTime.txt", 'rt', encoding='utf-8') as file:
@@ -194,12 +200,9 @@ def Shutdown(offtime):
 ## TODO
 ########
 
-# Write text file with time input when run from command-line
-# Detect file upon startup from command-line
 # Use file as time when run from command-line, enter time when run normally
 # (Refer to http://stackoverflow.com/questions/2933399/how-to-set-time-limit-on-input
 # And http://docs.python.org/3.3/library/threading.html?#timer-objects)
-# Add file detection into preload()
 # Check if input matches required format???
 # Once timer is started, press 'q' to close, or Windows' exit button???
 # Anything else I remember later on
@@ -210,11 +213,6 @@ def Shutdown(offtime):
 #http://www.dreamincode.net/forums/topic/210175-shutting-down-a-computer-from-python/
 #http://www.computerperformance.co.uk/windows7/windows7_shutdown_command.htm
 #http://www.thewindowsclub.com/shutdown-restart-windows-8
-## CMD Arguments
-# http://docs.python.org/3.3/howto/argparse.html#id1
-# http://beastie.cs.ua.edu/cs150/book/index_11.html
-
-##fileName = sys.argv[0].split(os.sep).pop()
 
 if __name__ == "__main__":
     preload()
