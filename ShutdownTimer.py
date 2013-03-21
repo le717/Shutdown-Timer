@@ -197,8 +197,9 @@ def Shutdown(offtime):
 
             if cur_seconds != 00:
                 # Get how many seconds before it is aligned
+                # 61 seconds because of the 1 second delay to display message
                 # Conver to int(eger) to subtract
-                aligntime = 60 - int(cur_seconds)
+                aligntime = 61 - int(cur_seconds)
 
                 print("\nIt is not {0}. Your computer will not shutdown.".format(offtime))
                 # Sleep for however long until alignment
