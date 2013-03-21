@@ -29,12 +29,14 @@ creator = "Triangle717"
 sys.setrecursionlimit(9999999)
 
 def cmdOpts():
+    '''Command Line Argument'''
     parser = argparse.ArgumentParser()
     parser.add_argument("-cmd",
     help="Runs {0} in command-line mode, which enables loading the shutdown time from ShutdownTime.txt".format(app),
     action="store_true")
     args = parser.parse_args()
-##    function(agrs.cmd)
+    global argu
+    argu = args.cmd
     if args.cmd:
         os.system("title {0} {1} - Command Line Version".format(app, majver))
         MainMenu()
@@ -62,13 +64,19 @@ def preload():
 
     # If you are running Python 3.3.0
     else:
-        if platform.system() == 'Windows':
-            main()
-        else: # if platform.system() != 'Windows':
+        if platform.system() != 'Windows':
             print("\n{0} {1} is not supported on a non-Windows Operating System!".format(app, majver))
             print("\n{0} is shutting down.".format(app))
             time.sleep(2)
             raise SystemExit
+##        if platform.system() == 'Windows':
+##            main()
+        else: # if platform.system() == 'Windows':
+            if argu:
+                MainMenu()
+            else:
+                main()
+
 ##
 ##        if not os.path.exists("ShutdownTime.txt"):
 ##            logging.warning("Cannot find last used shutdown time (ShutdownTime.txt)!")
