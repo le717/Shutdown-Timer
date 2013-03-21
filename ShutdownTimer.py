@@ -22,35 +22,18 @@ from threading import Timer
 import argparse
 
 app = "Shutdown Timer"
-majver = "0.3"
+majver = "0.4"
 creator = "Triangle717"
 
 # Expand recursion limit so program does not end prematurely.
 sys.setrecursionlimit(9999999)
 
-def cmdOpts():
-    '''Command Line Argument'''
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-cmd",
-    help="Runs {0} in command-line mode, which enables loading the shutdown time from ShutdownTime.txt".format(app),
-    action="store_true")
-    args = parser.parse_args()
-    global argu
-    argu = args.cmd
-    if args.cmd:
-        os.system("title {0} {1} - Command Line Version".format(app, majver))
-        MainMenu()
-    else:
-        os.system("title {0} {1}".format(app, majver))
-        preload()
-
-
 # ------------ Begin Shutdown Timer Initialization ------------ #
 
 def preload():
-    '''Python 3.3.0 & ShutdownTime.txt check'''
+    '''Python 3.3.0, CMD Argument, & ShutdownTime.txt check'''
 
-     # You need to have at least Python 3.3.0 to run this
+         # You need to have at least Python 3.3.0 to run this
     if sys.version_info < (3,3,0):
         sys.stdout.write("\nYou need to download Python 3.3.0 or greater to run {0} {1}.".format(app, majver))
 
@@ -64,17 +47,33 @@ def preload():
 
     # If you are running Python 3.3.0
     else:
+        # You are not running Windows
         if platform.system() != 'Windows':
             print("\n{0} {1} is not supported on a non-Windows Operating System!".format(app, majver))
             print("\n{0} is shutting down.".format(app))
             time.sleep(2)
             raise SystemExit
-##        if platform.system() == 'Windows':
-##            main()
-        else: # if platform.system() == 'Windows':
-            if argu:
-                MainMenu()
+
+        # You are running Windows
+        else:
+
+            # Command-line arguments parser
+            parser = argparse.ArgumentParser(description="{0} {1} Command-line arguments".format(app, majver))
+            parser.add_argument("-cmd", "--command",
+            help="Runs {0} in command-line mode, which uses the shutdown time from ShutdownTime.txt".format(app),
+            action="store_true")
+            args = parser.parse_args()
+
+            # It was run with the -cmd (or --command) argument
+            if args.command:
+                # Write window title for command-line mode
+                os.system("title {0} {1} - Command Line Mode".format(app, majver))
+                CmdMenu()
+
+            # It was run without the command-line argument
             else:
+                # Again, write window title, but this time for non-command-line mode
+                os.system("title {0} {1}".format(app, majver))
                 main()
 
 ##
@@ -89,8 +88,8 @@ def preload():
 ##            MainMenu()
 
 
-def MainMenu():
-    '''Shutdown Timer Command-line Menu layout'''
+def CmdMenu():
+    '''Shutdown Timer Command Line Mode Menu'''
 
     print("\n{0} Version {1}, Copyright 2013 {2}".format(app, majver, creator))
     print('''\nLast used shutdown time has been restored.
@@ -229,4 +228,4 @@ def Shutdown(offtime):
 ##fileName = sys.argv[0].split(os.sep).pop()
 
 if __name__ == "__main__":
-    cmdOpts()
+    preload()
