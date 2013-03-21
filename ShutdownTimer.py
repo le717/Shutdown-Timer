@@ -22,7 +22,7 @@ from threading import Timer
 import argparse
 
 app = "Shutdown Timer"
-majver = "0.5"
+majver = "0.6"
 creator = "Triangle717"
 
 # Expand recursion limit so program does not end prematurely.
@@ -155,8 +155,15 @@ Use the 24-hour format with the following layout: "HH:MM".
 
 def getTime():
     '''Reads ShutdownTime.txt for shutdown time for Command Line Mode'''
-    os._exit(0)
-##    with open("ShutdownTime.txt", 'rt', encoding='utf-8') as file:
+
+    # Open ShutdownTime.txt and read it
+    with open("ShutdownTime.txt", 'rt', encoding="utf-8") as file:
+        offtime = file.read()
+
+    # Remove ID line
+    offtime = offtime.strip("// Shutdown Timer, copyright 2013 Triangle717")
+    # Run Shutdown sequence
+    Shutdown(offtime)
 
 
 def Shutdown(offtime):
@@ -178,7 +185,7 @@ def Shutdown(offtime):
             raise SystemExit
 
         # The defined time does not equal the current (system) time.
-        else:
+        elif offtime != cur_time:
             # Get the current seconds, as defined by the system clock.
             seconds = time.strftime("%S", time.localtime())
             print(seconds)
@@ -196,13 +203,13 @@ def Shutdown(offtime):
                 # Loop back through the program
                 Shutdown(offtime)
 
-########
-## TODO
-########
+##        elif input():
+##            os._exit(0)
 
-# Use file as time when run from command-line, enter time when run normally
-# (Refer to http://stackoverflow.com/questions/2933399/how-to-set-time-limit-on-input
-# And http://docs.python.org/3.3/library/threading.html?#timer-objects)
+
+def TODO():
+    ''':P'''
+
 # Check if input matches required format???
 # Once timer is started, press 'q' to close, or Windows' exit button???
 # Anything else I remember later on
@@ -215,4 +222,5 @@ def Shutdown(offtime):
 #http://www.thewindowsclub.com/shutdown-restart-windows-8
 
 if __name__ == "__main__":
+    # Run program
     preload()
