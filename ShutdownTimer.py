@@ -20,10 +20,10 @@
 import sys, os, time
 import  platform, webbrowser
 from threading import Timer
-import argparse
+import argparse, linecache
 
 app = "Shutdown Timer"
-majver = "0.7"
+majver = "0.8"
 creator = "Triangle717"
 
 # Expand recursion limit so program does not end prematurely.
@@ -158,16 +158,11 @@ Use the 24-hour format with the following layout: "HH:MM".
 def getTime():
     '''Reads ShutdownTime.txt for shutdown time for Command Line Mode'''
 
-    # Open ShutdownTime.txt and read it
-    with open("ShutdownTime.txt", 'rt', encoding="utf-8") as file:
-        offtime = file.read()
-
-    # Remove ID line
-    offtime = offtime.strip("// Shutdown Timer, copyright 2013 Triangle717")
-    offtime = offtime.strip("\n\t\r")
+    # Read line 2 from ShutdownTime.txt for shutdown time
+    offtime = linecache.getline("ShutdownTime.txt", 2)
+    offtime = offtime.strip("\n")
     # Run Shutdown sequence
     Shutdown(offtime)
-
 
 def Shutdown(offtime):
     '''Checks if it is time to shutdown, and does so when ready'''
