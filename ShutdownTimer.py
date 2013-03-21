@@ -94,33 +94,18 @@ Your computer will shutdown at the time written in the file.
         \nShutdown Timer will begin in 10 seconds.
 Pressing 'q' right now will cancel the timer.'''.format(app))
 
-    # So the program can loop
-    global offtime
+    # Start 10 second countdown timer
+    # After 10 seconds, runs readFile() to get the shutdown time
+    t = Timer(10.0, readFile)
+    t.start()
+    menuopt = input("\n\n> ")
 
-    offtime = input("\n\n> ")
-##    offtime = "6:15"
-
-##    t = Timer(2.0, Shutdown(offtime))
-##    t = Timer(10.0, print("Using file"))
-##    t.start()
-##    print("Using file")
-##    raise SystemExit
-
-
-    if offtime.lower() == "q":
+    # User wanted to close the timer
+    if menuopt.lower() == "q":
+        t.cancel()
         print("\n{0} is shutting down.".format(app))
         time.sleep(2)
         raise SystemExit
-
-    elif len(offtime) == 0:
-        print("Invalid input!") # Temp message
-        MainMenu()
-
-    # User typed a valid time
-    else:
-##        t.cancel()
-        Shutdown(offtime)
-
 
 def main():
     '''Shutdown Timer Menu Layout'''
@@ -162,9 +147,9 @@ Use the 24-hour format with the following layout: "HH:MM".
 ##sys.stdout.write("Shutting down PC...")
 ##os.system("shutdown /r /t 0")
 
-def readFile(file):
-    print("HHHHHHHHHHHHIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
-    raise SystemExit
+def readFile():
+    '''Reads ShutdownTime.txt for shutdown time for Command Line Mode'''
+    os._exit(0)
 ##    with open("ShutdownTime.txt", 'rt', encoding='utf-8') as file:
 
 
