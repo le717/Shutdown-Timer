@@ -68,6 +68,7 @@ def preload():
             action="store_true")
             args = parser.parse_args()
 
+            # Declare force parameter (-f, --force) as global for use in Shutdown(offtime)
             global force
             force = args.force
 
@@ -145,7 +146,7 @@ Use the 24-hour format with the following layout: "HH:MM".
         with open("ShutdownTime.txt", 'wt', encoding="utf-8") as file:
             print("// Shutdown Timer, copyright 2013 Triangle717", file=file)
             # Kill new line ending
-            print(" {0}".format(offtime), file=file, end="")
+            print("{0}".format(offtime), file=file, end="")
         # Now run shutdown sequence
         Shutdown(offtime)
 
@@ -155,6 +156,8 @@ def getTime():
     # Read line 2 from ShutdownTime.txt for shutdown time
     offtime = linecache.getline("ShutdownTime.txt", 2)
     offtime = offtime.strip("\n")
+
+    print("Your computer will shutdown at {0}.".format(offtime))
 
     # Run Shutdown sequence
     Shutdown(offtime)
@@ -173,21 +176,22 @@ def Shutdown(offtime):
             print("\nYour computer is shutting down.")
             # Let user read message
             time.sleep(1)
-            # Call hidden shutdown.exe CMD app to close windows
-##            os._exit(0)
+
+            # Call hidden shutdown.exe CMD app to shutdown Windows
+            # The force parmeter was not used
             if not force:
-                print("Normal close")
-                os._exit(0)
-            elif force:
-                print("Force close")
                 os._exit(0)
 ##                os.system("shutdown.exe /s /t 0")
+
+            # The force parmeter was used
+            elif force:
+                os._exit(0)
+##                os.system("shutdown.exe /s /f /t 0")
 
         # The defined time does not equal the current (system) time.
         elif offtime != cur_time:
             # Get the current seconds, as defined by the system clock.
             cur_seconds = time.strftime("%S", time.localtime())
-            print(cur_seconds)
 
             '''The following code aligns the timer exactly with the system clock,
             allowing the computer to begin the shutdown routine exactly when stated.'''
@@ -207,18 +211,12 @@ def Shutdown(offtime):
 def TODO():
     ''':P'''
     # Keeps Python from throwing some error in case somebody wants to run this. :P
+    webbrowser.open_new_tab("http://triangle717.files.wordpress.com/2013/03/fabulandcow.jpg")
     os._exit(0)
 
 # Check if input matches required format???
 # Once timer is started, press 'q' to close, or Windows' exit button???
 # Anything else I remember later on
-
-
-# -- Resource links just for me. ;) -- #
-
-#http://www.dreamincode.net/forums/topic/210175-shutting-down-a-computer-from-python/
-#http://www.computerperformance.co.uk/windows7/windows7_shutdown_command.htm
-#http://www.thewindowsclub.com/shutdown-restart-windows-8
 
 if __name__ == "__main__":
     # Run program
