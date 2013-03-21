@@ -19,7 +19,7 @@
 """
 import sys, os, time, platform, webbrowser
 from threading import Timer
-import getopt
+import argparse
 
 app = "Shutdown Timer"
 majver = "0.3"
@@ -27,6 +27,15 @@ creator = "Triangle717"
 
 # Expand recursion limit so program does not end prematurely.
 sys.setrecursionlimit(9999999)
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-cmd",
+help="Runs {0} in command-line mode, which enables loading the shutdown time from ShutdownTime.txt".format(app),
+action="store_true")
+args = parser.parse_args()
+if args.cmd:
+    preload()
+
 
 # ------------ Begin Shutdown Timer Initialization ------------ #
 
