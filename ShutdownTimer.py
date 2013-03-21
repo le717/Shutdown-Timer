@@ -64,32 +64,29 @@ def preload():
             action="store_true")
             args = parser.parse_args()
 
-            # It was run with the -cmd (or --command) argument
-            if args.command:
-                # Write window title for command-line mode
-                os.system("title {0} {1} - Command Line Mode".format(app, majver))
-                CmdMenu()
-
-            # It was run without the command-line argument
-            else:
-                # Again, write window title, but this time for non-command-line mode
-                os.system("title {0} {1}".format(app, majver))
+            # It was not run with the -cmd (or --command) argument
+            if not args.command:
                 main()
 
-##
-##        if not os.path.exists("ShutdownTime.txt"):
-##            logging.warning("Cannot find last used shutdown time (ShutdownTime.txt)!")
-##            logging.info("Switching to FirstRunMenu()")
-##            FirstRunMenu()
-##
-##        else:
-##            logging.info("Last used shutdown time found (ShutdownTime.txt)")
-##            logging.info("Switching to MainMenu()")
-##            MainMenu()
+            # It was run with the command-line argument
+            else:
 
+                # ShutdownTime.txt does not exist
+                if not os.path.exists("ShutdownTime.txt"):
 
-def CmdMenu():
+                    # Go to main(), where it will be written
+                    main()
+
+                # ShutdownTime.txt does exist
+                elif os.path.exists("ShutdownTime.txt"):
+                    # Go to CmdMenu(), where it will be sued
+                    CmdMain()
+
+def CmdMain():
     '''Shutdown Timer Command Line Mode Menu'''
+
+    # Write window title for command-line mode
+    os.system("title {0} {1} - Command Line Mode".format(app, majver))
 
     print("\n{0} Version {1}, Copyright 2013 {2}".format(app, majver, creator))
     print('''\nLast used shutdown time has been restored.
@@ -127,6 +124,9 @@ def CmdMenu():
 
 def main():
     '''Shutdown Timer Menu Layout'''
+
+    # Write window title for non-command-line mode
+    os.system("title {0} {1}".format(app, majver))
 
     print("\n{0} Version {1}, Copyright 2013 {2}".format(app, majver, creator))
     print('''\nPlease enter the time you want the computer to shutdown.
