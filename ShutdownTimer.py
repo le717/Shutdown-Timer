@@ -19,11 +19,11 @@
 """
 import sys, os, time
 import  platform, webbrowser
-from threading import Timer
 import argparse, linecache
+from threading import Timer
 
 app = "Shutdown Timer"
-majver = "0.8"
+majver = "0.9"
 creator = "Triangle717"
 
 # Expand recursion limit so program does not end prematurely.
@@ -63,7 +63,13 @@ def preload():
             parser.add_argument("-cmd", "--command",
             help="Runs {0} in command-line mode, which uses the shutdown time from ShutdownTime.txt".format(app),
             action="store_true")
+            parser.add_argument("-f", "--force",
+            help='Sends "Force shutdown command" to Windows',
+            action="store_true")
             args = parser.parse_args()
+
+            global force
+            force = args.force
 
             # It was not run with the -cmd (or --command) argument
             if not args.command:
@@ -120,9 +126,6 @@ def main():
 Use the 24-hour format with the following layout: "HH:MM".
 \nPress "q" to exit.''')
 
-    # So the program can loop
-    global offtime
-
     offtime = input("\n\n> ")
 
     # Only 'q' will close the program
@@ -146,21 +149,13 @@ Use the 24-hour format with the following layout: "HH:MM".
         # Now run shutdown sequence
         Shutdown(offtime)
 
-# To be used later. :)
-##    time.sleep(50)
-##    raise SystemExit
-##sys.stdout.write("Shutdown started")
-##time.sleep(offtime)
-##sys.stdout.write("os.system('shutdown /r /t 0')")
-##sys.stdout.write("Shutting down PC...")
-##os.system("shutdown /r /t 0")
-
 def getTime():
     '''Reads ShutdownTime.txt for shutdown time for Command Line Mode'''
 
     # Read line 2 from ShutdownTime.txt for shutdown time
     offtime = linecache.getline("ShutdownTime.txt", 2)
     offtime = offtime.strip("\n")
+
     # Run Shutdown sequence
     Shutdown(offtime)
 
@@ -169,8 +164,6 @@ def Shutdown(offtime):
 
     # The current time, as defined by the System Clock
     cur_time = time.strftime("%H:%M", time.localtime())
-    print(cur_time)
-    print(offtime)
 
     # Keeps the program running until it is time.
     while True:
@@ -180,8 +173,15 @@ def Shutdown(offtime):
             print("\nYour computer is shutting down.")
             # Let user read message
             time.sleep(1)
-            # TODO: To be replaced with shutdown code
-            raise SystemExit
+            # Call hidden shutdown.exe CMD app to close windows
+##            os._exit(0)
+            if not force:
+                print("Normal close")
+                os._exit(0)
+            elif force:
+                print("Force close")
+                os._exit(0)
+##                os.system("shutdown.exe /s /t 0")
 
         # The defined time does not equal the current (system) time.
         elif offtime != cur_time:
