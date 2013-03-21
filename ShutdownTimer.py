@@ -23,16 +23,16 @@ import argparse, linecache
 from threading import Timer
 
 app = "Shutdown Timer"
-majver = "0.9"
+majver = "1.0"
 creator = "Triangle717"
 
 # Expand recursion limit so program does not end prematurely.
-sys.setrecursionlimit(9999999)
+sys.setrecursionlimit(999999999)
 
 # ------------ Begin Shutdown Timer Initialization ------------ #
 
 def preload():
-    '''Python 3.3.0, CMD Argument, & ShutdownTime.txt check'''
+    '''Python 3.3.0, CMD Arguments, & ShutdownTime.txt check'''
 
          # You need to have at least Python 3.3.0 to run this
     if sys.version_info < (3,3,0):
@@ -147,6 +147,7 @@ Use the 24-hour format with the following layout: "HH:MM".
             print("// Shutdown Timer, copyright 2013 Triangle717", file=file)
             # Kill new line ending
             print("{0}".format(offtime), file=file, end="")
+
         # Now run shutdown sequence
         Shutdown(offtime)
 
@@ -180,13 +181,11 @@ def Shutdown(offtime):
             # Call hidden shutdown.exe CMD app to shutdown Windows
             # The force parmeter was not used
             if not force:
-                os._exit(0)
-##                os.system("shutdown.exe /s /t 0")
+                os.system("shutdown.exe /s /t 0")
 
             # The force parmeter was used
             elif force:
-                os._exit(0)
-##                os.system("shutdown.exe /s /f /t 0")
+                os.system("shutdown.exe /s /f /t 0")
 
         # The defined time does not equal the current (system) time.
         elif offtime != cur_time:
