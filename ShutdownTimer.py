@@ -17,12 +17,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-import sys, os, time, platform, webbrowser
+import sys, os, time
+import  platform, webbrowser
 from threading import Timer
 import argparse
 
 app = "Shutdown Timer"
-majver = "0.6"
+majver = "0.7"
 creator = "Triangle717"
 
 # Expand recursion limit so program does not end prematurely.
@@ -88,17 +89,18 @@ def CmdMain():
     # Write window title for command-line mode
     os.system("title {0} {1} - Command Line Mode".format(app, majver))
 
-    print("\n{0} Version {1} - Command Line Mode\nCopyright 2013 {2}".format(app, majver, creator))
-    print('''\nShutdownTime.txt has been detected.
+    print("\n{0} Version {1}, Copyright 2013 {2}".format(app, majver, creator))
+    print('''Command Line Mode
+        \nShutdownTime.txt has been detected.
 Your computer will shutdown at the time written in the file.
-        \nShutdown Timer will begin in 10 seconds.
+        \nThe Shutdown sequence will begin in 10 seconds.
 Pressing 'q' right now will cancel the timer.'''.format(app))
 
     # Start 10 second countdown timer
     # After 10 seconds, runs readFile() to get the shutdown time
     t = Timer(10.0,getTime)
     t.start()
-    menuopt = input("\n\n> ")
+    menuopt = input("\n\n")
 
     # User wanted to close the timer
     if menuopt.lower() == "q":
@@ -140,7 +142,7 @@ Use the 24-hour format with the following layout: "HH:MM".
         with open("ShutdownTime.txt", 'wt', encoding="utf-8") as file:
             print("// Shutdown Timer, copyright 2013 Triangle717", file=file)
             # Kill new line ending
-            print(offtime, file=file, end="")
+            print(" {0}".format(offtime), file=file, end="")
         # Now run shutdown sequence
         Shutdown(offtime)
 
@@ -162,6 +164,7 @@ def getTime():
 
     # Remove ID line
     offtime = offtime.strip("// Shutdown Timer, copyright 2013 Triangle717")
+    offtime = offtime.strip("\n\t\r")
     # Run Shutdown sequence
     Shutdown(offtime)
 
@@ -179,36 +182,37 @@ def Shutdown(offtime):
 
         # The defined time equals the current (system) time
         if offtime == cur_time:
+            print("\nYour computer is shutting down.")
             # Let user read message
             time.sleep(1)
-            # To be replaced with shutdown code
+            # TODO: To be replaced with shutdown code
             raise SystemExit
 
         # The defined time does not equal the current (system) time.
         elif offtime != cur_time:
             # Get the current seconds, as defined by the system clock.
-            seconds = time.strftime("%S", time.localtime())
-            print(seconds)
+            cur_seconds = time.strftime("%S", time.localtime())
+            print(cur_seconds)
 
             '''The following code aligns the timer exactly with the system clock,
             allowing the computer to begin the shutdown routine exactly when stated.'''
 
-            if seconds != 00:
+            if cur_seconds != 00:
                 # Get how many seconds before it is aligned
                 # Conver to int(eger) to subtract
-                aligntime = 60 - int(seconds)
-                print("Shutdown later 2") # And here...
+                aligntime = 60 - int(cur_seconds)
+
+                print("\nIt is not time for your computer to shutdown.")
                 # Sleep for however long until alignment
                 time.sleep(aligntime)
                 # Loop back through the program
                 Shutdown(offtime)
 
-##        elif input():
-##            os._exit(0)
-
 
 def TODO():
     ''':P'''
+    # Keeps Python from throwing some error in case somebody wants to run this. :P
+    os._exit(0)
 
 # Check if input matches required format???
 # Once timer is started, press 'q' to close, or Windows' exit button???
