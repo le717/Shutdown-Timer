@@ -28,13 +28,19 @@ creator = "Triangle717"
 # Expand recursion limit so program does not end prematurely.
 sys.setrecursionlimit(9999999)
 
-parser = argparse.ArgumentParser()
-parser.add_argument("-cmd",
-help="Runs {0} in command-line mode, which enables loading the shutdown time from ShutdownTime.txt".format(app),
-action="store_true")
-args = parser.parse_args()
-if args.cmd:
-    preload()
+def cmdOpts():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-cmd",
+    help="Runs {0} in command-line mode, which enables loading the shutdown time from ShutdownTime.txt".format(app),
+    action="store_true")
+    args = parser.parse_args()
+##    function(agrs.cmd)
+    if args.cmd:
+        os.system("title {0} {1} - Command Line Version".format(app, majver))
+        MainMenu()
+    else:
+        os.system("title {0} {1}".format(app, majver))
+        preload()
 
 
 # ------------ Begin Shutdown Timer Initialization ------------ #
@@ -88,7 +94,7 @@ def MainMenu():
     global offtime
 
     offtime = input("\n\n> ")
-    offtime = "6:15"
+##    offtime = "6:15"
 
 ##    t = Timer(2.0, Shutdown(offtime))
 ##    t = Timer(10.0, print("Using file"))
@@ -108,7 +114,7 @@ def MainMenu():
 
     # User typed a valid time
     else:
-        t.cancel()
+##        t.cancel()
         Shutdown(offtime)
 
 
@@ -213,10 +219,6 @@ def Shutdown(offtime):
 # http://beastie.cs.ua.edu/cs150/book/index_11.html
 
 ##fileName = sys.argv[0].split(os.sep).pop()
-##if sys.argv[0] == fileName:
-##    preload()
-##elif sys.argv[:1] == fileName + "-cmd":
-##    MainMenu()
 
 if __name__ == "__main__":
-    preload()
+    cmdOpts()
