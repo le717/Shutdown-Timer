@@ -37,7 +37,7 @@ elif platform.architecture('32bit'):
     destfolder = "Compile/Windows32"
 
 build_exe_options = {"build_exe": destfolder,
-					 "create_shared_zip": True,
+                     "create_shared_zip": True,
                      "optimize": 1,
                      "compressed": True,
                      }
@@ -47,7 +47,7 @@ setup(
     version = "{0}".format(majver),
     author = "Triangle717",
     description = "Shutdown Timer Version {0}, created 2013 Triangle717".format(majver),
-	license = "GNU GPLv3",
+    license = "GNU GPLv3",
     options = {"build_exe": build_exe_options},
     executables = [Executable("ShutdownTimer.py")]
 )
