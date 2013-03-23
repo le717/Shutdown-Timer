@@ -1,7 +1,7 @@
 """
     Shutdown Timer -  Small Windows Shutdown Timer
     Created 2013 Triangle717 <http://triangle717.wordpress.com>
-    Source code is available at <https://github.com/le717/Shutdown-Timer>
+    Source code available at <https://github.com/le717/Shutdown-Timer>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
+
 import sys, os, time
 import  platform, webbrowser
 import argparse, linecache
@@ -216,6 +217,7 @@ def TODO():
 
 # Check if input matches required format???
 # Once timer is started, press 'q' to close, or Windows' exit button???
+# Restart (-r, --restart_ command-line parameter (requires redo of Shutdown(offtime))
 # Anything else I remember later on
 
 if __name__ == "__main__":

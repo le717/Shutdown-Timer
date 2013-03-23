@@ -1,4 +1,4 @@
-#################
+##################
 ## Eclipse
 #################
 
@@ -168,6 +168,7 @@ pip-log.txt
 
 Compile/
 *.bat
-*.py
+#*.py
 *.log
 ShutdownTime.txt
+Testing/
