@@ -167,6 +167,8 @@ pip-log.txt
 #########
 
 Compile/
+!Compile/Windows32/
+!Compile/Windows64/
 *.bat
 #*.py
 *.log

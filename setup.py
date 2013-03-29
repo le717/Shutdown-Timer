@@ -1,7 +1,6 @@
 """
     Shutdown Timer -  Small Windows Shutdown Timer
     Created 2013 Triangle717 <http://triangle717.wordpress.com>
-    Source code available at <https://github.com/le717/Shutdown-Timer>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,7 +14,6 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 """
 
 # Shutdown Timer setup script using cx_Freeze.
@@ -24,7 +22,6 @@
 # With changes by Triangle717
 
 from cx_Freeze import setup, Executable
-from ShutdownTimer import majver
 import sys, platform
 
 # Append build to the arguments. Just type "python setup.py" and it will compile
@@ -44,9 +41,9 @@ build_exe_options = {"build_exe": destfolder,
 
 setup(
     name = "Shutdown Timer",
-    version = "{0}".format(majver),
+    version = "1.0",
     author = "Triangle717",
-    description = "Shutdown Timer Version {0}, created 2013 Triangle717".format(majver),
+    description = "Shutdown Timer Version 1.0, created 2013 Triangle717",
     license = "GNU GPLv3",
     options = {"build_exe": build_exe_options},
     executables = [Executable("ShutdownTimer.py")]
