@@ -1,10 +1,10 @@
 Shutdown Timer
-============
+==============
 
 **Shutdown Timer** is a [Python 3](http://python.org) application created by [Triangle717](http://triangle717.wordpress.com) to shutdown your Windows computer at a specified time. 
 
 How It Works
-------------------
+------------
 
 **Shutdown Timer** is a two-mode application: a normal, click-and-run application, and command-line. The two modes work together, and one actually relies on the other. 
 
@@ -17,7 +17,7 @@ The first and main mode is the click-and-run (normal) mode. In this mode, you en
 The second mode is the command-line mode, which is activated by typing ```ShutdownTimer.exe -cmd``` or ```ShutdownTimer.exe --command```. The command line mode does not allow you to enter a shutdown time. Instead, it is the "automated mode" of **Shutdown Timer**. It uses a small text file written by the normal mode as the shutdown time. This allows you to always turn off your computer at the same time multiple times without typing in the time each launch, providing you haven't run the normal mode and changed the time. If the file the command-line mode relies on is not found, it will proceed to the normal mode so the file will be written. You can see all the command line arguments by running ```ShutdownTimer.exe --help```. 
 
 System Requirements
-------------------------------
+-------------------
 
 ### Operating System
 
@@ -29,8 +29,13 @@ If you want to run the EXE, again, you need to meet the operating system require
 Only if you get an error message saying "MSVCR100.dll is missing from your computer" do you need to install it. Otherwise, there is not need. 
  
 Contributing
----------------
+------------
 
 If you would like to contribute to the development of **Shutdown Timer**, submit a patch, or compile your own build, please take a look at [CONTRIBUTING.md](CONTRIBUTING.md). 
+
+Releases
+--------
+
+* [Version 1.0 - March 29, 2013](https://github.com/le717/Shutdown-Timer/tree/V1.0)
 
 ***Shutdown Timer* is created 2013 Triangle717 and is released under the [GNU General Public License Version 3](http://www.gnu.org/licenses/gpl.html)**
