@@ -25,7 +25,7 @@ To use **Shutdown Timer**, you will need to be running Windows. It has been succ
 
 If you run the Python script directly, you will need to same operating system requirements, in addition to a Python 3.3.0 interpreter. Again, a check will stop it on running on any versions lower than 3.3.0. 
 
-If you want to run the EXE, again, you need to meet the operating system requirements and have the Microsoft Visual Studio C++ 2010 Redistributable package, either x86 or x64, depending on the EXE version you use.  If you are unsure if you need this package or not, here's a helpful hint:
+If you want to run the EXE, again, you need to meet the operating system requirements and have the Microsoft Visual Studio C++ 2010 Redistributable Package, either [x86](http://www.microsoft.com/en-us/download/details.aspx?id=5555) or [x64](http://www.microsoft.com/en-us/download/details.aspx?id=14632), depending on the EXE version you use.  If you are unsure if you need this package or not, here's a helpful hint:
 Only if you get an error message saying "MSVCR100.dll is missing from your computer" do you need to install it. Otherwise, there is not need. 
  
 Contributing
