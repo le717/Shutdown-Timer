@@ -22,7 +22,7 @@ import argparse, linecache
 from threading import Timer
 
 app = "Shutdown Timer"
-majver = "1.0"
+majver = "1.0.1"
 creator = "Triangle717"
 
 # Expand recursion limit so program does not end prematurely.
@@ -30,10 +30,28 @@ sys.setrecursionlimit(999999999)
 
 # ------------ Begin Shutdown Timer Initialization ------------ #
 
-def preload():
-    '''Python 3.3.0, CMD Arguments, & ShutdownTime.txt check'''
+def CMDParse():
+    '''Parses Command=line Arguments'''
+    parser = argparse.ArgumentParser(description="{0} {1} Command-line arguments".format(app, majver))
+    # Command-line mode argument
+    parser.add_argument("-cmd", "--command",
+    help="Runs {0} in command-line mode, which uses the shutdown time from ShutdownTime.txt".format(app),
+    action="store_true")
+    # Force shutdown argument
+    parser.add_argument("-f", "--force",
+    help='Sends "Force shutdown command" to Windows',
+    action="store_true")
+    args = parser.parse_args()
 
-         # You need to have at least Python 3.3.0 to run this
+    # Declare force parameter (-f, --force) as global for use in Shutdown(offtime)
+    global force, command
+    force = args.force
+    command = args.command
+
+def preload():
+    '''Python 3.3.0 & ShutdownTime.txt check'''
+
+    # You need to have at least Python 3.3.0 to run this
     if sys.version_info < (3,3,0):
         sys.stdout.write("\nYou need to download Python 3.3.0 or greater to run {0} {1}.".format(app, majver))
 
@@ -56,23 +74,10 @@ def preload():
 
         # You are running Windows
         else:
-
-            # Command-line arguments parser
-            parser = argparse.ArgumentParser(description="{0} {1} Command-line arguments".format(app, majver))
-            parser.add_argument("-cmd", "--command",
-            help="Runs {0} in command-line mode, which uses the shutdown time from ShutdownTime.txt".format(app),
-            action="store_true")
-            parser.add_argument("-f", "--force",
-            help='Sends "Force shutdown command" to Windows',
-            action="store_true")
-            args = parser.parse_args()
-
-            # Declare force parameter (-f, --force) as global for use in Shutdown(offtime)
-            global force
-            force = args.force
-
+            # Run Command-line arguments parser
+            CMDParse()
             # It was not run with the -cmd (or --command) argument
-            if not args.command:
+            if not command:
                 main()
 
             # It was run with the command-line argument
@@ -178,13 +183,15 @@ def Shutdown(offtime):
             time.sleep(1)
 
             # Call hidden shutdown.exe CMD app to shutdown Windows
-            # The force parmeter was not used
+            # Using /p shutdowns Windows immeadity without warning,
+            # Equal to using /s /t 0
+            # If the force parmeter was not used
             if not force:
-                os.system("shutdown.exe /s /t 0")
+                os.system("shutdown.exe /p")
 
             # The force parmeter was used
             elif force:
-                os.system("shutdown.exe /s /f /t 0")
+                os.system("shutdown.exe /p /f ")
 
         # The defined time does not equal the current (system) time.
         elif offtime != cur_time:
