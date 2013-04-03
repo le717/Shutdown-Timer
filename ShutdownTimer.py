@@ -191,7 +191,7 @@ def Shutdown(offtime):
 
             # The force parmeter was used
             elif force:
-                os.system("shutdown.exe /p /f ")
+                os.system("shutdown.exe /p /f")
 
         # The defined time does not equal the current (system) time.
         elif offtime != cur_time:
