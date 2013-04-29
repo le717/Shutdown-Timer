@@ -1,3 +1,4 @@
+#! python3
 """
     Shutdown Timer -  Small Windows Shutdown Timer
     Created 2013 Triangle717 <http://triangle717.wordpress.com>
