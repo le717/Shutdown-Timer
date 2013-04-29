@@ -219,13 +219,15 @@ def getTime():
 
 def TheTimer(off_time):
     '''Gets current time and performs the appropriate actions
-    Note: This is still WIP, as all the bugs have not been ironed out'''
+    Note: This part is still WIP, as all the bugs have not been ironed out'''
 
     # The current time, as defined by the System Clock
     cur_time = time.strftime("%H:%M", time.localtime())
 
-    if off_time != cur_time:
-        while off_time != cur_time:
+    while True:
+
+        if cur_time != off_time:
+
             # Get the current seconds, as defined by the system clock.
             cur_seconds = time.strftime("%S", time.localtime())
 
@@ -241,13 +243,13 @@ def TheTimer(off_time):
                 print("\nIt is not {0}. Your computer will not {1}.".format(off_time, the_word))
                 # Sleep for however long until alignment
                 time.sleep(aligntime)
-                TheTimer(off_time)
+##                TheTimer(off_time)
 
-    elif off_time == cur_time:
-        print("\nYour computer is {0}.".format(the_word_ing))
-        # Let user read message
-        time.sleep(1)
-        close_Win()
+                if cur_time == off_time:
+                    print("\nYour computer is {0}.".format(the_word_ing))
+                    # Let user read message
+                    time.sleep(1)
+                    close_Win()
 
 # ------------ End Various Timer Actions ------------ #
 
@@ -263,9 +265,11 @@ def close_Win():
     if restart:
         # The force command was sent as well
         if force:
-            os.system("shutdown.exe /r /f")
+##            os.system("shutdown.exe /r /f")
+            raise SystemExit
         elif not force:
-            os.system("shutdown.exe /r")
+##            os.system("shutdown.exe /r")
+            raise SystemExit
 
     # Normal shutdown commmand was sent
     elif not restart:
@@ -273,10 +277,12 @@ def close_Win():
         # Using /p shutdowns Windows immediately without warning,
         # Same as /s /t 0
         if force:
-            os.system("shutdown.exe /p /f")
+##            os.system("shutdown.exe /p /f")
+            raise SystemExit
         # The force command was not sent
         elif not force:
-            os.system("shutdown.exe /p")
+##            os.system("shutdown.exe /p")
+            raise SystemExit
 
 # ------------ End Actual Shutdown/Restart Action ------------ #
 
