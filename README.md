@@ -4,6 +4,8 @@ Shutdown Timer
 **Shutdown Timer** is a [Python 3](http://python.org) application created by [Triangle717](http://triangle717.wordpress.com) to shutdown 
 your Windows computer at a specified time. 
 
+[![Build Status](https://travis-ci.org/le717/Shutdown-Timer.png)](https://travis-ci.org/le717/Shutdown-Timer)
+
 How It Works
 ------------
 
@@ -36,7 +38,8 @@ If you run the Python script directly, you will need to same operating system re
 it on running on any versions lower than 3.3.0. 
 
 If you want to run the EXE, again, you need to meet the operating system requirements and have the Microsoft Visual Studio C++ 2008 Redistributable Package, 
-either [x86](http://www.microsoft.com/en-us/download/GETLINK!!!) or [x64](http://www.microsoft.com/en-us/download/GETLINK!!!), 
+either [x86](http://www.microsoft.com/en-us/download/details.aspx?displaylang=en&id=29) or [x64]
+(http://www.microsoft.com/en-us/download/details.aspx?displaylang=en&id=15336), 
 depending on the EXE version you use. If you are unsure if you need this package or not, here's a helpful hint:
 Only if you get an error message saying "MSVCR100.dll is missing from your computer" do you need to install it. Otherwise, it is not needed. 
  
