@@ -224,32 +224,29 @@ def TheTimer(off_time):
     # The current time, as defined by the System Clock
     cur_time = time.strftime("%H:%M", time.localtime())
 
-    while True:
+    while off_time != cur_time:
 
-        if cur_time != off_time:
+        # Get the current seconds, as defined by the system clock.
+        cur_seconds = time.strftime("%S", time.localtime())
 
-            # Get the current seconds, as defined by the system clock.
-            cur_seconds = time.strftime("%S", time.localtime())
+        '''The following code aligns the timer exactly with the system clock,
+        allowing the computer to begin the shutdown routine exactly when stated.'''
 
-            '''The following code aligns the timer exactly with the system clock,
-            allowing the computer to begin the shutdown routine exactly when stated.'''
+        if cur_seconds != 00:
+            # Get how many seconds before it is aligned
+            # 61 seconds because of the 1 second delay to display message
+            # Conver to int(eger) to subtract
+            align_time = 61 - int(cur_seconds)
 
-            if cur_seconds != 00:
-                # Get how many seconds before it is aligned
-                # 61 seconds because of the 1 second delay to display message
-                # Conver to int(eger) to subtract
-                aligntime = 61 - int(cur_seconds)
-
-                print("\nIt is not {0}. Your computer will not {1}.".format(off_time, the_word))
-                # Sleep for however long until alignment
-                time.sleep(aligntime)
+        print("\nIt is not {0}, but {1}. Your computer will not {2}.".format(off_time, cur_time, the_word))
+        # Sleep for however long until alignment
+        time.sleep(align_time)
 ##                TheTimer(off_time)
 
-                if cur_time == off_time:
-                    print("\nYour computer is {0}.".format(the_word_ing))
-                    # Let user read message
-                    time.sleep(1)
-                    close_Win()
+    print("\nYour computer is {0}.".format(the_word_ing))
+    # Let user read message
+    time.sleep(1)
+    close_Win()
 
 # ------------ End Various Timer Actions ------------ #
 
