@@ -9,18 +9,18 @@ Shutdown Timer Change Log
 **Released ?? ??, 2013**
 
 * Added restart computer parameter, supports force command
-* Rewrote timer process in an attempt to make **Shutdown Timer** work properly if timer is loaded early in morning (however, is still WIP)
+* Rewrote timer process in an attempt to make **Shutdown Timer** work properly if timer is loaded early in morning
 * Display "shutdown" or "restart" depending on if -restart parameter is passed
 * Renamed *ShutdownTime.txt* to *TheTime.txt* added loading of ShutdownTime.txt* only if *TheTime.txt* does not exist
 * Unchained import statements
 * Small changes
 * Added script dividers
-* Updated shutdown.exe commands (again)
 * Added `debug` variable and messages (set to `False` by default)
-* Made timer get the newest time after `time.sleep(align_time)` ends (it was using the same time over and over again)
+* Made timer process get the newest time after `time.sleep(align_time)` ends (it was using the same time over and over again)
 * Fixed alignment time
 * Comments update
-* Fixed Timer, now switches to close_Win() if `cur_time1 is equal to 1off_time`.
+* Finished rewrite of timer process, now switches to close_Win() if `off_time` is equal to `cur_time`.
+* Fixed restart commands, now restarts immediately
 
 1.0.1
 -----

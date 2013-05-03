@@ -281,12 +281,13 @@ def close_Win():
         # The force command was sent as well
         if force:
             if debug:
-                print("DEBUG: The shutdown commmand is " + r'os.system("shutdown.exe -r -f")')
-            os.system("shutdown.exe -r -f")
+                print("DEBUG: The shutdown commmand is " + r'os.system("shutdown.exe /r /f")')
+            os.system("shutdown.exe /r /f /t 0")
+        # Only the restart command was sent
         elif not force:
             if debug:
-                 print("DEBUG: The shutdown commmand is " + r'os.system("shutdown.exe -r")')
-            os.system("shutdown.exe -r")
+                 print("DEBUG: The shutdown commmand is " + r'os.system("shutdown.exe /r /t 0")')
+            os.system("shutdown.exe /r /t 0")
 
     # Normal shutdown commmand was sent
     elif not restart:
@@ -295,13 +296,13 @@ def close_Win():
         # Same as /s /t 0
         if force:
             if debug:
-                print("DEBUG: The shutdown commmand is " + r'os.system("shutdown.exe -p -f")')
-            os.system("shutdown.exe -p -f")
+                print("DEBUG: The shutdown commmand is " + r'os.system("shutdown.exe /p /f")')
+            os.system("shutdown.exe /p /f")
         # The force command was not sent
         elif not force:
             if debug:
-                print("DEBUG: The shutdown commmand is " + r'os.system("shutdown.exe -p")')
-            os.system("shutdown.exe -p")
+                print("DEBUG: The shutdown commmand is " + r'os.system("shutdown.exe /p")')
+            os.system("shutdown.exe /p")
 
 # ------------ End Shutdown/Restart Commands ------------ #
 

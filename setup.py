@@ -38,8 +38,7 @@ else:
 build_exe_options = {"build_exe": destfolder,
                      "create_shared_zip": True,
                      "optimize": 1,
-                     "compressed": True,
-                     }
+                     "compressed": True}
 
 setup(
     name = "Shutdown Timer",
@@ -48,5 +47,4 @@ setup(
     description = "Shutdown Timer Version 1.0.2, created 2013 Triangle717",
     license = "GNU GPLv3",
     options = {"build_exe": build_exe_options},
-    executables = [Executable("ShutdownTimer.py")]
-)
+    executables = [Executable("ShutdownTimer.py")])
