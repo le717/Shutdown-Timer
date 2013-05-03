@@ -31,11 +31,8 @@ from threading import Timer
 app = "Shutdown Timer"
 majver = "1.0.2"
 creator = "Triangle717"
+# Debug variable is set to False before release
 debug = True
-
-# Expand recursion limit so program does not end prematurely.
-# TODO: Might be faulty, see TODO() comments 1-2
-sys.setrecursionlimit(999999999)
 
 # ------------ Begin Shutdown Timer Initialization ------------ #
 
@@ -101,7 +98,7 @@ def preload():
                     main()
                 # The CMD time files does exist
                 elif has_file == True:
-                    # Go to CmdMenu(), where it will be used
+                    # Go to CmdMain(), where it will be used
                     CmdMain()
 
 def timer_File():
@@ -110,17 +107,25 @@ def timer_File():
     global the_file
     # Both files exist, new file has priority
     if os.path.exists("ShutdownTime.txt") and os.path.exists("TheTime.txt"):
+        if debug:
+            print("DEBUG: Both ShutdownTime.txt and TheTime.txt exists. TheTime.txt will be used.")
         the_file = "TheTime.txt"
         return True
     # Only the old file exists
     elif os.path.exists("ShutdownTime.txt") and not os.path.exists("TheTime.txt"):
+        if debug:
+            print("DEBUG: ShutdownTime.txt exists, but TheTime.txt does not. ShutdownTime.txt will be used.")
         the_file = "ShutdownTime.txt"
         return True
     # Neither of the files exist
     elif not os.path.exists("ShutdownTime.txt") and not os.path.exists("TheTime.txt"):
+        if debug:
+            print("DEBUG: Neither ShutdownTime.txt nor TheTime.txt exists.")
         return False
     # Anything else (not really needed, but here for safety)
     else:
+        if debug:
+            print("DEBUG: TheTime.txt will be used.")
         the_file = "TheTime.txt"
         return True
 
@@ -218,38 +223,37 @@ def getTime():
     # Run timer
     theTimer(off_time)
 
-def TheCurrentTime():
-    '''Gets the current time, as reported by the System Clock'''
-
-    cur_time = time.strftime("%H:%M", time.localtime())
-    return cur_time
-
-
 
 def theTimer(off_time):
     '''Gets current time and performs the appropriate actions
     Note: This part is still WIP, as all the bugs have not been ironed out'''
 
-    # The current time, as defined by the System Clock
-    cur_time = time.strftime("%H:%M", time.localtime())
-##    cur_time = TheCurrentTime()
-
-    while off_time != str(cur_time):
+    # If the shutdown time does not equal
+    # the current time, as defined by the System Clock
+    while off_time != time.strftime("%H:%M", time.localtime()):
+        # Required so the current time will be updated when
+        # time.sleep(align_time) is finished. The line above
+        # will not do this.
         cur_time = time.strftime("%H:%M", time.localtime())
+
         if debug:
-            print("\nDEBUG: The current time is " + cur_time)
+            print("DEBUG: The current time is " + cur_time)
 
         # Get the current seconds, as defined by the system clock.
         cur_seconds = time.strftime("%S", time.localtime())
 
-        '''The following code aligns the timer exactly with the system clock,
-        allowing the computer to begin the shutdown routine exactly when stated.'''
-
         if cur_seconds != 00:
-            # Get how many seconds before it is aligned
-            # TODO: Rewrite this comment! 61 seconds because of the 1 second delay to display message
-            # Conver to int(eger) to subtract
-            align_time = 63 - int(cur_seconds)
+            # Align the timer exactly with the system clock,
+            # allowing the computer to begin the shutdown routine exactly when stated.
+
+            # !!WARNING!!
+            # Do not change align_time to anything less than 60.
+            # Anything less creates a huge bug and throws the timer
+            # off by a minute, or creates a negative time
+
+            # Convert to int(eger) so we can subtract
+            align_time = 60 - int(cur_seconds)
+
             if debug:
                 print("DEBUG: Align time is " + str(align_time))
 
@@ -265,7 +269,7 @@ def theTimer(off_time):
 # ------------ End Various Timer Actions ------------ #
 
 
-# ------------ Begin Actual Shutdown/Restart Action ------------ #
+# ------------ Begin Shutdown/Restart Commands ------------ #
 
 def close_Win():
     '''Shutsdown or Retarts Computer depending on Arguments'''
@@ -276,10 +280,14 @@ def close_Win():
     if restart:
         # The force command was sent as well
         if force:
-##            os.system("shutdown.exe /r /f")
+            if debug:
+                print("DEBUG: The shutdown commmand is " + r'os.system("shutdown.exe -r -f")')
+##            os.system("shutdown.exe -r -f")
             raise SystemExit
         elif not force:
-##            os.system("shutdown.exe /r")
+            if debug:
+                 print("DEBUG: The shutdown commmand is " + r'os.system("shutdown.exe -r")')
+##            os.system("shutdown.exe -r")
             raise SystemExit
 
     # Normal shutdown commmand was sent
@@ -288,14 +296,18 @@ def close_Win():
         # Using /p shutdowns Windows immediately without warning,
         # Same as /s /t 0
         if force:
-##            os.system("shutdown.exe /p /f")
+            if debug:
+                print("DEBUG: The shutdown commmand is " + r'os.system("shutdown.exe -p -f")')
+##            os.system("shutdown.exe -p -f")
             raise SystemExit
         # The force command was not sent
         elif not force:
-##            os.system("shutdown.exe /p")
+            if debug:
+                print("DEBUG: The shutdown commmand is " + r'os.system("shutdown.exe -p")')
+##            os.system("shutdown.exe -p")
             raise SystemExit
 
-# ------------ End Actual Shutdown/Restart Action ------------ #
+# ------------ End Shutdown/Restart Commands ------------ #
 
 def TODO():
     ''':P'''
@@ -303,10 +315,9 @@ def TODO():
     webbrowser.open_new_tab("http://triangle717.files.wordpress.com/2013/03/fabulandcow.jpg")
     os._exit(0)
 
-# Rework the looping method to make this work if Windows is booted in early morning
-# Look at the PatchIt! Uninstaller for help
+# OS X or Linux commands for cross-platform support?
 # Check if input matches required format???
-# Once timer is started, press 'q' to close, or Windows' exit button???
+# Once timer is started, press 'q' to close, or window exit button???
 # Anything else I remember later on
 
 if __name__ == "__main__":
