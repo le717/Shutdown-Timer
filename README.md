@@ -2,9 +2,7 @@ Shutdown Timer
 ==============
 
 **Shutdown Timer** is a [Python 3](http://python.org) application created by [Triangle717](http://triangle717.wordpress.com) to shutdown 
-your Windows computer at a specified time. 
-
-[![Build Status](https://travis-ci.org/le717/Shutdown-Timer.png)](https://travis-ci.org/le717/Shutdown-Timer)
+your Windows computer at a specified time.
 
 How It Works
 ------------
