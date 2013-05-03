@@ -31,6 +31,7 @@ from threading import Timer
 app = "Shutdown Timer"
 majver = "1.0.2"
 creator = "Triangle717"
+debug = True
 
 # Expand recursion limit so program does not end prematurely.
 # TODO: Might be faulty, see TODO() comments 1-2
@@ -198,7 +199,7 @@ Use the 24-hour format with the following layout: "HH:MM".
             print("{0}".format(off_time), file=f, end="")
 
         # Now run shutdown sequence
-        TheTimer(off_time)
+        theTimer(off_time)
 
 # ------------ End Shutdown Timer Menus ------------ #
 
@@ -215,16 +216,28 @@ def getTime():
     print("Your computer will {0} at {1}.".format(the_word, off_time))
 
     # Run timer
-    TheTimer(off_time)
+    theTimer(off_time)
 
-def TheTimer(off_time):
+def TheCurrentTime():
+    '''Gets the current time, as reported by the System Clock'''
+
+    cur_time = time.strftime("%H:%M", time.localtime())
+    return cur_time
+
+
+
+def theTimer(off_time):
     '''Gets current time and performs the appropriate actions
     Note: This part is still WIP, as all the bugs have not been ironed out'''
 
     # The current time, as defined by the System Clock
     cur_time = time.strftime("%H:%M", time.localtime())
+##    cur_time = TheCurrentTime()
 
-    while off_time != cur_time:
+    while off_time != str(cur_time):
+        cur_time = time.strftime("%H:%M", time.localtime())
+        if debug:
+            print("DEBUG: The current time is " + cur_time)
 
         # Get the current seconds, as defined by the system clock.
         cur_seconds = time.strftime("%S", time.localtime())
@@ -236,11 +249,14 @@ def TheTimer(off_time):
             # Get how many seconds before it is aligned
             # 61 seconds because of the 1 second delay to display message
             # Conver to int(eger) to subtract
-            align_time = 61 - int(cur_seconds)
+            align_time = 62 - int(cur_seconds)
+            if debug:
+                print("DEBUG: Align time is " + str(align_time))
 
-        print("\nIt is not {0}, but {1}. Your computer will not {2}.".format(off_time, cur_time, the_word))
+        print("\nIt is not {0}, it is only {1}. Your computer will not {2}.".format(off_time, str(cur_time), the_word))
         # Sleep for however long until alignment
         time.sleep(align_time)
+
 ##                TheTimer(off_time)
 
     print("\nYour computer is {0}.".format(the_word_ing))
