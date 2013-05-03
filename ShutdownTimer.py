@@ -237,7 +237,7 @@ def theTimer(off_time):
     while off_time != str(cur_time):
         cur_time = time.strftime("%H:%M", time.localtime())
         if debug:
-            print("DEBUG: The current time is " + cur_time)
+            print("\nDEBUG: The current time is " + cur_time)
 
         # Get the current seconds, as defined by the system clock.
         cur_seconds = time.strftime("%S", time.localtime())
@@ -247,17 +247,15 @@ def theTimer(off_time):
 
         if cur_seconds != 00:
             # Get how many seconds before it is aligned
-            # 61 seconds because of the 1 second delay to display message
+            # TODO: Rewrite this comment! 61 seconds because of the 1 second delay to display message
             # Conver to int(eger) to subtract
-            align_time = 62 - int(cur_seconds)
+            align_time = 63 - int(cur_seconds)
             if debug:
                 print("DEBUG: Align time is " + str(align_time))
 
         print("\nIt is not {0}, it is only {1}. Your computer will not {2}.".format(off_time, str(cur_time), the_word))
         # Sleep for however long until alignment
         time.sleep(align_time)
-
-##                TheTimer(off_time)
 
     print("\nYour computer is {0}.".format(the_word_ing))
     # Let user read message
