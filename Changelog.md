@@ -15,7 +15,12 @@ Shutdown Timer Change Log
 * Unchained import statements
 * Small changes
 * Added script dividers
-* __Coming Soon.__
+* Updated shutdown.exe commands (again)
+* Added `debug` variable and messages (set to `False` by default)
+* Made timer get the newest time after `time.sleep(align_time)` ends (it was using the same time over and over again)
+* Fixed alignment time
+* Comments update
+* Fixed Timer, now switches to close_Win() if `cur_time1 is equal to 1off_time`.
 
 1.0.1
 -----
@@ -25,6 +30,7 @@ Shutdown Timer Change Log
 * Changed shutdown parameter
 * Added Python 3.3.1 shebang line
 * Rewrote shutdown command function
+* Updated shutdown.exe command
 
 1.0
 ---

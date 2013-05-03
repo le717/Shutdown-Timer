@@ -32,7 +32,7 @@ app = "Shutdown Timer"
 majver = "1.0.2"
 creator = "Triangle717"
 # Debug variable is set to False before release
-debug = True
+debug = False
 
 # ------------ Begin Shutdown Timer Initialization ------------ #
 
@@ -282,13 +282,11 @@ def close_Win():
         if force:
             if debug:
                 print("DEBUG: The shutdown commmand is " + r'os.system("shutdown.exe -r -f")')
-##            os.system("shutdown.exe -r -f")
-            raise SystemExit
+            os.system("shutdown.exe -r -f")
         elif not force:
             if debug:
                  print("DEBUG: The shutdown commmand is " + r'os.system("shutdown.exe -r")')
-##            os.system("shutdown.exe -r")
-            raise SystemExit
+            os.system("shutdown.exe -r")
 
     # Normal shutdown commmand was sent
     elif not restart:
@@ -298,22 +296,16 @@ def close_Win():
         if force:
             if debug:
                 print("DEBUG: The shutdown commmand is " + r'os.system("shutdown.exe -p -f")')
-##            os.system("shutdown.exe -p -f")
-            raise SystemExit
+            os.system("shutdown.exe -p -f")
         # The force command was not sent
         elif not force:
             if debug:
                 print("DEBUG: The shutdown commmand is " + r'os.system("shutdown.exe -p")')
-##            os.system("shutdown.exe -p")
-            raise SystemExit
+            os.system("shutdown.exe -p")
 
 # ------------ End Shutdown/Restart Commands ------------ #
 
-def TODO():
-    ''':P'''
-    # Keeps Python from throwing some error in case somebody wants to run this. :P
-    webbrowser.open_new_tab("http://triangle717.files.wordpress.com/2013/03/fabulandcow.jpg")
-    os._exit(0)
+"""TODO List"""
 
 # OS X or Linux commands for cross-platform support?
 # Check if input matches required format???
