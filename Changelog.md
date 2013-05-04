@@ -1,14 +1,11 @@
 Shutdown Timer Change Log
 =========================
 
-
-
 1.0.2
 -----
 
 **Released ?? ??, 2013**
 
-* Added restart computer parameter, supports force command
 * Rewrote timer process in an attempt to make **Shutdown Timer** work properly if timer is loaded early in morning
 * Display "shutdown" or "restart" depending on if -restart parameter is passed
 * Renamed *ShutdownTime.txt* to *TheTime.txt* added loading of ShutdownTime.txt* only if *TheTime.txt* does not exist
@@ -21,6 +18,14 @@ Shutdown Timer Change Log
 * Comments update
 * Finished rewrite of timer process, now switches to close_Win() if `off_time` is equal to `cur_time`.
 * Fixed restart commands, now restarts immediately
+* Changed command-line mode (`-cmd`, `--command`) to Automatic mode (`-a`, `--auto`), messages and function names changed accordingly
+* Split up functions in `preload()`
+* Moved Python and Windows check from under `preload()`
+* Moved `close_Type()` from `preload()`
+* Added a few more debug messages
+* Cleaned up what is left of `preload()`
+* Various cleanup
+* Updated README.md with new restart and automatic modes
 
 1.0.1
 -----
@@ -31,6 +36,7 @@ Shutdown Timer Change Log
 * Added Python 3.3.1 shebang line
 * Rewrote shutdown command function
 * Updated shutdown.exe command
+* Added restart computer parameter, supports force command
 
 1.0
 ---

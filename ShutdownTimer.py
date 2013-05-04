@@ -32,16 +32,34 @@ app = "Shutdown Timer"
 majver = "1.0.2"
 creator = "Triangle717"
 # Debug variable is set to False before release
-debug = False
+debug = True
+
+# You need to have at least Python 3.3.0 to run this
+if sys.version_info < (3,3,0):
+    sys.stdout.write("\nYou need to download Python 3.3.0 or greater to run {0} {1}.".format(app, majver))
+    # Don't open browser immediately
+    time.sleep(2)
+    webbrowser.open_new_tab("http://python.org/download") # New tab, raise browser window (if possible)
+    # Close program
+    time.sleep(3)
+    raise SystemExit
+
+# If you are running Python 3.3.0+
+else:
+    # You are not running Windows
+    if platform.system() != 'Windows':
+        print("\n{0} {1} is not supported on a non-Windows Operating System!".format(app, majver))
+        time.sleep(2)
+        raise SystemExit
 
 # ------------ Begin Shutdown Timer Initialization ------------ #
 
 def CMDParse():
-    '''Parses Command=line Arguments'''
+    """Parses Command-line Arguments"""
     parser = argparse.ArgumentParser(description="{0} {1} Command-line arguments".format(app, majver))
-    # Command-line mode argument
-    parser.add_argument("-cmd", "--command",
-    help="Runs {0} in command-line mode, using the shutdown time in TheTime.txt".format(app),
+    # Automatic  mode argument
+    parser.add_argument("-a", "--auto",
+    help="Runs {0} in automatic mode, using the time written in TheTime.txt".format(app),
     action="store_true")
 
     # Force shutdown argument
@@ -56,53 +74,31 @@ def CMDParse():
     args = parser.parse_args()
 
     # Declare force parameter (-f, --force) as global for use in Shutdown(offtime)
-    global force, command, restart
+    global force, auto, restart
     force = args.force
-    command = args.command
+    auto = args.auto
     restart = args.restart
 
 def preload():
-    '''Python 3.3.0 & ShutdownTime.txt check'''
+    """Run the correct mode, depending on parameters passed"""
 
-    # You need to have at least Python 3.3.0 to run this
-    if sys.version_info < (3,3,0):
-        sys.stdout.write("\nYou need to download Python 3.3.0 or greater to run {0} {1}.".format(app, majver))
-        # Don't open browser immediately
-        time.sleep(2)
-        webbrowser.open_new_tab("http://python.org/download") # New tab, raise browser window (if possible)
-        # Close app
-        time.sleep(3)
-        raise SystemExit
-
-    # If you are running Python 3.3.0+
+    # The program was not run with the -a (or --auto) argument
+    if not auto:
+        main()
+    # It was run with the automatic argument
     else:
-        # You are not running Windows
-        if platform.system() != 'Windows':
-            print("\n{0} {1} is not supported on a non-Windows Operating System!".format(app, majver))
-            print("\n{0} is shutting down.".format(app))
-            time.sleep(2)
-            raise SystemExit
-
-        # You are running Windows
-        else:
-            close_Type()
-            # It was not run with the -cmd (or --command) argument
-            if not command:
-                main()
-            # It was run with the command-line argument
-            else:
-                has_file = timer_File()
-                # The CMD time files does not exist
-                if has_file == False:
-                    # Go to main(), where it will be written
-                    main()
-                # The CMD time files does exist
-                elif has_file == True:
-                    # Go to CmdMain(), where it will be used
-                    CmdMain()
+        has_file = timer_File()
+        # The CMD time files does not exist
+        if not has_file:
+            # Go to main(), where it will be written
+            main()
+        # The Auto time file(s) does exist
+        elif has_file:
+            # Go to AutoMain(), where it will be used
+            AutoMain()
 
 def timer_File():
-    '''Check for the existance and the usagev of new or old CMD time file'''
+    """Check for the existance and the usage of new or old time file"""
 
     global the_file
     # Both files exist, new file has priority
@@ -111,17 +107,20 @@ def timer_File():
             print("DEBUG: Both ShutdownTime.txt and TheTime.txt exists. TheTime.txt will be used.")
         the_file = "TheTime.txt"
         return True
+
     # Only the old file exists
     elif os.path.exists("ShutdownTime.txt") and not os.path.exists("TheTime.txt"):
         if debug:
             print("DEBUG: ShutdownTime.txt exists, but TheTime.txt does not. ShutdownTime.txt will be used.")
         the_file = "ShutdownTime.txt"
         return True
+
     # Neither of the files exist
     elif not os.path.exists("ShutdownTime.txt") and not os.path.exists("TheTime.txt"):
         if debug:
             print("DEBUG: Neither ShutdownTime.txt nor TheTime.txt exists.")
         return False
+
     # Anything else (not really needed, but here for safety)
     else:
         if debug:
@@ -130,13 +129,17 @@ def timer_File():
         return True
 
 def close_Type():
-    '''Change app messages depending if we are shutting down or restarting'''
+    """Change app messages depending if we are shutting down or restarting"""
 
     global the_word, the_word_ing
     if restart:
+        if debug:
+            print("DEBUG: The words are 'restart' and 'restarting'.")
         the_word = "restart"
         the_word_ing = "restarting"
     elif not restart:
+        if debug:
+            print("DEBUG: The words are 'shutdown' and 'shutting down'.")
         the_word = "shutdown"
         the_word_ing = "shutting down"
 
@@ -145,39 +148,38 @@ def close_Type():
 
 # ------------ Begin Shutdown Timer Menus ------------ #
 
-def CmdMain():
-    '''Shutdown Timer Command Line Mode Menu'''
+def AutoMain():
+    """Shutdown Timer Automatic Mode Menu"""
 
-    # Write window title for command-line mode
-    os.system("title {0} {1} - Command Line Mode".format(app, majver))
+    # Write window title for automatic mode
+    os.system("title {0} {1} - Automatic Mode".format(app, majver))
 
-    print("\n{0} Version {1}, Created 2013 {2}".format(app, majver, creator))
-    print('''Command Line Mode
-{0} has been detected.
+    print("\n{0} Version {1} - Automatic Mode".format(app, majver))
+    print('''Created 2013 {0}
+
+{1} has been detected.
 Your computer will {1} at the time written in the file.
 \nThe Timer will begin in 10 seconds.
-Pressing 'q' right now will cancel the {1}.'''.format(the_file, the_word))
+Pressing 'q' right now will cancel the {2}.'''.format(creator, the_file, the_word))
 
     # Start 10 second countdown timer
     # After 10 seconds, run readFile() to get the shutdown time
     t = Timer(10.0, getTime)
     t.start()
-    menuopt = input("\n\n")
+    menuopt = input("\n\n> ")
 
     # User wanted to close the timer
     if menuopt.lower() == "q":
         t.cancel()
-        # print("\n{0} is shutting down.".format(app))
-        # time.sleep(2)
         raise SystemExit
 
 def main():
-    '''Shutdown Timer Menu Layout'''
+    """Shutdown Timer Menu Layout"""
 
-    # Write window title for non-command-line mode
+    # Write window title for non-automatic mode
     os.system("title {0} {1}".format(app, majver))
 
-    print("\n{0} Version {1}, Created 2013 {2}".format(app, majver, creator))
+    print("\n{0} Version {1}\nCreated 2013 {2}".format(app, majver, creator))
     print('''\nPlease enter the time you want the computer to {0}.
 Use the 24-hour format with the following layout: "HH:MM".
 \nPress "q" to exit.'''.format(the_word))
@@ -186,8 +188,6 @@ Use the 24-hour format with the following layout: "HH:MM".
 
     # Only 'q' will close the program
     if off_time.lower() == "q":
-        # print("\n{0} is shutting down.".format(app))
-        # time.sleep(2)
         raise SystemExit
 
     elif len(off_time) == 0:
@@ -197,7 +197,7 @@ Use the 24-hour format with the following layout: "HH:MM".
 
     # User typed a vaild time
     else:
-        # Write time to be used by CMD mode
+        # Write time to be used by Automatic mode
         # TheTime.txt is the only file written from now on
         with open("TheTime.txt", 'wt', encoding="utf-8") as f:
             print("// Shutdown Timer, created 2013 Triangle717", file=f)
@@ -212,7 +212,7 @@ Use the 24-hour format with the following layout: "HH:MM".
 # ------------ Begin Various Timer Actions ------------ #
 
 def getTime():
-    '''Reads TheTime.txt/ShutdownTime.txt for shutdown time for Command Line Mode'''
+    """Reads TheTime.txt/ShutdownTime.txt for shutdown time for Automatic Mode"""
 
     # Read line 2 from the_file for shutdown time
     off_time = linecache.getline(the_file, 2)
@@ -225,8 +225,8 @@ def getTime():
 
 
 def theTimer(off_time):
-    '''Gets current time and performs the appropriate actions
-    Note: This part is still WIP, as all the bugs have not been ironed out'''
+    """Gets current time and performs the appropriate actions
+    Note: This part is still WIP, as all the bugs have not been ironed out"""
 
     # If the shutdown time does not equal
     # the current time, as defined by the System Clock
@@ -272,7 +272,7 @@ def theTimer(off_time):
 # ------------ Begin Shutdown/Restart Commands ------------ #
 
 def close_Win():
-    '''Shutsdown or Retarts Computer depending on Arguments'''
+    """Shutsdown or Retarts Computer depending on Arguments"""
 
     # Call hidden shutdown.exe CMD app to shutdown/restart Windows
 
@@ -316,4 +316,5 @@ def close_Win():
 if __name__ == "__main__":
     # Run program
     CMDParse()
+    close_Type()
     preload()
