@@ -32,7 +32,7 @@ app = "Shutdown Timer"
 majver = "1.0.2"
 creator = "Triangle717"
 # Debug variable is set to False before release
-debug = True
+debug = False
 
 # You need to have at least Python 3.3.0 to run this
 if sys.version_info < (3,3,0):
