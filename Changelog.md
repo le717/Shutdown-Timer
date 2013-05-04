@@ -25,7 +25,8 @@ Shutdown Timer Change Log
 * Added a few more debug messages
 * Cleaned up what is left of `preload()`
 * Various cleanup
-* Updated README.md with new restart and automatic modes
+* Updated *README.md* with new restart and automatic modes
+* Added Command-line Arguments section to *README.md*
 
 1.0.1
 -----
@@ -35,7 +36,7 @@ Shutdown Timer Change Log
 * Changed shutdown parameter
 * Added Python 3.3.1 shebang line
 * Rewrote shutdown command function
-* Updated shutdown.exe command
+* Updated shutdown.exe commands
 * Added restart computer parameter, supports force command
 
 1.0

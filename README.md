@@ -18,12 +18,21 @@ compare the two. If the two times do not match, it will run until they do match,
 
 ### Automatic Mode
 
-The second mode is the automatic mode, which is activated by running `ShutdownTimer.exe -a` or `ShutdownTimer.exe --auto`. The automatic mode 
-does not allow you to enter a halt time. Instead, it uses a small text file written by the normal mode as the halt time.
-This allows you to always halt your computer at the same time multiple times without typing in the time each launch, providing you 
+The second mode is the automatic mode. The automatic mode does not allow you to enter a halt time. Instead, it uses a small text file written by the normal mode as the halt time. This allows you to always halt your computer at the same time multiple times without typing in the time each launch, providing you 
 haven't run the normal mode and changed the halt time. 
-If the file the automatic mode relies on is not found, it will proceed to the normal mode so the file will 
-be written. You can see all the command line arguments by running `ShutdownTimer.exe --help`. 
+If the file the automatic mode relies on is not found, it will proceed to the normal mode so the file will be written. 
+
+
+### Command-line Arguments
+
+**Shutdown Timer** contains a few command-line arguments. None of the commands conflict with each other; they all can be used at once.
+You can get more details on each command line argument by running `ShutdownTimer.exe --help`. 
+
+* **Automatic Mode**, discussed above, is activated by running `ShutdownTimer.exe -a` or `ShutdownTimer.exe --auto`.
+* Instead of shutting down the computer, you can **restart** it instead. Just pass `ShutdownTimer.exe -r` or `ShutdownTimer.exe --restart`.
+* The **force** command sends the force command to Windows, making the computer halt even if a process is preventing it from halting.
+Pass `ShutdownTimer.exe -f` or `ShutdownTimer.exe --force` to send the force command.
+
 
 System Requirements
 -------------------
@@ -35,10 +44,10 @@ To use **Shutdown Timer**, you will need to be running Windows. It has been succ
 If you run the Python script directly, you will need to same operating system requirements, in addition to having at least a Python 3.3.0 interpreter. 
 Again, a check will stop it on running on any versions lower than 3.3.0. 
 
-If you want to run the EXE, again, you need to meet the operating system requirements and have the Microsoft Visual Studio C++ 2008 Redistributable Package, 
+If you want to run the Exe, again, you need to meet the operating system requirements and have the Microsoft Visual Studio C++ 2008 Redistributable Package, 
 either [x86](http://www.microsoft.com/en-us/download/details.aspx?displaylang=en&id=29) or 
 [x64](http://www.microsoft.com/en-us/download/details.aspx?displaylang=en&id=15336), 
-depending on the EXE version you use. If you are unsure if you need this package or not, here's a helpful hint:
+depending on the Exe version you use. If you are unsure if you need this package or not, here's a helpful hint:
 Only if you get an error message saying "MSVCR100.dll is missing from your computer" do you need to install it. Otherwise, it is not needed. 
  
 Contributing
