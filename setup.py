@@ -38,7 +38,8 @@ else:
 build_exe_options = {"build_exe": destfolder,
                      "create_shared_zip": True,
                      "optimize": 1,
-                     "compressed": True}
+                     "compressed": True,
+                     "icon": "Icon.ico"}
 
 setup(
     name = "Shutdown Timer",
