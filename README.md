@@ -49,12 +49,6 @@ either [x86](http://www.microsoft.com/en-us/download/details.aspx?displaylang=en
 [x64](http://www.microsoft.com/en-us/download/details.aspx?displaylang=en&id=15336), 
 depending on the Exe version you use. If you are unsure if you need this package or not, here's a helpful hint:
 Only if you get an error message saying "MSVCR100.dll is missing from your computer" do you need to install it. Otherwise, it is not needed. 
- 
-Contributing
-------------
-
-If you would like to contribute to the development of **Shutdown Timer**, submit a patch, or compile your own build, please take a look at 
-[CONTRIBUTING.md](CONTRIBUTING.md). 
 
 Releases
 --------
