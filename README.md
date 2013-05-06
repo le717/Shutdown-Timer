@@ -30,7 +30,7 @@ You can get more details on each command line argument by running `ShutdownTimer
 
 * **Automatic Mode**, discussed above, is activated by running `ShutdownTimer.exe -a` or `ShutdownTimer.exe --auto`.
 * Instead of shutting down the computer, you can **restart** it instead. Just pass `ShutdownTimer.exe -r` or `ShutdownTimer.exe --restart`.
-* The **force** command sends the force command to Windows, making the computer halt even if a process is preventing it from halting.
+* The **force** argument sends the force command to Windows, making the computer halt even if a process is preventing it from halting.
 Pass `ShutdownTimer.exe -f` or `ShutdownTimer.exe --force` to send the force command.
 
 
@@ -58,6 +58,12 @@ If you would like to contribute to the development of **Shutdown Timer**, submit
 
 Releases
 --------
+
+* Version 1.2 - May 6, 2013
+
+> [Source Code](https://github.com/le717/Shutdown-Timer/tree/V1.2)
+
+> [Direct Download](https://github.com/le717/Shutdown-Timer/archive/V1.2.zip)
 
 * Version 1.0 - March 29, 2013
 

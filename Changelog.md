@@ -4,7 +4,7 @@ Shutdown Timer Change Log
 1.0.2
 -----
 
-**Released ?? ??, 2013**
+**Released May 6, 2013**
 
 * Rewrote timer process in an attempt to make **Shutdown Timer** work properly if timer is loaded early in morning
 * Display "shutdown" or "restart" depending on if -restart parameter is passed
@@ -27,6 +27,7 @@ Shutdown Timer Change Log
 * Various cleanup
 * Updated *README.md* with new restart and automatic modes
 * Added Command-line Arguments section to *README.md*
+* Added application icon
 
 1.0.1
 -----
