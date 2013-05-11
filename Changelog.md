@@ -1,13 +1,21 @@
 Shutdown Timer Change Log
 =========================
 
+1.0.2r2
+-------
+
+**Released ?? ??, 2013**
+
+* Fixed doctype for `close_Type()`
+* Fixed mixed-up variable in `AutoMain()`
+
 1.0.2
 -----
 
 **Released May 6, 2013**
 
 * Rewrote timer process in an attempt to make **Shutdown Timer** work properly if timer is loaded early in morning
-* Display "shutdown" or "restart" depending on if -restart parameter is passed
+* Display "shutdown" or "restart" depending on if `-r` or `--restart` parameter is passed
 * Renamed *ShutdownTime.txt* to *TheTime.txt* added loading of ShutdownTime.txt* only if *TheTime.txt* does not exist
 * Unchained import statements
 * Small changes
@@ -18,7 +26,7 @@ Shutdown Timer Change Log
 * Comments update
 * Finished rewrite of timer process, now switches to close_Win() if `off_time` is equal to `cur_time`.
 * Fixed restart commands, now restarts immediately
-* Changed command-line mode (`-cmd`, `--command`) to Automatic mode (`-a`, `--auto`), messages and function names changed accordingly
+* Changed Command-line mode (`-cmd`, `--command`) to Automatic mode (`-a`, `--auto`), messages and function names changed accordingly
 * Split up functions in `preload()`
 * Moved Python and Windows check from under `preload()`
 * Moved `close_Type()` from `preload()`

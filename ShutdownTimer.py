@@ -159,7 +159,7 @@ def AutoMain():
     print('''Created 2013 {0}
 
 {1} has been detected.
-Your computer will {1} at the time written in the file.
+Your computer will {2} at the time written in the file.
 \nThe Timer will begin in 10 seconds.
 Pressing 'q' right now will cancel the {2}.'''.format(creator, the_file, the_word))
 
@@ -226,8 +226,7 @@ def getTime():
 
 
 def theTimer(off_time):
-    """Gets current time and performs the appropriate actions
-    Note: This part is still WIP, as all the bugs have not been ironed out"""
+    """Gets current time and performs the appropriate actions"""
 
     # If the shutdown time does not equal
     # the current time, as defined by the System Clock
