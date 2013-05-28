@@ -309,7 +309,7 @@ def close_Win():
 """TODO List"""
 
 # OS X or Linux commands for cross-platform support?
-# Check if input matches required format???
+# Check if input matches required format (use "re" module)
 # Once timer is started, press 'q' to close, or window exit button???
 # Anything else I remember later on
 
