@@ -30,17 +30,18 @@ from threading import Timer
 
 # Global variables
 app = "Shutdown Timer"
-majver = "1.0.2"
+majver = "1.0.2.1"
 creator = "Triangle717"
 # Debug variable is set to False before release
 debug = False
 
 # You need to have at least Python 3.3.0 to run this
-if sys.version_info < (3,3,0):
+if sys.version_info < (3, 3, 0):
     sys.stdout.write("\nYou need to download Python 3.3.0 or greater to run {0} {1}.".format(app, majver))
     # Don't open browser immediately
     time.sleep(2)
-    webbrowser.open_new_tab("http://python.org/download") # New tab, raise browser window (if possible)
+    # New tab, raise browser window (if possible)
+    webbrowser.open_new_tab("http://python.org/download")
     # Close program
     time.sleep(3)
     raise SystemExit
@@ -49,18 +50,23 @@ if sys.version_info < (3,3,0):
 else:
     # You are not running Windows
     if platform.system() != 'Windows':
-        print("\n{0} {1} is not supported on a non-Windows Operating System!".format(app, majver))
+        print("\n{0} {1} is not supported on a non-Windows Operating System!"
+        .format(app, majver))
         time.sleep(2)
         raise SystemExit
 
+
 # ------------ Begin Shutdown Timer Initialization ------------ #
+
 
 def CMDParse():
     """Parses Command-line Arguments"""
-    parser = argparse.ArgumentParser(description="{0} {1} Command-line arguments".format(app, majver))
+    parser = argparse.ArgumentParser(
+        description="{0} {1} Command-line arguments".format(app, majver))
     # Automatic  mode argument
     parser.add_argument("-a", "--auto",
-    help="Runs {0} in automatic mode, using the time written in TheTime.txt".format(app),
+    help="Runs {0} in automatic mode, using the time written in TheTime.txt"
+    .format(app),
     action="store_true")
 
     # Force shutdown argument
@@ -74,11 +80,13 @@ def CMDParse():
     action="store_true")
     args = parser.parse_args()
 
-    # Declare force parameter (-f, --force) as global for use in Shutdown(offtime)
+    # Declare force parameter (-f, --force) as global
+    # for use in Shutdown(offtime)
     global force, auto, restart
     force = args.force
     auto = args.auto
     restart = args.restart
+
 
 def preload():
     """Run the correct mode, depending on parameters passed"""
@@ -98,6 +106,7 @@ def preload():
             # Go to AutoMain(), where it will be used
             AutoMain()
 
+
 def timer_File():
     """Check for the existance and the usage of new or old time file"""
 
@@ -105,19 +114,25 @@ def timer_File():
     # Both files exist, new file has priority
     if os.path.exists("ShutdownTime.txt") and os.path.exists("TheTime.txt"):
         if debug:
-            print("DEBUG: Both ShutdownTime.txt and TheTime.txt exists. TheTime.txt will be used.")
+            print('''DEBUG: Both ShutdownTime.txt and TheTime.txt exists.
+TheTime.txt will be used.''')
         the_file = "TheTime.txt"
         return True
 
     # Only the old file exists
-    elif os.path.exists("ShutdownTime.txt") and not os.path.exists("TheTime.txt"):
+    elif (
+        os.path.exists("ShutdownTime.txt") and not os.path.exists("TheTime.txt")
+        ):
         if debug:
-            print("DEBUG: ShutdownTime.txt exists, but TheTime.txt does not. ShutdownTime.txt will be used.")
+            print('''DEBUG: ShutdownTime.txt exists, but TheTime.txt does not.
+ShutdownTime.txt will be used.''')
         the_file = "ShutdownTime.txt"
         return True
 
     # Neither of the files exist
-    elif not os.path.exists("ShutdownTime.txt") and not os.path.exists("TheTime.txt"):
+    elif not (
+        os.path.exists("ShutdownTime.txt") and not os.path.exists("TheTime.txt")
+    ):
         if debug:
             print("DEBUG: Neither ShutdownTime.txt nor TheTime.txt exists.")
         return False
@@ -128,6 +143,7 @@ def timer_File():
             print("DEBUG: TheTime.txt will be used.")
         the_file = "TheTime.txt"
         return True
+
 
 def close_Type():
     """Change app messages depending if we are shutting down or restarting"""
@@ -144,10 +160,12 @@ def close_Type():
         the_word = "shutdown"
         the_word_ing = "shutting down"
 
+
 # ------------ End Shutdown Timer Initialization ------------ #
 
 
 # ------------ Begin Shutdown Timer Menus ------------ #
+
 
 def AutoMain():
     """Shutdown Timer Automatic Mode Menu"""
@@ -161,7 +179,8 @@ def AutoMain():
 {1} has been detected.
 Your computer will {2} at the time written in the file.
 \nThe Timer will begin in 10 seconds.
-Pressing 'q' right now will cancel the {2}.'''.format(creator, the_file, the_word))
+Pressing 'q' right now will cancel the {2}.'''.format(
+    creator, the_file, the_word))
 
     # Start 10 second countdown timer
     # After 10 seconds, run readFile() to get the shutdown time
@@ -173,6 +192,7 @@ Pressing 'q' right now will cancel the {2}.'''.format(creator, the_file, the_wor
     if menuopt.lower() == "q":
         t.cancel()
         raise SystemExit
+
 
 def main():
     """Shutdown Timer Menu Layout"""
@@ -201,19 +221,21 @@ Use the 24-hour format with the following layout: "HH:MM".
         # Write time to be used by Automatic mode
         # TheTime.txt is the only file written from now on
         with open("TheTime.txt", 'wt', encoding="utf-8") as f:
-            print("// Shutdown Timer, created 2013 Triangle717", file=f)
-            print("{0}".format(off_time), file=f, end="")
+            f.write("// Shutdown Timer, created 2013 Triangle717\n")
+            f.write("{0}".format(off_time))
 
         # Now run shutdown sequence
         theTimer(off_time)
+
 
 # ------------ End Shutdown Timer Menus ------------ #
 
 
 # ------------ Begin Various Timer Actions ------------ #
 
+
 def getTime():
-    """Reads TheTime.txt/ShutdownTime.txt for shutdown time for Automatic Mode"""
+    """Reads TheTime.txt/ShutdownTime.txt for shutdown time in Automatic Mode"""
 
     # Read line 2 from the_file for shutdown time
     off_time = linecache.getline(the_file, 2)
@@ -244,7 +266,8 @@ def theTimer(off_time):
 
         if cur_seconds != 00:
             # Align the timer exactly with the system clock,
-            # allowing the computer to begin the shutdown routine exactly when stated.
+            # allowing the computer to begin the shutdown routine
+            # exactly when stated.
 
             # !!WARNING!!
             # Do not change align_time to anything less than 60.
@@ -257,7 +280,8 @@ def theTimer(off_time):
             if debug:
                 print("DEBUG: Align time is " + str(align_time))
 
-        print("\nIt is not {0}, it is only {1}. Your computer will not {2}.".format(off_time, str(cur_time), the_word))
+        print("\nIt is not {0}, it is only {1}. Your computer will not {2}."
+        .format(off_time, str(cur_time), the_word))
         # Sleep for however long until alignment
         time.sleep(align_time)
 
@@ -271,6 +295,7 @@ def theTimer(off_time):
 
 # ------------ Begin Shutdown/Restart Commands ------------ #
 
+
 def close_Win():
     """Shutsdown or Retarts Computer depending on Arguments"""
 
@@ -281,12 +306,14 @@ def close_Win():
         # The force command was sent as well
         if force:
             if debug:
-                print("DEBUG: The shutdown commmand is " + r'os.system("shutdown.exe /r /f")')
+                print("DEBUG: The shutdown commmand is {0}".format(
+                    r'os.system("shutdown.exe /r /f")'))
             os.system("shutdown.exe /r /f /t 0")
         # Only the restart command was sent
         elif not force:
             if debug:
-                 print("DEBUG: The shutdown commmand is " + r'os.system("shutdown.exe /r /t 0")')
+                print("DEBUG: The shutdown commmand is {0}".format(
+                    r'os.system("shutdown.exe /r /t 0")'))
             os.system("shutdown.exe /r /t 0")
 
     # Normal shutdown commmand was sent
@@ -296,13 +323,16 @@ def close_Win():
         # Same as /s /t 0
         if force:
             if debug:
-                print("DEBUG: The shutdown commmand is " + r'os.system("shutdown.exe /p /f")')
+                print("DEBUG: The shutdown commmand is {0}".format(
+                    r'os.system("shutdown.exe /p /f")'))
             os.system("shutdown.exe /p /f")
         # The force command was not sent
         elif not force:
             if debug:
-                print("DEBUG: The shutdown commmand is " + r'os.system("shutdown.exe /p")')
+                print("DEBUG: The shutdown commmand is {0}".format(
+                    r'os.system("shutdown.exe /p")'))
             os.system("shutdown.exe /p")
+
 
 # ------------ End Shutdown/Restart Commands ------------ #
 
