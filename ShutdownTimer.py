@@ -37,7 +37,8 @@ debug = False
 
 # You need to have at least Python 3.3.0 to run this
 if sys.version_info < (3, 3, 0):
-    sys.stdout.write("\nYou need to download Python 3.3.0 or greater to run {0} {1}.".format(app, majver))
+    sys.stdout.write('''\nYou need to download Python 3.3.0 or greater to run
+    {0} {1}.'''.format(app, majver))
     # Don't open browser immediately
     time.sleep(2)
     # New tab, raise browser window (if possible)

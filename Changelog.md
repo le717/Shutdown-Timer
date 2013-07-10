@@ -9,7 +9,7 @@ Shutdown Timer Change Log
 * Fixed doctype for `close_Type()`
 * Fixed mixed-up variable in `AutoMain()`
 * Converted writing of `TheTime.txt` to not use Python 3 `print()` function
-* Updated script to mostly conform with PEP8 guidelines
+* Updated script to conform with PEP8 guidelines
 
 1.0.2
 -----
