@@ -1,7 +1,7 @@
-#! python3
+#! python3.3-32
 """
     Shutdown Timer -  Small Windows Shutdown Timer
-    Created 2013 Triangle717 <http://triangle717.wordpress.com>
+    Created 2013 Triangle717 <http://Triangle717.WordPress.com>
 
     Shutdown Timer is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,7 +23,8 @@
 # With changes by Triangle717
 
 from cx_Freeze import setup, Executable
-import sys, platform
+import sys
+from ShutdownTimer import majver
 
 # Append build to the arguments. Just type "python setup.py" and it will compile
 if len(sys.argv) == 1: sys.argv[1:] = ["build"]
@@ -33,7 +34,9 @@ if len(sys.argv) == 1: sys.argv[1:] = ["build"]
 if sys.maxsize == 2147483647:
     destfolder = "Compile/Windows32"
 else:
-    destfolder = "Compile/Windows64"
+    input('''\n64-bit binaries are not compiled.
+Please recompile Shutdown Timer {0} using 32-bit Python 3.3.'''.format(majver))
+    raise SystemExit
 
 build_exe_options = {"build_exe": destfolder,
                      "create_shared_zip": True,
@@ -42,10 +45,11 @@ build_exe_options = {"build_exe": destfolder,
                      "icon": "Icon.ico"}
 
 setup(
-    name = "Shutdown Timer",
-    version = "1.0.2",
-    author = "Triangle717",
-    description = "Shutdown Timer Version 1.0.2, created 2013 Triangle717",
-    license = "GNU GPLv3",
-    options = {"build_exe": build_exe_options},
-    executables = [Executable("ShutdownTimer.py")])
+    name="Shutdown Timer",
+    versio=majver,
+    author="Triangle717",
+    description="Shutdown Timer Version {0}, created 2013 Triangle717".format(
+        majver),
+    license="GNU GPLv3",
+    options={"build_exe": build_exe_options},
+    executables=[Executable("ShutdownTimer.py")])

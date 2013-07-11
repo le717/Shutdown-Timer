@@ -4,12 +4,13 @@ Shutdown Timer Change Log
 1.0.2.1
 -------
 
-**Released July ??, 2013**
+**Released July 11, 2013**
 
 * Fixed doctype for `close_Type()`
 * Fixed mixed-up variable in `AutoMain()`
 * Converted writing of `TheTime.txt` to not use Python 3 `print()` function
-* Updated script to conform with PEP8 guidelines
+* Updated script to conform with PEP 8 guidelines
+* Updated `setup.py` to conform with PEP 8 guidelines
 
 1.0.2
 -----
