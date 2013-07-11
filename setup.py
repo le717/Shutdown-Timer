@@ -46,10 +46,9 @@ build_exe_options = {"build_exe": destfolder,
 
 setup(
     name="Shutdown Timer",
-    versio=majver,
+    version=majver,
     author="Triangle717",
-    description="Shutdown Timer Version {0}, created 2013 Triangle717".format(
-        majver),
+    description="Shutdown Timer Version {0}".format(majver),
     license="GNU GPLv3",
     options={"build_exe": build_exe_options},
     executables=[Executable("ShutdownTimer.py")])
