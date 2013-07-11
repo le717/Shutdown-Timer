@@ -32,7 +32,7 @@ if len(sys.argv) == 1: sys.argv[1:] = ["build"]
 # Compile into the proper folder depending on the architecture
 # Based on code from the Python help file (platform module) and my own tests
 if sys.maxsize == 2147483647:
-    destfolder = "Compile/Windows32"
+    destfolder = "Compile/Windows"
 else:
     input('''\n64-bit binaries are not compiled.
 Please recompile Shutdown Timer {0} using 32-bit Python 3.3.'''.format(majver))
