@@ -25,15 +25,12 @@ import time
 import platform
 import webbrowser
 import argparse
-import linecache
 from threading import Timer
 
 # Global variables
 app = "Shutdown Timer"
-majver = "1.0.2.1"
+majver = "1.0.2.2"
 creator = "Triangle717"
-# Debug variable is set to False before release
-debug = False
 
 # You need to have at least Python 3.3.0 to run this
 if sys.version_info < (3, 3, 0):
@@ -64,6 +61,7 @@ def CMDParse():
     """Parses Command-line Arguments"""
     parser = argparse.ArgumentParser(
         description="{0} {1} Command-line arguments".format(app, majver))
+
     # Automatic  mode argument
     parser.add_argument("-a", "--auto",
     help="Runs {0} in automatic mode, using the time written in TheTime.txt"
@@ -79,14 +77,28 @@ def CMDParse():
     parser.add_argument("-r", "--restart",
     help='Restart Windows instead of shutting it down',
     action="store_true")
+
+    # Debug message argument
+    parser.add_argument("-d", "--debug",
+    help='Dispay debugging messages',
+    action="store_true")
+
+    # Register all the parameters
     args = parser.parse_args()
 
-    # Declare force parameter (-f, --force) as global
-    # for use in Shutdown(offtime)
-    global force, auto, restart
+    # Declare all parameters as global for use in other locations
+    global force, auto, restart, debug
     force = args.force
     auto = args.auto
     restart = args.restart
+    debug = args.debug
+
+    # Enable debugging messages
+    if debug:
+        debug = True
+    # Do not enable debugging messages
+    elif not debug:
+        debug = False
 
 
 def preload():
@@ -95,13 +107,16 @@ def preload():
     # The program was not run with the -a (or --auto) argument
     if not auto:
         main()
+
     # It was run with the automatic argument
     else:
+
         has_file = timer_File()
         # The CMD time files does not exist
         if not has_file:
             # Go to main(), where it will be written
             main()
+
         # The Auto time file(s) does exist
         elif has_file:
             # Go to AutoMain(), where it will be used
@@ -239,7 +254,8 @@ def getTime():
     """Reads TheTime.txt/ShutdownTime.txt for shutdown time in Automatic Mode"""
 
     # Read line 2 from the_file for shutdown time
-    off_time = linecache.getline(the_file, 2)
+    with open(the_file, "rt") as f:
+        off_time = f.readlines()[1]
     off_time = off_time.strip("\n")
 
     print("Your computer will {0} at {1}.".format(the_word, off_time))
@@ -260,7 +276,7 @@ def theTimer(off_time):
         cur_time = time.strftime("%H:%M", time.localtime())
 
         if debug:
-            print("DEBUG: The current time is " + cur_time)
+            print("DEBUG: The current time is {0}".format(cur_time))
 
         # Get the current seconds, as defined by the system clock.
         cur_seconds = time.strftime("%S", time.localtime())
@@ -279,10 +295,10 @@ def theTimer(off_time):
             align_time = 60 - int(cur_seconds)
 
             if debug:
-                print("DEBUG: Align time is " + str(align_time))
+                print("DEBUG: Align time is {0} seconds".format(align_time))
 
         print("\nIt is not {0}, it is only {1}. Your computer will not {2}."
-        .format(off_time, str(cur_time), the_word))
+        .format(off_time, cur_time, the_word))
         # Sleep for however long until alignment
         time.sleep(align_time)
 
