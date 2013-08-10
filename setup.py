@@ -26,16 +26,18 @@ from cx_Freeze import setup, Executable
 import sys
 from ShutdownTimer import majver
 
-# Append build to the arguments. Just type "python setup.py" and it will compile
+# Append build to the arguments. Just type "python setup.py" and it will freeze
 if len(sys.argv) == 1: sys.argv[1:] = ["build"]
 
-# Compile into the proper folder depending on the architecture
+# Freeze into the proper folder depending on the architecture
 # Based on code from the Python help file (platform module) and my own tests
 if sys.maxsize == 2147483647:
-    destfolder = "Compile/Windows"
+    destfolder = os.path.join("Freeze", "Windows")
+    if not os.path.exists(destfolder):
+        os.makedirs(destfolder)
 else:
-    input('''\n64-bit binaries are not compiled.
-Please recompile Shutdown Timer {0} using 32-bit Python 3.3.'''.format(majver))
+    input('''\n64-bit binaries are not frozen.
+Please freeze Shutdown Timer {0} using 32-bit Python 3.3.'''.format(majver))
     raise SystemExit(0)
 
 build_exe_options = {"build_exe": destfolder,
