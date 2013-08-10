@@ -24,6 +24,7 @@
 
 from cx_Freeze import setup, Executable
 import sys
+import os
 from ShutdownTimer import majver
 
 # Append build to the arguments. Just type "python setup.py" and it will freeze
