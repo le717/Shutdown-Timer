@@ -42,7 +42,7 @@ if sys.version_info < (3, 3, 0):
     webbrowser.open_new_tab("http://python.org/download")
     # Close program
     time.sleep(3)
-    raise SystemExit
+    raise SystemExit(0)
 
 # If you are running Python 3.3.0+
 else:
@@ -51,7 +51,7 @@ else:
         print("\n{0} {1} is not supported on a non-Windows Operating System!"
         .format(app, majver))
         time.sleep(2)
-        raise SystemExit
+        raise SystemExit(0)
 
 
 # ------------ Begin Shutdown Timer Initialization ------------ #
@@ -207,7 +207,7 @@ Pressing 'q' right now will cancel the {2}.'''.format(
     # User wanted to close the timer
     if menuopt.lower() == "q":
         t.cancel()
-        raise SystemExit
+        raise SystemExit(0)
 
 
 def main():
@@ -225,7 +225,7 @@ Use the 24-hour format with the following layout: "HH:MM".
 
     # Only 'q' will close the program
     if off_time.lower() == "q":
-        raise SystemExit
+        raise SystemExit(0)
 
     elif len(off_time) == 0:
         print("\nYou have entered an invalid time!")
@@ -270,6 +270,7 @@ def theTimer(off_time):
     # If the shutdown time does not equal
     # the current time, as defined by the System Clock
     while off_time != time.strftime("%H:%M", time.localtime()):
+
         # Required so the current time will be updated when
         # time.sleep(align_time) is finished. The line above
         # will not do this.

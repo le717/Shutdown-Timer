@@ -36,7 +36,7 @@ if sys.maxsize == 2147483647:
 else:
     input('''\n64-bit binaries are not compiled.
 Please recompile Shutdown Timer {0} using 32-bit Python 3.3.'''.format(majver))
-    raise SystemExit
+    raise SystemExit(0)
 
 build_exe_options = {"build_exe": destfolder,
                      "create_shared_zip": True,

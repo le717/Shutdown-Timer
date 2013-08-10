@@ -4,11 +4,12 @@ Shutdown Timer Change Log
 1.0.2.2
 -------
 
-**Released ?? ??, 2013**
+**Released August 10, 2013**
 
 * Added ability to enable debug messages if `--test`` parameter is passed from the command-line
 * Removed `linecache` usage, replaced with build-in `open()` function
 * Minor messages cleanup
+* Exit **Shutdown Timer with exit code `0`
 
 1.0.2.1
 -------
