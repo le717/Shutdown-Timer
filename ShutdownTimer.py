@@ -78,27 +78,13 @@ def CMDParse():
     help='Restart Windows instead of shutting it down',
     action="store_true")
 
-    # Debug message argument
-    parser.add_argument("-d", "--debug",
-    help='Dispay debugging messages',
-    action="store_true")
-
     # Register all the parameters
     args = parser.parse_args()
 
     # Declare all parameters as global for use in other locations
-    global force, auto, restart, debug
+    global force, auto, restart
     force = args.force
     auto = args.auto
-    restart = args.restart
-    debug = args.debug
-
-    # Enable debugging messages
-    if debug:
-        debug = True
-    # Do not enable debugging messages
-    elif not debug:
-        debug = False
 
 
 def preload():
@@ -129,9 +115,6 @@ def timer_File():
     global the_file
     # Both files exist, new file has priority
     if os.path.exists("ShutdownTime.txt") and os.path.exists("TheTime.txt"):
-        if debug:
-            print('''DEBUG: Both ShutdownTime.txt and TheTime.txt exists.
-TheTime.txt will be used.''')
         the_file = "TheTime.txt"
         return True
 
@@ -139,9 +122,6 @@ TheTime.txt will be used.''')
     elif (
         os.path.exists("ShutdownTime.txt") and not os.path.exists("TheTime.txt")
         ):
-        if debug:
-            print('''DEBUG: ShutdownTime.txt exists, but TheTime.txt does not.
-ShutdownTime.txt will be used.''')
         the_file = "ShutdownTime.txt"
         return True
 
@@ -149,14 +129,10 @@ ShutdownTime.txt will be used.''')
     elif not (
         os.path.exists("ShutdownTime.txt") and not os.path.exists("TheTime.txt")
     ):
-        if debug:
-            print("DEBUG: Neither ShutdownTime.txt nor TheTime.txt exists.")
         return False
 
     # Anything else (not really needed, but here for safety)
     else:
-        if debug:
-            print("DEBUG: TheTime.txt will be used.")
         the_file = "TheTime.txt"
         return True
 
@@ -166,13 +142,9 @@ def close_Type():
 
     global the_word, the_word_ing
     if restart:
-        if debug:
-            print("DEBUG: The words are 'restart' and 'restarting'.")
         the_word = "restart"
         the_word_ing = "restarting"
     elif not restart:
-        if debug:
-            print("DEBUG: The words are 'shutdown' and 'shutting down'.")
         the_word = "shutdown"
         the_word_ing = "shutting down"
 
@@ -276,9 +248,6 @@ def theTimer(off_time):
         # will not do this.
         cur_time = time.strftime("%H:%M", time.localtime())
 
-        if debug:
-            print("DEBUG: The current time is {0}".format(cur_time))
-
         # Get the current seconds, as defined by the system clock.
         cur_seconds = time.strftime("%S", time.localtime())
 
@@ -292,11 +261,8 @@ def theTimer(off_time):
             # Anything less creates a huge bug and throws the timer
             # off by a minute, or creates a negative time
 
-            # Convert to int(eger) so we can subtract
+            # Convert to integer so we can subtract
             align_time = 60 - int(cur_seconds)
-
-            if debug:
-                print("DEBUG: Align time is {0} seconds".format(align_time))
 
         print("\nIt is not {0}, it is only {1}. Your computer will not {2}."
         .format(off_time, cur_time, the_word))
@@ -323,15 +289,9 @@ def close_Win():
     if restart:
         # The force command was sent as well
         if force:
-            if debug:
-                print("DEBUG: The shutdown commmand is {0}".format(
-                    r'os.system("shutdown.exe /r /f")'))
             os.system("shutdown.exe /r /f /t 0")
         # Only the restart command was sent
         elif not force:
-            if debug:
-                print("DEBUG: The shutdown commmand is {0}".format(
-                    r'os.system("shutdown.exe /r /t 0")'))
             os.system("shutdown.exe /r /t 0")
 
     # Normal shutdown commmand was sent
@@ -340,15 +300,9 @@ def close_Win():
         # Using /p shutdowns Windows immediately without warning,
         # Same as /s /t 0
         if force:
-            if debug:
-                print("DEBUG: The shutdown commmand is {0}".format(
-                    r'os.system("shutdown.exe /p /f")'))
             os.system("shutdown.exe /p /f")
         # The force command was not sent
         elif not force:
-            if debug:
-                print("DEBUG: The shutdown commmand is {0}".format(
-                    r'os.system("shutdown.exe /p")'))
             os.system("shutdown.exe /p")
 
 
@@ -356,13 +310,10 @@ def close_Win():
 
 """TODO List"""
 
-# OS X or Linux commands for cross-platform support?
-# Check if input matches required format (use "re" module)
+# Check if input matches required format
 # Once timer is started, press 'q' to close, or window exit button???
-# Anything else I remember later on
 
 if __name__ == "__main__":
-    # Run program
     CMDParse()
     close_Type()
     preload()
