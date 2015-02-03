@@ -24,10 +24,11 @@ along with Shutdown Timer. If not, see <http://www.gnu.org/licenses/>.
 # import re
 import os
 import sys
-# import json
+import json
 import time
 import argparse
 import platform
+# import subprocess
 from threading import Timer
 
 import constants as const
@@ -46,7 +47,7 @@ class ShutdownTimer:
         self.__configPath = self._getConfigPath()
         self.__jsonFile = os.path.join(self.__configPath, "Shutdown-Timer.json")
         self._loadConfig()
-        self.__verbs = _setVerb()
+        self.__verbs = _getVerb()
 
     def _getConfigPath(self):
         """Get the file path where configuration files will be stored.
@@ -103,7 +104,7 @@ class ShutdownTimer:
         except PermissionError:
             return False
 
-    def _setVerb(self):
+    def _getVerb(self):
         """Set the action verbs for use in messages depending on restart status.
 
         @return {Tuple} Two index tuple containing the action verbs.
@@ -112,6 +113,30 @@ class ShutdownTimer:
         if self.__restart:
             return ("restart", "restarting")
         return ("shutdown", "shutting down")
+
+    def _getCommand(self):
+        """Construct the shutdown command based on user option selection.
+
+        @returns {String} The exact commands to run.
+        """
+        commands = ["shutdown.exe"]
+
+        # Restart or shutdown computer?
+        if self__restart:
+            commands.push("/r")
+        else:
+            commands.push("/p")
+
+        # Force closing, do not wait for any programs
+        if self.__force:
+            commands.push("/f")
+
+        # Restarting will always have a timeout dialog before
+        # the process starts, remove it to match shutdown behavior
+        if self__restart:
+            commands.push("/t 0")
+
+        return commands.join(" ")
 
 
 def CMDParse():
