@@ -29,7 +29,6 @@ import time
 import argparse
 import platform
 # import subprocess
-from threading import Timer
 
 import constants as const
 
@@ -61,43 +60,6 @@ class ShutdownTimer:
         if not os.path.exists(path):
             os.makedirs(path)
         return path
-
-    def _loadConfig(self):
-        """Read and store the configuration file.
-
-        @returns {Boolean} True if the config file was read, False otherwise.
-        """
-        try:
-            # Make sure it exists
-            if os.path.exists(self.__jsonFile):
-                with open(self.__jsonFile, "rt", encoding="utf-8") as f:
-                    self.__configData = json.load(f)
-                    return True
-                return False
-
-        # The file is not valid JSON, sliently fail
-        except ValueError:
-            return False
-
-    def saveConfig(self):
-        """Write the JSON-based config file.
-
-        @returns {Boolean} True if the config file was written, False otherwise.
-        """
-        try:
-            jsonData = {
-                "auto": self.__auto,
-                "force": self.__force,
-                "restart": self.__restart,
-                "time": self.__time
-            }
-            with open(self.__jsonFile, "wt", encoding="utf_8") as f:
-                f.write(json.dumps(jsonData, indent=4, sort_keys=True))
-            return True
-
-        # Silently fail
-        except PermissionError:
-            return False
 
     def _getVerb(self):
         """Set the action verbs for use in messages depending on restart status.
@@ -162,6 +124,44 @@ class ShutdownTimer:
         self.__restart = args.restart
         return True
 
+    def _loadConfig(self):
+        """Read and store the configuration file.
+
+        @returns {Boolean} True if the config file was read, False otherwise.
+        """
+        try:
+            # Make sure it exists
+            if os.path.exists(self.__jsonFile):
+                with open(self.__jsonFile, "rt", encoding="utf-8") as f:
+                    self.__configData = json.load(f)
+                    return True
+                return False
+
+        # The file is not valid JSON, sliently fail
+        except ValueError:
+            return False
+
+    def saveConfig(self):
+        """Write the JSON-based config file.
+
+        @returns {Boolean} True if the config file was written, False otherwise.
+        """
+        try:
+            jsonData = {
+                "auto": self.__auto,
+                "force": self.__force,
+                "restart": self.__restart,
+                "time": self.__time
+            }
+            with open(self.__jsonFile, "wt", encoding="utf_8") as f:
+                f.write(json.dumps(jsonData, indent=4, sort_keys=True))
+            return True
+
+        # Silently fail
+        except PermissionError:
+            return False
+
+
     def getTime(self):
         """Get the time the computer will close.
 
@@ -188,34 +188,51 @@ class ShutdownTimer:
 
         # Make sure it follows a certain format
         formatRegex = re.match(r"(\d{2}):(\d{2})", userTime)
+        if formatRegex is None:
+            print("The time is not in the required HH:MM format!")
+            return False
 
-        if formatRegex:
-            # Convert the values to intergers
-            hours = int(formatRegex.group(1))
-            mins = int(formatRegex.group(2))
+        # Convert the values to intergers
+        hours = int(formatRegex.group(1))
+        mins = int(formatRegex.group(2))
 
-            # Hours value is out of range
-            if not isBetween(hours, 0, 24):
-                raise ValueError("Hour values must be between 0 and 24.")
+        # Hours value is out of range
+        if not isBetween(hours, 0, 24):
+            raise ValueError("Hour values must be between 0 and 24.")
 
-            # Minutes value is out of range
-            if not isBetween(mins, 0, 59):
-                raise ValueError("Minute values must be between 0 and 59.")
+        # Minutes value is out of range
+        if not isBetween(mins, 0, 59):
+            raise ValueError("Minute values must be between 0 and 59.")
 
-            # Store the time
-            self.__time = userTime
-            return True
-        return False
+        # Store the time
+        self.__time = userTime
+        return True
 
     def start(self):
 
         print(self._getCommand())
 
+    def setModes(self, auto=False, force=False, restart=False):
+
+        self.__auto = auto
+        self.__force = force
+        self.__restart = restart
+
+    def getModes(self):
+        """Get the Windows closing options.
+
+        @return {Tuple} Three index tuple containing Boolean values for
+            automatic, force, restart modes. In all case, a value of True
+            represents that mode is enabled and False disabled.
+        """
+        return (self.__auto, self.__force, self.__restart)
+
 
 def CMDParse():
     """Parses Command-line Arguments"""
     parser = argparse.ArgumentParser(
-        description="{0} {1} Command-line arguments".format(const.appName, const.version))
+        description="{0} {1} Command-line arguments".format(
+            const.appName, const.version))
 
     # Automatic mode argument
     parser.add_argument("-a", "--auto",
@@ -364,6 +381,7 @@ Submit a "q" to exit.""".format(timer.verbs[0]))
     # The user's time was successfully set
     if timer.setTime(offTime):
         timer.saveConfig()
+        timer.start()
 
 
 if __name__ == "__main__":
