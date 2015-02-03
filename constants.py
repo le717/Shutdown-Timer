@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Shutdown Timer -  Small Windows Shutdown Timer.
+"""Shutdown Timer -  Small Windows shutdown timer.
 
 Created 2013, 2015 Triangle717
 <http://Triangle717.WordPress.com>

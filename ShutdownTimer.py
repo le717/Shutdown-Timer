@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Shutdown Timer -  Small Windows Shutdown Timer.
+"""Shutdown Timer -  Small Windows shutdown timer.
 
 Created 2013, 2015 Triangle717
 <http://Triangle717.WordPress.com>
@@ -20,39 +20,16 @@ along with Shutdown Timer. If not, see <http://www.gnu.org/licenses/>.
 
 """
 
+
+import re
 import os
 import sys
 import json
 import time
-import platform
-import webbrowser
 import argparse
 from threading import Timer
 
 import constants as const
-
-
-# You need to have at least Python 3.3 to run this
-if sys.version_info[:2] < (3, 3):
-    sys.stdout.write('''\nYou need to download Python 3.3.0 or greater to run
-    {0} {1}.'''.format(const.appName, const.version))
-    # Don't open browser immediately
-    time.sleep(2)
-    # New tab, raise browser window (if possible)
-    webbrowser.open_new_tab("http://python.org/download")
-    # Close program
-    time.sleep(3)
-    raise SystemExit(0)
-
-# If you are running Python 3.3.0+
-else:
-    # You are not running Windows
-    if platform.system() != 'Windows':
-        print("\n{0} {1} is not supported on a non-Windows Operating System!"
-        .format(const.appName, const.version))
-        time.sleep(2)
-        raise SystemExit(0)
-
 
 
 def CMDParse():
