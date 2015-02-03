@@ -21,8 +21,8 @@ along with Shutdown Timer. If not, see <http://www.gnu.org/licenses/>.
 """
 
 
-# import re
 import os
+import re
 import sys
 import json
 import time
@@ -36,9 +36,9 @@ import constants as const
 
 class ShutdownTimer:
 
-    def __init__(self, time):
+    def __init__(self):
 
-        self.time = time
+        self.__time = None
         self.__auto = False
         self.__force = False
         self.__restart = False
@@ -46,7 +46,8 @@ class ShutdownTimer:
         self.__configPath = self._getConfigPath()
         self.__jsonFile = os.path.join(self.__configPath, "Shutdown-Timer.json")
         self._loadConfig()
-        self.__verbs = _getVerb()
+        self._commandLine()
+        self.verbs = self._getVerb()
 
     def _getConfigPath(self):
         """Get the file path where configuration files will be stored.
@@ -78,17 +79,17 @@ class ShutdownTimer:
         except ValueError:
             return False
 
-    def _saveConfig(self):
+    def saveConfig(self):
         """Write the JSON-based config file.
 
         @returns {Boolean} True if the config file was written, False otherwise.
         """
         try:
             jsonData = {
-                "time": self.time,
                 "auto": self.__auto,
                 "force": self.__force,
-                "restart": self.__restart
+                "restart": self.__restart,
+                "time": self.__time
             }
             with open(self.__jsonFile, "wt", encoding="utf_8") as f:
                 f.write(json.dumps(jsonData, indent=4, sort_keys=True))
@@ -160,6 +161,50 @@ class ShutdownTimer:
         self.__force = args.force
         self.__restart = args.restart
         return True
+
+    def getTime(self):
+        """Get the time the computer will close.
+
+        @return {String}"""
+        return self.__time
+
+    def setTime(self, userTime):
+        """Validate and set the time the computer will close."
+
+        @param {String} userTime The user-provided time to close.
+        @return {!Boolean} True if the time was set,
+                False if defined time format was not followed,
+                A ValueError will be raised if a value
+                    is not in acceptable range.
+        """
+
+        def isBetween(val, minV, maxV):
+            """Check that a value is within inclusive acceptable range.
+
+            @return {Boolean} True if in range, False if not.
+            """
+            return val >= minV and val <= maxV
+
+        # Make sure it follows a certain format
+        formatRegex = re.match(r"(\d{2}):(\d{2})", userTime)
+
+        if formatRegex:
+            # Convert the values to intergers
+            hours = int(formatRegex.group(1))
+            mins = int(formatRegex.group(2))
+
+            # Hours value is out of range
+            if not isBetween(hours, 0, 24):
+                raise ValueError("Hour values must be between 0 and 24.")
+
+            # Minutes value is out of range
+            if not isBetween(mins, 0, 59):
+                raise ValueError("Minute values must be between 0 and 59.")
+
+            # Store the time
+            self.__time = userTime.strip()
+            return True
+        return False
 
 
 def CMDParse():
@@ -394,7 +439,29 @@ def close_Win():
             os.system("shutdown.exe /p")
 
 
+
+def tempMain():
+    """Temporary UI until GUI is implemented."""
+    os.system("title {0} v{1}".format(const.appName, const.version))
+    timer = ShutdownTimer()
+
+    print("""
+Enter the time you want the computer to {0}.
+Use the 24-hour system in the following format: "HH:MM".
+Submit a "q" to exit.""".format(timer.verbs[0]))
+    offTime = input("\n\n> ")
+
+    # Quit program
+    if offTime.lower().strip() == "q":
+        raise SystemExit(0)
+
+    # The user's time was successfully set
+    if timer.setTime(offTime):
+        timer.saveConfig()
+
+
 if __name__ == "__main__":
+    # tempMain()
     CMDParse()
     close_Type()
     preload()
