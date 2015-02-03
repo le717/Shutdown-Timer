@@ -1,41 +1,41 @@
-#! python3
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""Shutdown Timer -  Small Windows Shutdown Timer.
+
+Created 2013, 2015 Triangle717
+<http://Triangle717.WordPress.com>
+
+Shutdown Timer is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Shutdown Timer is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Shutdown Timer. If not, see <http://www.gnu.org/licenses/>.
+
 """
-    Shutdown Timer -  Small Windows Shutdown Timer
-    Created 2013 Triangle717 <http://Triangle717.WordPress.com>
 
-    Shutdown Timer is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    Shutdown Timer is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Shutdown Timer. If not, see <http://www.gnu.org/licenses/>.
-"""
-
-# Imports
-import sys
 import os
+import sys
+import json
 import time
 import platform
 import webbrowser
 import argparse
 from threading import Timer
 
-# Global variables
-app = "Shutdown Timer"
-majver = "1.0.2.2"
-creator = "Triangle717"
+import constants as const
 
-# You need to have at least Python 3.3.0 to run this
-if sys.version_info < (3, 3, 0):
+
+# You need to have at least Python 3.3 to run this
+if sys.version_info[:2] < (3, 3):
     sys.stdout.write('''\nYou need to download Python 3.3.0 or greater to run
-    {0} {1}.'''.format(app, majver))
+    {0} {1}.'''.format(const.appName, const.version))
     # Don't open browser immediately
     time.sleep(2)
     # New tab, raise browser window (if possible)
@@ -49,23 +49,21 @@ else:
     # You are not running Windows
     if platform.system() != 'Windows':
         print("\n{0} {1} is not supported on a non-Windows Operating System!"
-        .format(app, majver))
+        .format(const.appName, const.version))
         time.sleep(2)
         raise SystemExit(0)
 
-
-# ------------ Begin Shutdown Timer Initialization ------------ #
 
 
 def CMDParse():
     """Parses Command-line Arguments"""
     parser = argparse.ArgumentParser(
-        description="{0} {1} Command-line arguments".format(app, majver))
+        description="{0} {1} Command-line arguments".format(const.appName, const.version))
 
     # Automatic  mode argument
     parser.add_argument("-a", "--auto",
     help="Runs {0} in automatic mode, using the time written in TheTime.txt"
-    .format(app),
+    .format(const.appName),
     action="store_true")
 
     # Force shutdown argument
@@ -85,6 +83,7 @@ def CMDParse():
     global force, auto, restart
     force = args.force
     auto = args.auto
+    restart = args.restart
 
 
 def preload():
@@ -149,26 +148,20 @@ def close_Type():
         the_word_ing = "shutting down"
 
 
-# ------------ End Shutdown Timer Initialization ------------ #
-
-
-# ------------ Begin Shutdown Timer Menus ------------ #
-
-
 def AutoMain():
     """Shutdown Timer Automatic Mode Menu"""
 
     # Write window title for automatic mode
-    os.system("title {0} {1} - Automatic Mode".format(app, majver))
+    os.system("title {0} {1} - Automatic Mode".format(const.appName, const.version))
 
-    print("\n{0} Version {1} - Automatic Mode".format(app, majver))
+    print("\n{0} Version {1} - Automatic Mode".format(const.appName, const.version))
     print('''Created 2013 {0}
 
 {1} has been detected.
 Your computer will {2} at the time written in the file.
 \nThe Timer will begin in 10 seconds.
 Pressing 'q' right now will cancel the {2}.'''.format(
-    creator, the_file, the_word))
+    const.creator, the_file, the_word))
 
     # Start 10 second countdown timer
     # After 10 seconds, run readFile() to get the shutdown time
@@ -186,9 +179,8 @@ def main():
     """Shutdown Timer Menu Layout"""
 
     # Write window title for non-automatic mode
-    os.system("title {0} {1}".format(app, majver))
-
-    print("\n{0} Version {1}\nCreated 2013 {2}".format(app, majver, creator))
+    os.system("title {0} {1}".format(const.appName, const.version,
+const.creator))
     print('''\nPlease enter the time you want the computer to {0}.
 Use the 24-hour format with the following layout: "HH:MM".
 \nPress "q" to exit.'''.format(the_word))
@@ -214,12 +206,6 @@ Use the 24-hour format with the following layout: "HH:MM".
 
         # Now run shutdown sequence
         theTimer(off_time)
-
-
-# ------------ End Shutdown Timer Menus ------------ #
-
-
-# ------------ Begin Various Timer Actions ------------ #
 
 
 def getTime():
@@ -274,11 +260,6 @@ def theTimer(off_time):
     time.sleep(1)
     close_Win()
 
-# ------------ End Various Timer Actions ------------ #
-
-
-# ------------ Begin Shutdown/Restart Commands ------------ #
-
 
 def close_Win():
     """Shutsdown or Retarts Computer depending on Arguments"""
@@ -305,13 +286,6 @@ def close_Win():
         elif not force:
             os.system("shutdown.exe /p")
 
-
-# ------------ End Shutdown/Restart Commands ------------ #
-
-"""TODO List"""
-
-# Check if input matches required format
-# Once timer is started, press 'q' to close, or window exit button???
 
 if __name__ == "__main__":
     CMDParse()
