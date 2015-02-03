@@ -42,7 +42,6 @@ class ShutdownTimer:
         self.__auto = False
         self.__force = False
         self.__restart = False
-        self.__isWindows = "Windows" in platform.platform()
         self.__configData = None
         self.__configPath = self._getConfigPath()
         self.__jsonFile = os.path.join(self.__configPath, "Shutdown-Timer.json")
@@ -52,14 +51,9 @@ class ShutdownTimer:
     def _getConfigPath(self):
         """Get the file path where configuration files will be stored.
 
-        On Windows, the root folder is %AppData%, while on Mac OS X and Linux
-        it is ~. On all platforms, the rest of the path is Triangle717/*AppName*.
-
-        @returns {String} The configuration path.
+        @returns {String} The configuration path, %AppData%,Triangle717/*AppName*.
         """
-        root = os.path.expanduser("~")
-        if self.__isWindows:
-            root = os.path.expandvars("%AppData%")
+        root = os.path.expandvars("%AppData%")
 
         # Create the path if needed
         path = os.path.join(root, "Triangle717", "Shutdown-Timer")
@@ -157,7 +151,7 @@ class ShutdownTimer:
                             action="store_true")
 
         # Restart mode
-        parser.add_argument("-r", "--restart"
+        parser.add_argument("-r", "--restart",
                             help="Restart Windows instead of shutting down",
                             action="store_true")
 
