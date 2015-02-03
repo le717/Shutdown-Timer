@@ -117,21 +117,21 @@ class ShutdownTimer:
         commands = ["shutdown.exe"]
 
         # Restart or shutdown computer?
-        if self__restart:
-            commands.push("/r")
+        if self.__restart:
+            commands.append("/r")
         else:
-            commands.push("/p")
+            commands.append("/p")
 
         # Force closing, do not wait for any programs
         if self.__force:
-            commands.push("/f")
+            commands.append("/f")
 
         # Restarting will always have a timeout dialog before
         # the process starts, remove it to match shutdown behavior
-        if self__restart:
-            commands.push("/t 0")
+        if self.__restart:
+            commands.append("/t 0")
 
-        return commands.join(" ")
+        return " ".join(commands)
 
     def _commandLine(self):
         """Command-line arguments parser.
@@ -165,7 +165,8 @@ class ShutdownTimer:
     def getTime(self):
         """Get the time the computer will close.
 
-        @return {String}"""
+        @return {String}
+        """
         return self.__time
 
     def setTime(self, userTime):
@@ -202,9 +203,13 @@ class ShutdownTimer:
                 raise ValueError("Minute values must be between 0 and 59.")
 
             # Store the time
-            self.__time = userTime.strip()
+            self.__time = userTime
             return True
         return False
+
+    def start(self):
+
+        print(self._getCommand())
 
 
 def CMDParse():
@@ -449,10 +454,10 @@ def tempMain():
 Enter the time you want the computer to {0}.
 Use the 24-hour system in the following format: "HH:MM".
 Submit a "q" to exit.""".format(timer.verbs[0]))
-    offTime = input("\n\n> ")
+    offTime = input("\n\n> ").lower().strip()
 
     # Quit program
-    if offTime.lower().strip() == "q":
+    if offTime == "q":
         raise SystemExit(0)
 
     # The user's time was successfully set
