@@ -138,13 +138,42 @@ class ShutdownTimer:
 
         return commands.join(" ")
 
+    def _commandLine(self):
+        """Command-line arguments parser.
+
+        @returns {Boolean} Always returns True.
+        """
+        parser = argparse.ArgumentParser(
+            description="{0} Command-line arguments".format(const.appName))
+
+        # Auto mode
+        parser.add_argument("-a", "--auto",
+                            help="Run in automatic mode using previously set time.",
+                            action="store_true")
+
+        # Force mode
+        parser.add_argument("-f", "--force",
+                            help="Force Windows to close without waiting on programs",
+                            action="store_true")
+
+        # Restart mode
+        parser.add_argument("-r", "--restart"
+                            help="Restart Windows instead of shutting down",
+                            action="store_true")
+
+        args = parser.parse_args()
+        self.__auto = args.auto
+        self.__force = args.force
+        self.__restart = args.restart
+        return True
+
 
 def CMDParse():
     """Parses Command-line Arguments"""
     parser = argparse.ArgumentParser(
         description="{0} {1} Command-line arguments".format(const.appName, const.version))
 
-    # Automatic  mode argument
+    # Automatic mode argument
     parser.add_argument("-a", "--auto",
     help="Runs {0} in automatic mode, using the time written in TheTime.txt"
     .format(const.appName),
