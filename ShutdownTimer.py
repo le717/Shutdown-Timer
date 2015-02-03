@@ -243,56 +243,6 @@ def CMDParse():
     restart = args.restart
 
 
-def preload():
-    """Run the correct mode, depending on parameters passed"""
-
-    # The program was not run with the -a (or --auto) argument
-    if not auto:
-        main()
-
-    # It was run with the automatic argument
-    else:
-
-        has_file = timer_File()
-        # The CMD time files does not exist
-        if not has_file:
-            # Go to main(), where it will be written
-            main()
-
-        # The Auto time file(s) does exist
-        elif has_file:
-            # Go to AutoMain(), where it will be used
-            AutoMain()
-
-
-def timer_File():
-    """Check for the existance and the usage of new or old time file"""
-
-    global the_file
-    # Both files exist, new file has priority
-    if os.path.exists("ShutdownTime.txt") and os.path.exists("TheTime.txt"):
-        the_file = "TheTime.txt"
-        return True
-
-    # Only the old file exists
-    elif (
-        os.path.exists("ShutdownTime.txt") and not os.path.exists("TheTime.txt")
-        ):
-        the_file = "ShutdownTime.txt"
-        return True
-
-    # Neither of the files exist
-    elif not (
-        os.path.exists("ShutdownTime.txt") and not os.path.exists("TheTime.txt")
-    ):
-        return False
-
-    # Anything else (not really needed, but here for safety)
-    else:
-        the_file = "TheTime.txt"
-        return True
-
-
 def close_Type():
     """Change app messages depending if we are shutting down or restarting"""
 
@@ -303,33 +253,6 @@ def close_Type():
     elif not restart:
         the_word = "shutdown"
         the_word_ing = "shutting down"
-
-
-def AutoMain():
-    """Shutdown Timer Automatic Mode Menu"""
-
-    # Write window title for automatic mode
-    os.system("title {0} {1} - Automatic Mode".format(const.appName, const.version))
-
-    print("\n{0} Version {1} - Automatic Mode".format(const.appName, const.version))
-    print('''Created 2013 {0}
-
-{1} has been detected.
-Your computer will {2} at the time written in the file.
-\nThe Timer will begin in 10 seconds.
-Pressing 'q' right now will cancel the {2}.'''.format(
-    const.creator, the_file, the_word))
-
-    # Start 10 second countdown timer
-    # After 10 seconds, run readFile() to get the shutdown time
-    t = Timer(10.0, getTime)
-    t.start()
-    menuopt = input("\n\n> ")
-
-    # User wanted to close the timer
-    if menuopt.lower() == "q":
-        t.cancel()
-        raise SystemExit(0)
 
 
 def main():
@@ -353,29 +276,7 @@ Use the 24-hour format with the following layout: "HH:MM".
         time.sleep(1.5)
         main()
 
-    # User typed a vaild time
-    else:
-        # Write time to be used by Automatic mode
-        # TheTime.txt is the only file written from now on
-        with open("TheTime.txt", 'wt', encoding="utf-8") as f:
-            f.write("// Shutdown Timer, created 2013 Triangle717\n")
-            f.write("{0}".format(off_time))
-
-        # Now run shutdown sequence
-        theTimer(off_time)
-
-
-def getTime():
-    """Reads TheTime.txt/ShutdownTime.txt for shutdown time in Automatic Mode"""
-
-    # Read line 2 from the_file for shutdown time
-    with open(the_file, "rt") as f:
-        off_time = f.readlines()[1]
-    off_time = off_time.strip("\n")
-
-    print("Your computer will {0} at {1}.".format(the_word, off_time))
-
-    # Run timer
+    # User typed a valid time, run shutdown sequence
     theTimer(off_time)
 
 
@@ -469,4 +370,4 @@ if __name__ == "__main__":
     # tempMain()
     CMDParse()
     close_Type()
-    preload()
+    main()
