@@ -41,41 +41,77 @@ class ShutdownTimer:
         self.__auto = False
         self.__force = False
         self.__restart = False
-        self.__verbs = _setVerb()
         self.__isWindows = "Windows" in platform.platform()
         self.__configData = None
         self.__configPath = self._getConfigPath()
         self.__jsonFile = os.path.join(self.__configPath, "Shutdown-Timer.json")
+        self._loadConfig()
+        self.__verbs = _setVerb()
 
+    def _getConfigPath(self):
+        """Get the file path where configuration files will be stored.
 
-        def _getConfigPath(self):
-            """Get the file path where configuration files will be stored.
+        On Windows, the root folder is %AppData%, while on Mac OS X and Linux
+        it is ~. On all platforms, the rest of the path is Triangle717/*AppName*.
 
-            On Windows, the root folder is %AppData%, while on Mac OS X and Linux
-            it is ~. On all platforms, the rest of the path is Triangle717/*AppName*.
+        @returns {String} The configuration path.
+        """
+        root = os.path.expanduser("~")
+        if self.__isWindows:
+            root = os.path.expandvars("%AppData%")
 
-            @returns {String} The configuration path.
-            """
-            root = os.path.expanduser("~")
-            if self.__isWindows:
-                root = os.path.expandvars("%AppData%")
+        # Create the path if needed
+        path = os.path.join(root, "Triangle717", "Shutdown-Timer")
+        if not os.path.exists(path):
+            os.makedirs(path)
+        return path
 
-            # Create the path if needed
-            path = os.path.join(root, "Triangle717", "Shutdown-Timer")
-            if not os.path.exists(path):
-                os.makedirs(path)
-            return path
+    def _loadConfig(self):
+        """Read and store the configuration file.
 
+        @returns {Boolean} True if the config file was read, False otherwise.
+        """
+        try:
+            # Make sure it exists
+            if os.path.exists(self.__jsonFile):
+                with open(self.__jsonFile, "rt", encoding="utf-8") as f:
+                    self.__configData = json.load(f)
+                    return True
+                return False
 
-        def _setVerb(self):
-            """Set the action verbs for use in messages depending on restart status.
+        # The file is not valid JSON, sliently fail
+        except ValueError:
+            return False
 
-            @return {Tuple} Two index tuple containing the action verbs.
-            Second index is the "ing" form of the verb.
-            """
-            if self.__restart:
-                return ("restart", "restarting")
-            return ("shutdown", "shutting down")
+    def _saveConfig(self):
+        """Write the JSON-based config file.
+
+        @returns {Boolean} True if the config file was written, False otherwise.
+        """
+        try:
+            jsonData = {
+                "time": self.time,
+                "auto": self.__auto,
+                "force": self.__force,
+                "restart": self.__restart
+            }
+            with open(self.__jsonFile, "wt", encoding="utf_8") as f:
+                f.write(json.dumps(jsonData, indent=4, sort_keys=True))
+            return True
+
+        # Silently fail
+        except PermissionError:
+            return False
+
+    def _setVerb(self):
+        """Set the action verbs for use in messages depending on restart status.
+
+        @return {Tuple} Two index tuple containing the action verbs.
+        Second index is the "ing" form of the verb.
+        """
+        if self.__restart:
+            return ("restart", "restarting")
+        return ("shutdown", "shutting down")
 
 
 def CMDParse():
