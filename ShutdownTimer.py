@@ -21,15 +21,61 @@ along with Shutdown Timer. If not, see <http://www.gnu.org/licenses/>.
 """
 
 
-import re
+# import re
 import os
 import sys
-import json
+# import json
 import time
 import argparse
+import platform
 from threading import Timer
 
 import constants as const
+
+
+class ShutdownTimer:
+
+    def __init__(self, time):
+
+        self.time = time
+        self.__auto = False
+        self.__force = False
+        self.__restart = False
+        self.__verbs = _setVerb()
+        self.__isWindows = "Windows" in platform.platform()
+        self.__configData = None
+        self.__configPath = self._getConfigPath()
+        self.__jsonFile = os.path.join(self.__configPath, "Shutdown-Timer.json")
+
+
+        def _getConfigPath(self):
+            """Get the file path where configuration files will be stored.
+
+            On Windows, the root folder is %AppData%, while on Mac OS X and Linux
+            it is ~. On all platforms, the rest of the path is Triangle717/*AppName*.
+
+            @returns {String} The configuration path.
+            """
+            root = os.path.expanduser("~")
+            if self.__isWindows:
+                root = os.path.expandvars("%AppData%")
+
+            # Create the path if needed
+            path = os.path.join(root, "Triangle717", "Shutdown-Timer")
+            if not os.path.exists(path):
+                os.makedirs(path)
+            return path
+
+
+        def _setVerb(self):
+            """Set the action verbs for use in messages depending on restart status.
+
+            @return {Tuple} Two index tuple containing the action verbs.
+            Second index is the "ing" form of the verb.
+            """
+            if self.__restart:
+                return ("restart", "restarting")
+            return ("shutdown", "shutting down")
 
 
 def CMDParse():
