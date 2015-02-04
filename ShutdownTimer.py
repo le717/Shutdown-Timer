@@ -95,6 +95,11 @@ class ShutdownTimer:
 
         return " ".join(commands)
 
+    def _runCommand(self):
+        """"""
+        pass
+        # subprocess.call(self._getCommand())
+
     def _commandLine(self):
         """Command-line arguments parser.
 
@@ -250,8 +255,6 @@ class ShutdownTimer:
         print("\nYour computer will now {0}.".format(self.verbs[0]))
         return True
 
-
-
     def getTime(self):
         """Get the time the computer will close.
 
@@ -309,6 +312,7 @@ class ShutdownTimer:
         return True
 
     def start(self):
+        """"""
         print()
         if self._countDown():
             print(self._getCommand())
@@ -329,143 +333,8 @@ class ShutdownTimer:
         return (self.__auto, self.__force, self.__restart)
 
 
-def CMDParse():
-    """Parses Command-line Arguments"""
-    parser = argparse.ArgumentParser(
-        description="{0} {1} Command-line arguments".format(
-            const.appName, const.version))
-
-    # Automatic mode argument
-    parser.add_argument("-a", "--auto",
-    help="Runs {0} in automatic mode, using the time written in TheTime.txt"
-    .format(const.appName),
-    action="store_true")
-
-    # Force shutdown argument
-    parser.add_argument("-f", "--force",
-    help='Sends "Force" command to Windows',
-    action="store_true")
-
-    # Restart Computer argument
-    parser.add_argument("-r", "--restart",
-    help='Restart Windows instead of shutting it down',
-    action="store_true")
-
-    # Register all the parameters
-    args = parser.parse_args()
-
-    # Declare all parameters as global for use in other locations
-    global force, auto, restart
-    force = args.force
-    auto = args.auto
-    restart = args.restart
-
-
-def close_Type():
-    """Change app messages depending if we are shutting down or restarting"""
-
-    global the_word, the_word_ing
-    if restart:
-        the_word = "restart"
-        the_word_ing = "restarting"
-    elif not restart:
-        the_word = "shutdown"
-        the_word_ing = "shutting down"
-
-
 def main():
-    """Shutdown Timer Menu Layout"""
-
-    # Write window title for non-automatic mode
-    os.system("title {0} {1}".format(const.appName, const.version,
-const.creator))
-    print('''\nPlease enter the time you want the computer to {0}.
-Use the 24-hour format with the following layout: "HH:MM".
-\nPress "q" to exit.'''.format(the_word))
-
-    off_time = input("\n\n> ")
-
-    # Only 'q' will close the program
-    if off_time.lower() == "q":
-        raise SystemExit(0)
-
-    elif len(off_time) == 0:
-        print("\nYou have entered an invalid time!")
-        time.sleep(1.5)
-        main()
-
-    # User typed a valid time, run shutdown sequence
-    theTimer(off_time)
-
-
-def theTimer(off_time):
-    """Gets current time and performs the appropriate actions"""
-
-    # If the shutdown time does not equal
-    # the current time, as defined by the System Clock
-    while off_time != time.strftime("%H:%M", time.localtime()):
-
-        # Required so the current time will be updated when
-        # time.sleep(align_time) is finished. The line above
-        # will not do this.
-        cur_time = time.strftime("%H:%M", time.localtime())
-
-        # Get the current seconds, as defined by the system clock.
-        cur_seconds = time.strftime("%S", time.localtime())
-
-        if cur_seconds != 00:
-            # Align the timer exactly with the system clock,
-            # allowing the computer to begin the shutdown routine
-            # exactly when stated.
-
-            # !!WARNING!!
-            # Do not change align_time to anything less than 60.
-            # Anything less creates a huge bug and throws the timer
-            # off by a minute, or creates a negative time
-
-            # Convert to integer so we can subtract
-            align_time = 60 - int(cur_seconds)
-
-        print("\nIt is not {0}, it is only {1}. Your computer will not {2}."
-        .format(off_time, cur_time, the_word))
-        # Sleep for however long until alignment
-        time.sleep(align_time)
-
-    print("\nYour computer is {0}.".format(the_word_ing))
-    # Let user read message
-    time.sleep(1)
-    close_Win()
-
-
-def close_Win():
-    """Shutsdown or Retarts Computer depending on Arguments"""
-
-    # Call hidden shutdown.exe CMD app to shutdown/restart Windows
-
-    # The restart command was sent
-    if restart:
-        # The force command was sent as well
-        if force:
-            os.system("shutdown.exe /r /f /t 0")
-        # Only the restart command was sent
-        elif not force:
-            os.system("shutdown.exe /r /t 0")
-
-    # Normal shutdown commmand was sent
-    elif not restart:
-        # The force command was sent as well
-        # Using /p shutdowns Windows immediately without warning,
-        # Same as /s /t 0
-        if force:
-            os.system("shutdown.exe /p /f")
-        # The force command was not sent
-        elif not force:
-            os.system("shutdown.exe /p")
-
-
-
-def tempMain():
-    """Temporary UI until GUI is implemented."""
+    """Basic temporary UI until GUI is implemented."""
     os.system("title {0} v{1}".format(const.appName, const.version))
     timer = ShutdownTimer()
 
@@ -486,7 +355,4 @@ Submit a "q" to exit.""".format(timer.verbs[0]))
 
 
 if __name__ == "__main__":
-    # tempMain()
-    CMDParse()
-    close_Type()
     main()
