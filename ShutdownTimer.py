@@ -168,6 +168,89 @@ class ShutdownTimer:
         """
         return val >= minV and val <= maxV
 
+    def _getCurTime(self):
+        """Get the current time, according to the system clock.
+
+        @return {Tuple}
+        """
+        curTime = time.localtime()
+        return (curTime[3], curTime[4], curTime[5])
+
+    def _calcHoursLeft(self, curHour, offHour):
+        """Calculate the number of hours that remain until closing.
+
+        @param {Number} curHour TODO.
+        @param {Number} offHour TODO.
+        @return {Number} The number of hours remaining.
+        """
+
+        # It will happpen this very hour
+        if curHour == offHour:
+            return 0
+
+        # 4-23 hours over night
+        elif curHour > offHour:
+            # Midnight through noon
+            if self._isBetween(offHour, 0, 12):
+                return (24 + offHour) - curHour
+
+                # 1 PM through 11 PM
+            elif self._isBetween(offHour, 13, 23):
+                return 24 + (offHour - curHour)
+
+        # 1-18 hours today
+        elif offHour > curHour:
+            return offHour - curHour
+
+    def _countDown(self):
+        """Calculate remaining time and wait until closing can occur."""
+        curHour, curMin, curSec = self._getCurTime()
+
+        # If the shutdown time does not equal, the current time,
+        # as defined by the local system's clock
+        while (
+            "{0}:{1}".format(curHour, curMin) !=
+            "{0}:{1}".format(self.__time[0], self.__time[1])
+        ):
+            curHour, curMin, curSec = self._getCurTime()
+
+            # Calculate remaining hours
+            remainHours = self._calcHoursLeft(curHour, self.__time[0])
+
+            # Calculate remaining minutes
+            if curMin > self.__time[1]:
+                 remainMins = curMin - (self.__time[1] - 1)
+            else:
+                 remainMins = (self.__time[1] - 1) - curMin
+
+            # Prevent the minutes from reading -1
+            if remainMins == -1:
+                remainMins = 0
+
+            # Calculate remaining seconds
+            remainSecs = 60 - curSec
+
+            # Prevent the seconds from reading 60
+            if remainSecs == 60:
+                remainSecs = "00"
+
+            # Add the leading zeros
+            elif self._isBetween(remainSecs, 1, 9):
+                remainSecs = "0{0}".format(remainSecs)
+
+            # Display remaining time
+            remainTime = "{0}:{1}".format(remainMins, remainSecs)
+
+            # Display hours if needed too
+            if curHour == 0:
+                 remainTime = "{0}:{1}".format(remainHours, remainTime)
+
+            print("Time remaining until {0}: {1}".format(self.verbs[0], remainTime))
+            time.sleep(1)
+        print("\nYour computer will now {0}.".format(self.verbs[0]))
+        return True
+
+
 
     def getTime(self):
         """Get the time the computer will close.
@@ -226,8 +309,9 @@ class ShutdownTimer:
         return True
 
     def start(self):
-
-        print(self._getCommand())
+        print()
+        if self._countDown():
+            print(self._getCommand())
 
     def setModes(self, auto=False, force=False, restart=False):
 
