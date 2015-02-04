@@ -161,13 +161,37 @@ class ShutdownTimer:
         except PermissionError:
             return False
 
+    def _isBetween(self, val, minV, maxV):
+        """Check that a value is within inclusive acceptable range.
+
+        @return {Boolean} True if in range, False if not.
+        """
+        return val >= minV and val <= maxV
+
 
     def getTime(self):
         """Get the time the computer will close.
 
         @return {String}
         """
-        return self.__time
+        time = []
+
+        # Hours
+        if self._isBetween(self.__time[0], 0, 9):
+            time.append("0{0}".format(self.__time[0]))
+        else:
+            time.append(str(self.__time[0]))
+
+        # Add the colon
+        time.append(":")
+
+        # Minutes
+        if self._isBetween(self.__time[1], 0, 9):
+            time.append("0{0}".format(self.__time[1]))
+        else:
+            time.append(str(self.__time[1]))
+
+        return "".join(time)
 
     def setTime(self, userTime):
         """Validate and set the time the computer will close."
@@ -178,13 +202,6 @@ class ShutdownTimer:
                 A ValueError will be raised if a value
                     is not in acceptable range.
         """
-
-        def isBetween(val, minV, maxV):
-            """Check that a value is within inclusive acceptable range.
-
-            @return {Boolean} True if in range, False if not.
-            """
-            return val >= minV and val <= maxV
 
         # Make sure it follows a certain format
         formatRegex = re.match(r"(\d{2}):(\d{2})", userTime)
@@ -197,15 +214,15 @@ class ShutdownTimer:
         mins = int(formatRegex.group(2))
 
         # Hours value is out of range
-        if not isBetween(hours, 0, 24):
+        if not self._isBetween(hours, 0, 24):
             raise ValueError("Hour values must be between 0 and 24.")
 
         # Minutes value is out of range
-        if not isBetween(mins, 0, 59):
+        if not self._isBetween(mins, 0, 59):
             raise ValueError("Minute values must be between 0 and 59.")
 
         # Store the time
-        self.__time = userTime
+        self.__time = (hours, mins)
         return True
 
     def start(self):
