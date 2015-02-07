@@ -28,7 +28,7 @@ import json
 import time
 import argparse
 import platform
-# import subprocess
+import subprocess
 
 import constants as const
 
@@ -36,7 +36,12 @@ import constants as const
 class ShutdownTimer:
 
     def __init__(self):
+        """Initalize public and private properties.
 
+        Exposes the following public properties
+        * {Tuple} verbs Two index tuple containing the action verbs.
+            Second index is the "ing" form of the verb.
+        """
         self.__time = None
         self.__auto = False
         self.__force = False
@@ -74,7 +79,7 @@ class ShutdownTimer:
     def _getCommand(self):
         """Construct the shutdown command based on user option selection.
 
-        @returns {String} The exact commands to run.
+        @returns {Array} The exact command to run, including any arguments.
         """
         commands = ["shutdown.exe"]
 
@@ -92,13 +97,11 @@ class ShutdownTimer:
         # the process starts, remove it to match shutdown behavior
         if self.__restart:
             commands.append("/t 0")
-
-        return " ".join(commands)
+        return commands
 
     def _runCommand(self):
-        """"""
-        pass
-        # subprocess.call(self._getCommand())
+        """Run the closing command."""
+        subprocess.call(self._getCommand())
 
     def _commandLine(self):
         """Command-line arguments parser.
@@ -252,6 +255,8 @@ class ShutdownTimer:
 
             print("Time remaining until {0}: {1}".format(self.verbs[0], remainTime))
             time.sleep(1)
+
+        # Close the computer
         print("\nYour computer will now {0}.".format(self.verbs[0]))
         return True
 
@@ -315,7 +320,7 @@ class ShutdownTimer:
         """"""
         print()
         if self._countDown():
-            print(self._getCommand())
+            self._runCommand()
 
     def setModes(self, auto=False, force=False, restart=False):
 
