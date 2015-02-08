@@ -21,20 +21,29 @@ along with Shutdown Timer. If not, see <http://www.gnu.org/licenses/>.
 """
 import os
 import sys
-from cx_Freeze import setup, Executable
+from cx_Freeze import (setup, Executable)
+
 import constants as const
 
 
-# Freeze into the proper folder depending on the architecture
-# Based on code from the Python help file (platform module) and my own tests
-if sys.maxsize == 2147483647:
-    destfolder = os.path.join("Freeze", "Windows")
-    if not os.path.exists(destfolder):
-        os.makedirs(destfolder)
+# Windows
+if sys.platform == "win32":
+
+    # x86 build
+    if sys.maxsize < 2 ** 32:
+        destfolder = os.path.join("bin", "Windows", "x86")
+
+        # x64 build
+    else:
+        destfolder = os.path.join("bin", "Windows", "x64")
+        
 else:
-    input('''\n64-bit binaries are not frozen.
-Please freeze Shutdown Timer {0} using 32-bit Python 3.3.'''.format(majver))
+    print("{0} is not supported on non Windows OS!".format(const.appName))
     raise SystemExit(0)
+
+# Create the freeze path if it doesn't exist
+if not os.path.exists(destfolder):
+    os.makedirs(destfolder)
 
 build_exe_options = {
     "build_exe": destfolder,
@@ -48,7 +57,7 @@ setup(
     name=const.appName,
     version=const.version,
     author=const.creator,
-    description="Shutdown Timer v{0}".format(const.version),
+    description="{0} v{1}".format(const.appName, const.version),
     license="GPL v3",
     options={"build_exe": build_exe_options},
     executables=[Executable("ShutdownTimer.py")])

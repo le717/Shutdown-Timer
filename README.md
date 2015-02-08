@@ -1,4 +1,4 @@
-# Shutdown Timer https://travis-ci.org/le717/Shutdown-Timer.svg #
+# Shutdown Timer [![Build Status](https://travis-ci.org/le717/Shutdown-Timer.svg)](https://travis-ci.org/le717/Shutdown-Timer) #
 
 **Shutdown Timer** is a [Python 3](http://python.org) application created by [Triangle717](http://Triangle717.WordPress.com)
 to shutdown or restart your Windows computer at a specified time.
