@@ -33,37 +33,7 @@ Pass `ShutdownTimer.exe -f` or `ShutdownTimer.exe --force` to send the force com
 ### Operating System ###
 To use **Shutdown Timer**, you will need to be running Windows. It has been successfully tested on Windows Vista, 7 and 8. It may work on Windows XP, but it has not been tested. A check has been added to **Shutdown Timer** to prohibit it from running on non-Windows operating systems.
 
-If you run the Python script directly, you will need to same operating system requirements, in addition to having at least a Python 3.3.0 interpreter.
-Again, a check will stop it on running on any versions lower than 3.3.0.
-
-If you want to run the Exe, again, you need to meet the operating system requirements and have the [Microsoft Visual Studio C++ 2008 Redistributable Package](http://www.microsoft.com/en-us/download/details.aspx?displaylang=en&id=29),
-installed. If you are unsure if you need this package or not, here's a hint:
-Only if you get an error message saying "MSVCR100.dll is missing from your computer" do you need to install it. Otherwise, it is not needed.
-
-Releases
---------
-
-* Version 1.0.2.1 - July 11, 2013
-
-> [Source Code + Direct Download](https://github.com/le717/Shutdown-Timer/releases/v1.0.2.1)
-
-* Version 1.0.2 - May 6, 2013
-
-> [Source Code](https://github.com/le717/Shutdown-Timer/tree/V1.2)
-
-> [Direct Download](https://github.com/le717/Shutdown-Timer/archive/V1.2.zip)
-
-* Version 1.2 - May 6, 2013
-
-> [Source Code](https://github.com/le717/Shutdown-Timer/tree/V1.2)
-
-> [Direct Download](https://github.com/le717/Shutdown-Timer/archive/V1.2.zip)
-
-* Version 1.0 - March 29, 2013
-
-> [Source Code](https://github.com/le717/Shutdown-Timer/tree/V1.0)
-
-> [Direct Download](https://github.com/le717/Shutdown-Timer/archive/V1.0.zip)
+If you run the Python script directly, you will need to same operating system requirements, in addition to having at least a Python 3.3.0 installation.
 
 
 ## License ##
