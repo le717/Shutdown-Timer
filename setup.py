@@ -1,34 +1,29 @@
-#! python3.3-32
+#! /usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""Shutdown Timer -  Small Windows shutdown timer.
+
+Created 2013, 2015 Triangle717
+<http://Triangle717.WordPress.com>
+
+Shutdown Timer is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Shutdown Timer is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Shutdown Timer. If not, see <http://www.gnu.org/licenses/>.
+
 """
-    Shutdown Timer -  Small Windows Shutdown Timer
-    Created 2013 Triangle717 <http://Triangle717.WordPress.com>
-
-    Shutdown Timer is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    Shutdown Timer is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Shutdown Timer.  If not, see <http://www.gnu.org/licenses/>.
-"""
-
-# Shutdown Timer setup script using cx_Freeze.
-# Taken from https://github.com/Lyrositor/EBPatcher
-# and https://github.com/JrMasterModelBuilder/JAM-Extractor
-# With changes by Triangle717
-
-from cx_Freeze import setup, Executable
-import sys
 import os
-from ShutdownTimer import majver
+import sys
+from cx_Freeze import setup, Executable
+import constants as const
 
-# Append build to the arguments. Just type "python setup.py" and it will freeze
-if len(sys.argv) == 1: sys.argv[1:] = ["build"]
 
 # Freeze into the proper folder depending on the architecture
 # Based on code from the Python help file (platform module) and my own tests
@@ -41,17 +36,19 @@ else:
 Please freeze Shutdown Timer {0} using 32-bit Python 3.3.'''.format(majver))
     raise SystemExit(0)
 
-build_exe_options = {"build_exe": destfolder,
-                     "create_shared_zip": True,
-                     "optimize": 1,
-                     "compressed": True,
-                     "icon": "Icon.ico"}
+build_exe_options = {
+    "build_exe": destfolder,
+     "create_shared_zip": True,
+     "optimize": 1,
+     "compressed": True,
+     "icon": "Icon.ico"
+}
 
 setup(
-    name="Shutdown Timer",
-    version=majver,
-    author="Triangle717",
-    description="Shutdown Timer Version {0}".format(majver),
-    license="GNU GPLv3",
+    name=const.appName,
+    version=const.version,
+    author=const.creator,
+    description="Shutdown Timer v{0}".format(const.version),
+    license="GPL v3",
     options={"build_exe": build_exe_options},
     executables=[Executable("ShutdownTimer.py")])

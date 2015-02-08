@@ -23,11 +23,9 @@ along with Shutdown Timer. If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import re
-import sys
 import json
 import time
 import argparse
-import platform
 import subprocess
 
 import constants as const
@@ -228,9 +226,9 @@ class ShutdownTimer:
 
             # Calculate remaining minutes
             if curMin > self.__time[1]:
-                 remainMins = curMin - (self.__time[1] - 1)
+                remainMins = curMin - (self.__time[1] - 1)
             else:
-                 remainMins = (self.__time[1] - 1) - curMin
+                remainMins = (self.__time[1] - 1) - curMin
 
             # Prevent the minutes from reading -1
             if remainMins == -1:
@@ -252,7 +250,7 @@ class ShutdownTimer:
 
             # Display hours if needed too
             if curHour == 0:
-                 remainTime = "{0}:{1}".format(remainHours, remainTime)
+                remainTime = "{0}:{1}".format(remainHours, remainTime)
 
             print("Time remaining until {0}: {1}".format(self.verbs[0], remainTime))
             time.sleep(1)
