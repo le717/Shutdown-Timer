@@ -35,13 +35,20 @@ __all__ = ("ShutdownTimer", "main")
 
 class ShutdownTimer:
 
-    def __init__(self):
-        """Initalize public and private properties.
+    """Core Shutdown Timer code and actions.
 
-        Exposes the following public properties
-        * {Tuple} verbs Two index tuple containing the action verbs.
-            Second index is the "ing" form of the verb.
-        """
+    Exposes the following public properties and methods:
+    * {Tuple} verbs Two index tuple containing the action verbs.
+        Second index is the "ing" form of the verb.
+    * {Method} TODO.
+    * {Method} TODO.
+    * {Method} TODO.
+    * {Method} TODO.
+    * {Method} TODO.
+    """
+
+    def __init__(self):
+        """Initalize public and private properties."""
         self.__time = None
         self.__force = False
         self.__restart = False
@@ -114,7 +121,7 @@ class ShutdownTimer:
 
         # Force mode
         parser.add_argument("-f", "--force",
-                            help="Force Windows to close without waiting on programs",
+                            help="Close Windows without waiting on programs",
                             action="store_true")
 
         # Restart mode
@@ -167,7 +174,7 @@ class ShutdownTimer:
 
     def _isBetween(self, val, minV, maxV):
         """Check that a value is within inclusive acceptable range.
-        
+
         @param {Number} val TODO.
         @param {Number} minV TODO.
         @param {Number} maxV TODO.
@@ -322,7 +329,7 @@ class ShutdownTimer:
 
     def setModes(self, force=False, restart=False):
         """TODO.
-        
+
         @param {Boolean} force TODO.
         @param {Boolean} restart TODO.
         @returns {Boolean} Always returns True.
