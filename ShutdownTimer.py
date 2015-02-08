@@ -30,6 +30,8 @@ import subprocess
 
 import constants as const
 
+__all__ = ("ShutdownTimer", "main")
+
 
 class ShutdownTimer:
 

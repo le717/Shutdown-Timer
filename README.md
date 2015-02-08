@@ -2,7 +2,7 @@
 
 > Small, Windows-only program to shutdown or restart your computer at a stated time.
 
-## Usgae ##
+## Usage ##
 Enter the time you want the computer to close (shutdown or restart) using 24 (military) time, and press &lt;Enter&gt;
 **Shutdown Timer** will then take that time and the current time, as defined by the system clock, and compare the two.
 If the two times do not match, it will run until they do match, when it will then halt your computer.
@@ -18,9 +18,7 @@ Pass `ShutdownTimer.exe -f` or `ShutdownTimer.exe --force` to send the force com
 
 
 ## Requirements ##
-To use **Shutdown Timer**, you will need to be running Windows. It has been successfully tested on Windows Vista, 7 and 8. It may work on Windows XP, but it has not been tested. A check has been added to **Shutdown Timer** to prohibit it from running on non-Windows operating systems.
-
-If you run the Python script directly, you will need to same operating system requirements, in addition to having at least a Python 3.3.0 installation.
+* Windows XP or higher. Mac OS X and Linux versions will not be developed.
 
 ## License ##
 [GPL v3](http://www.gnu.org/licenses/gpl.html)
