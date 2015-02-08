@@ -36,7 +36,7 @@ if sys.platform == "win32":
         # x64 build
     else:
         destfolder = os.path.join("bin", "Windows", "x64")
-        
+
 else:
     print("{0} is not supported on non Windows OS!".format(const.appName))
     raise SystemExit(0)
@@ -47,10 +47,10 @@ if not os.path.exists(destfolder):
 
 build_exe_options = {
     "build_exe": destfolder,
-     "create_shared_zip": True,
-     "optimize": 1,
-     "compressed": True,
-     "icon": "Icon.ico"
+    "create_shared_zip": True,
+    "optimize": 1,
+    "compressed": True,
+    "icon": "Icon.ico"
 }
 
 setup(
@@ -60,4 +60,5 @@ setup(
     description="{0} v{1}".format(const.appName, const.version),
     license="GPL v3",
     options={"build_exe": build_exe_options},
-    executables=[Executable("ShutdownTimer.py")])
+    executables=[Executable("ShutdownTimer.py")]
+)

@@ -41,12 +41,12 @@ class ShutdownTimer:
             Second index is the "ing" form of the verb.
         """
         self.__time = None
-        self.__auto = False
         self.__force = False
         self.__restart = False
         self.__configData = None
         self.__configPath = self._getConfigPath()
-        self.__jsonFile = os.path.join(self.__configPath, "Shutdown-Timer.json")
+        self.__jsonFile = os.path.join(self.__configPath,
+                                       "Shutdown-Timer.json")
         self._loadConfig()
         self._commandLine()
         self.verbs = self._getVerb()
@@ -54,7 +54,8 @@ class ShutdownTimer:
     def _getConfigPath(self):
         """Get the file path where configuration files will be stored.
 
-        @returns {String} The configuration path, %AppData%,Triangle717/*AppName*.
+        @returns {String} The configuration path,
+            `%AppData%,Triangle717/*AppName*`.
         """
         root = os.path.expandvars("%AppData%")
 
@@ -109,11 +110,6 @@ class ShutdownTimer:
         parser = argparse.ArgumentParser(
             description="{0} Command-line arguments".format(const.appName))
 
-        # Auto mode
-        parser.add_argument("-a", "--auto",
-                            help="Run in automatic mode using previously set time.",
-                            action="store_true")
-
         # Force mode
         parser.add_argument("-f", "--force",
                             help="Force Windows to close without waiting on programs",
@@ -126,7 +122,6 @@ class ShutdownTimer:
 
         # Assign the arguments
         args = parser.parse_args()
-        self.__auto = args.auto
         self.__force = args.force
         self.__restart = args.restart
         return True
@@ -155,7 +150,6 @@ class ShutdownTimer:
         """
         try:
             jsonData = {
-                "auto": self.__auto,
                 "force": self.__force,
                 "restart": self.__restart,
                 "time": self.__time
@@ -190,7 +184,6 @@ class ShutdownTimer:
         @param {Number} offHour TODO.
         @return {Number} The number of hours remaining.
         """
-
         # It will happpen this very hour
         if curHour == offHour:
             return 0
@@ -284,7 +277,7 @@ class ShutdownTimer:
         return "".join(time)
 
     def setTime(self, userTime):
-        """Validate and set the time the computer will close."
+        """Validate and set the time the computer will close.
 
         @param {String} userTime The user-provided time to close.
         @return {!Boolean} True if the time was set,
@@ -292,7 +285,6 @@ class ShutdownTimer:
                 A ValueError will be raised if a value
                     is not in acceptable range.
         """
-
         # Make sure it follows a certain format
         formatRegex = re.match(r"(\d{2}):(\d{2})", userTime)
         if formatRegex is None:
@@ -321,9 +313,8 @@ class ShutdownTimer:
         if self._countDown():
             self._runCommand()
 
-    def setModes(self, auto=False, force=False, restart=False):
+    def setModes(self, force=False, restart=False):
 
-        self.__auto = auto
         self.__force = force
         self.__restart = restart
 
@@ -331,10 +322,10 @@ class ShutdownTimer:
         """Get the Windows closing options.
 
         @return {Tuple} Three index tuple containing Boolean values for
-            automatic, force, restart modes. In all case, a value of True
+            force and restart modes. In all case, a value of True
             represents that mode is enabled and False disabled.
         """
-        return (self.__auto, self.__force, self.__restart)
+        return (self.__force, self.__restart)
 
 
 def main():
