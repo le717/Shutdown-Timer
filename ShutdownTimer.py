@@ -57,7 +57,7 @@ class ShutdownTimer:
         """Get the file path where configuration files will be stored.
 
         @returns {String} The configuration path,
-            `%AppData%,Triangle717/*AppName*`.
+            `%AppData%/Triangle717/*AppName*`.
         """
         root = os.path.expandvars("%AppData%")
 
@@ -148,7 +148,8 @@ class ShutdownTimer:
     def saveConfig(self):
         """Write the JSON-based config file.
 
-        @returns {Boolean} True if the config file was written, False otherwise.
+        @returns {Boolean} True if the config file was written,
+            False otherwise.
         """
         try:
             jsonData = {
@@ -166,7 +167,10 @@ class ShutdownTimer:
 
     def _isBetween(self, val, minV, maxV):
         """Check that a value is within inclusive acceptable range.
-
+        
+        @param {Number} val TODO.
+        @param {Number} minV TODO.
+        @param {Number} maxV TODO.
         @return {Boolean} True if in range, False if not.
         """
         return val >= minV and val <= maxV
@@ -247,7 +251,8 @@ class ShutdownTimer:
             if curHour == 0:
                 remainTime = "{0}:{1}".format(remainHours, remainTime)
 
-            print("Time remaining until {0}: {1}".format(self.verbs[0], remainTime))
+            print("Time remaining until {0}: {1}".format(
+                    self.verbs[0], remainTime))
             time.sleep(1)
 
         # Close the computer
@@ -257,7 +262,7 @@ class ShutdownTimer:
     def getTime(self):
         """Get the time the computer will close.
 
-        @return {String}
+        @return {String} Closing time.
         """
         time = []
 
@@ -310,15 +315,21 @@ class ShutdownTimer:
         return True
 
     def start(self):
-        """"""
+        """Start the timer and send command to close the computer."""
         print()
         if self._countDown():
             self._runCommand()
 
     def setModes(self, force=False, restart=False):
-
+        """TODO.
+        
+        @param {Boolean} force TODO.
+        @param {Boolean} restart TODO.
+        @returns {Boolean} Always returns True.
+        """
         self.__force = force
         self.__restart = restart
+        return True
 
     def getModes(self):
         """Get the Windows closing options.
