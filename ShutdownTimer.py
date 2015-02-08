@@ -126,6 +126,7 @@ class ShutdownTimer:
                             help="Restart Windows instead of shutting down",
                             action="store_true")
 
+        # Assign the arguments
         args = parser.parse_args()
         self.__auto = args.auto
         self.__force = args.force
@@ -339,7 +340,7 @@ class ShutdownTimer:
 
 
 def main():
-    """Basic temporary UI until GUI is implemented."""
+    """Basic temporary UI until TODO GUI is implemented."""
     os.system("title {0} v{1}".format(const.appName, const.version))
     timer = ShutdownTimer()
 

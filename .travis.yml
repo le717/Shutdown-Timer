@@ -1,0 +1,12 @@
+language: python
+python:
+  - 3.3
+  - 3.4
+
+install: pip install -r requirements.txt
+script:
+  - flake8 ShutdownTimer.py
+  - flake8 setup.py
+
+  - pep257 ShutdownTimer.py --explain
+  - pep257 setup.py --explain
