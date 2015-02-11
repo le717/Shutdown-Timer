@@ -48,7 +48,7 @@ class ShutdownTimer:
     """
 
     def __init__(self):
-        """Initalize public and private properties."""
+        """Initalize all properties and methods."""
         self.__time = None
         self.__force = False
         self.__restart = False
@@ -175,9 +175,9 @@ class ShutdownTimer:
     def _isBetween(self, val, minV, maxV):
         """Check that a value is within inclusive acceptable range.
 
-        @param {Number} val TODO.
-        @param {Number} minV TODO.
-        @param {Number} maxV TODO.
+        @param {Number} val The value to check.
+        @param {Number} minV The maximum value.
+        @param {Number} maxV The minimum value.
         @return {Boolean} True if in range, False if not.
         """
         return val >= minV and val <= maxV
