@@ -104,7 +104,8 @@ class ShutdownTimer:
         # Restarting will always have a timeout dialog before
         # the process starts, remove it to match shutdown behavior
         if self.__restart:
-            commands.append("/t 0")
+            commands.append("/t")
+            commands.append("0")
         return commands
 
     def _runCommand(self):
