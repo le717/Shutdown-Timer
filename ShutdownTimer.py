@@ -53,14 +53,14 @@ class ShutdownTimer:
         self.__force = False
         self.__restart = False
         self.__configData = None
-        self.__configPath = self._getConfigPath()
+        self.__configPath = self.__getConfigPath()
         self.__jsonFile = os.path.join(self.__configPath,
                                        "Shutdown-Timer.json")
-        self._loadConfig()
-        self._commandLine()
-        self.verbs = self._getVerb()
+        self.__loadConfig()
+        self.__commandLine()
+        self.verbs = self.__getVerb()
 
-    def _getConfigPath(self):
+    def __getConfigPath(self):
         """Get the file path where configuration files will be stored.
 
         @returns {String} The configuration path,
@@ -74,7 +74,7 @@ class ShutdownTimer:
             os.makedirs(path)
         return path
 
-    def _getVerb(self):
+    def __getVerb(self):
         """Set the action verbs for use in messages depending on restart status.
 
         @return {Tuple} Two index tuple containing the action verbs.
@@ -84,7 +84,7 @@ class ShutdownTimer:
             return ("restart", "restarting")
         return ("shutdown", "shutting down")
 
-    def _getCommand(self):
+    def __getCommand(self):
         """Construct the shutdown command based on user option selection.
 
         @returns {Array} The exact command to run, including any arguments.
@@ -108,11 +108,11 @@ class ShutdownTimer:
             commands.append("0")
         return commands
 
-    def _runCommand(self):
+    def __runCommand(self):
         """Run the closing command."""
-        subprocess.call(self._getCommand())
+        subprocess.call(self.__getCommand())
 
-    def _commandLine(self):
+    def __commandLine(self):
         """Command-line arguments parser.
 
         @returns {Boolean} Always returns True.
@@ -136,7 +136,7 @@ class ShutdownTimer:
         self.__restart = args.restart
         return True
 
-    def _loadConfig(self):
+    def __loadConfig(self):
         """Read and store the configuration file.
 
         @returns {Boolean} True if the config file was read, False otherwise.
@@ -173,7 +173,7 @@ class ShutdownTimer:
         except PermissionError:
             return False
 
-    def _isBetween(self, val, minV, maxV):
+    def __isBetween(self, val, minV, maxV):
         """Check that a value is within inclusive acceptable range.
 
         @param {Number} val The value to check.
@@ -183,7 +183,7 @@ class ShutdownTimer:
         """
         return val >= minV and val <= maxV
 
-    def _getCurTime(self):
+    def __getCurTime(self):
         """Get the current time, according to the system clock.
 
         @return {Tuple}
@@ -191,7 +191,7 @@ class ShutdownTimer:
         curTime = time.localtime()
         return (curTime[3], curTime[4], curTime[5])
 
-    def _calcHoursLeft(self, curHour, offHour):
+    def __calcHoursLeft(self, curHour, offHour):
         """Calculate the number of hours that remain until closing.
 
         @param {Number} curHour TODO.
@@ -205,20 +205,20 @@ class ShutdownTimer:
         # 4-23 hours over night
         elif curHour > offHour:
             # Midnight through noon
-            if self._isBetween(offHour, 0, 12):
+            if self.__isBetween(offHour, 0, 12):
                 return (24 + offHour) - curHour
 
                 # 1 PM through 11 PM
-            elif self._isBetween(offHour, 13, 23):
+            elif self.__isBetween(offHour, 13, 23):
                 return 24 + (offHour - curHour)
 
         # 1-18 hours today
         elif offHour > curHour:
             return offHour - curHour
 
-    def _countDown(self):
+    def __countDown(self):
         """Calculate remaining time and wait until closing can occur."""
-        curHour, curMin, curSec = self._getCurTime()
+        curHour, curMin, curSec = self.__getCurTime()
 
         # If the shutdown time does not equal, the current time,
         # as defined by the local system's clock
@@ -226,10 +226,10 @@ class ShutdownTimer:
             "{0}:{1}".format(curHour, curMin) !=
             "{0}:{1}".format(self.__time[0], self.__time[1])
         ):
-            curHour, curMin, curSec = self._getCurTime()
+            curHour, curMin, curSec = self.__getCurTime()
 
             # Calculate remaining hours
-            remainHours = self._calcHoursLeft(curHour, self.__time[0])
+            remainHours = self.__calcHoursLeft(curHour, self.__time[0])
 
             # Calculate remaining minutes
             if curMin > self.__time[1]:
@@ -249,7 +249,7 @@ class ShutdownTimer:
                 remainSecs = "00"
 
             # Add the leading zeros
-            elif self._isBetween(remainSecs, 1, 9):
+            elif self.__isBetween(remainSecs, 1, 9):
                 remainSecs = "0{0}".format(remainSecs)
 
             # Display remaining time
@@ -275,7 +275,7 @@ class ShutdownTimer:
         time = []
 
         # Hours
-        if self._isBetween(self.__time[0], 0, 9):
+        if self.__isBetween(self.__time[0], 0, 9):
             time.append("0{0}".format(self.__time[0]))
         else:
             time.append(str(self.__time[0]))
@@ -284,7 +284,7 @@ class ShutdownTimer:
         time.append(":")
 
         # Minutes
-        if self._isBetween(self.__time[1], 0, 9):
+        if self.__isBetween(self.__time[1], 0, 9):
             time.append("0{0}".format(self.__time[1]))
         else:
             time.append(str(self.__time[1]))
@@ -311,11 +311,11 @@ class ShutdownTimer:
         mins = int(formatRegex.group(2))
 
         # Hours value is out of range
-        if not self._isBetween(hours, 0, 24):
+        if not self.__isBetween(hours, 0, 24):
             raise ValueError("Hour values must be between 0 and 24.")
 
         # Minutes value is out of range
-        if not self._isBetween(mins, 0, 59):
+        if not self.__isBetween(mins, 0, 59):
             raise ValueError("Minute values must be between 0 and 59.")
 
         # Store the time
@@ -325,8 +325,8 @@ class ShutdownTimer:
     def start(self):
         """Start the timer and send command to close the computer."""
         print()
-        if self._countDown():
-            self._runCommand()
+        if self.__countDown():
+            self.__runCommand()
 
     def setModes(self, force=False, restart=False):
         """TODO.
