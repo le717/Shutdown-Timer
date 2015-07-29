@@ -214,7 +214,7 @@ class ShutdownTimer:
 
         # 1-18 hours today
         elif offHour > curHour:
-            return offHour - curHour
+            return (offHour - curHour) - 1
 
     def __countDown(self):
         """Calculate remaining time and wait until closing can occur."""
