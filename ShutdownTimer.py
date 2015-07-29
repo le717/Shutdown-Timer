@@ -256,7 +256,7 @@ class ShutdownTimer:
             remainTime = "{0}:{1}".format(remainMins, remainSecs)
 
             # Display hours if needed too
-            if curHour == 0:
+            if curHour != 0:
                 remainTime = "{0}:{1}".format(remainHours, remainTime)
 
             print("Time remaining until {0}: {1}".format(
