@@ -260,7 +260,7 @@ class ShutdownTimer:
                 remainTime = "{0}:{1}".format(remainHours, remainTime)
 
             print("Time remaining until {0}: {1}".format(
-                    self.verbs[0], remainTime))
+                  self.verbs[0], remainTime))
             time.sleep(1)
 
         # Close the computer
